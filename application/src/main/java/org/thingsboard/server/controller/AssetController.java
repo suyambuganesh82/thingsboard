@@ -1,12 +1,12 @@
 /**
  * Copyright © 2016-2024 The Thingsboard Authors
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,15 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.thingsboard.server.common.data.Customer;
 import org.thingsboard.server.common.data.EntitySubtype;
 import org.thingsboard.server.common.data.asset.Asset;
@@ -41,11 +33,7 @@ import org.thingsboard.server.common.data.asset.AssetInfo;
 import org.thingsboard.server.common.data.asset.AssetSearchQuery;
 import org.thingsboard.server.common.data.edge.Edge;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
-import org.thingsboard.server.common.data.id.AssetId;
-import org.thingsboard.server.common.data.id.AssetProfileId;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.EdgeId;
-import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.page.TimePageLink;
@@ -63,29 +51,11 @@ import org.thingsboard.server.service.security.permission.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-import static org.thingsboard.server.controller.ControllerConstants.ASSET_ID_PARAM_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.ASSET_INFO_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.ASSET_NAME_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.ASSET_PROFILE_ID_PARAM_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.ASSET_TEXT_SEARCH_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.ASSET_TYPE_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.CUSTOMER_ID_PARAM_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.EDGE_ASSIGN_ASYNC_FIRST_STEP_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.EDGE_ASSIGN_RECEIVE_STEP_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.EDGE_ID_PARAM_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.EDGE_UNASSIGN_ASYNC_FIRST_STEP_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.EDGE_UNASSIGN_RECEIVE_STEP_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.PAGE_DATA_PARAMETERS;
-import static org.thingsboard.server.controller.ControllerConstants.PAGE_NUMBER_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.PAGE_SIZE_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.SORT_ORDER_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.SORT_PROPERTY_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.TENANT_AUTHORITY_PARAGRAPH;
-import static org.thingsboard.server.controller.ControllerConstants.TENANT_OR_CUSTOMER_AUTHORITY_PARAGRAPH;
-import static org.thingsboard.server.controller.ControllerConstants.UUID_WIKI_LINK;
+import static org.thingsboard.server.controller.ControllerConstants.*;
 import static org.thingsboard.server.controller.EdgeController.EDGE_ID;
 
 @RestController
@@ -94,10 +64,9 @@ import static org.thingsboard.server.controller.EdgeController.EDGE_ID;
 @RequiredArgsConstructor
 @Slf4j
 public class AssetController extends BaseController {
+    public static final String ASSET_ID = "assetId";
     private final AssetBulkImportService assetBulkImportService;
     private final TbAssetService tbAssetService;
-
-    public static final String ASSET_ID = "assetId";
 
     @ApiOperation(value = "Get Asset (getAssetById)",
             notes = "Fetch the Asset object based on the provided Asset Id. " +
@@ -224,7 +193,7 @@ public class AssetController extends BaseController {
             @RequestParam(required = false) String sortOrder) throws ThingsboardException {
         TenantId tenantId = getCurrentUser().getTenantId();
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             return checkNotNull(assetService.findAssetsByTenantIdAndType(tenantId, type, pageLink));
         } else {
             return checkNotNull(assetService.findAssetsByTenantId(tenantId, pageLink));
@@ -245,7 +214,7 @@ public class AssetController extends BaseController {
             @Parameter(description = ASSET_TYPE_DESCRIPTION)
             @RequestParam(required = false) String type,
             @Parameter(description = ASSET_PROFILE_ID_PARAM_DESCRIPTION)
-            @RequestParam(required = false) String assetProfileId,
+            @RequestParam(required = false) UUID assetProfileId,
             @Parameter(description = ASSET_TEXT_SEARCH_DESCRIPTION)
             @RequestParam(required = false) String textSearch,
             @Parameter(description = SORT_PROPERTY_DESCRIPTION, schema = @Schema(allowableValues = {"createdTime", "name", "type", "label", "customerTitle"}))
@@ -254,10 +223,10 @@ public class AssetController extends BaseController {
             @RequestParam(required = false) String sortOrder) throws ThingsboardException {
         TenantId tenantId = getCurrentUser().getTenantId();
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             return checkNotNull(assetService.findAssetInfosByTenantIdAndType(tenantId, type, pageLink));
-        } else if (assetProfileId != null && assetProfileId.length() > 0) {
-            AssetProfileId profileId = new AssetProfileId(toUUID(assetProfileId));
+        } else if (assetProfileId != null) {
+            AssetProfileId profileId = new AssetProfileId(assetProfileId);
             return checkNotNull(assetService.findAssetInfosByTenantIdAndAssetProfileId(tenantId, profileId, pageLink));
         } else {
             return checkNotNull(assetService.findAssetInfosByTenantId(tenantId, pageLink));
@@ -318,7 +287,7 @@ public class AssetController extends BaseController {
     @ResponseBody
     public PageData<AssetInfo> getCustomerAssetInfos(
             @Parameter(description = CUSTOMER_ID_PARAM_DESCRIPTION)
-            @PathVariable("customerId") String strCustomerId,
+            @PathVariable("customerId") UUID strCustomerId,
             @Parameter(description = PAGE_SIZE_DESCRIPTION)
             @RequestParam int pageSize,
             @Parameter(description = PAGE_NUMBER_DESCRIPTION)
@@ -326,7 +295,7 @@ public class AssetController extends BaseController {
             @Parameter(description = ASSET_TYPE_DESCRIPTION)
             @RequestParam(required = false) String type,
             @Parameter(description = ASSET_PROFILE_ID_PARAM_DESCRIPTION)
-            @RequestParam(required = false) String assetProfileId,
+            @RequestParam(required = false) UUID assetProfileId,
             @Parameter(description = ASSET_TEXT_SEARCH_DESCRIPTION)
             @RequestParam(required = false) String textSearch,
             @Parameter(description = SORT_PROPERTY_DESCRIPTION, schema = @Schema(allowableValues = {"createdTime", "name", "type", "label", "customerTitle"}))
@@ -335,13 +304,13 @@ public class AssetController extends BaseController {
             @RequestParam(required = false) String sortOrder) throws ThingsboardException {
         checkParameter("customerId", strCustomerId);
         TenantId tenantId = getCurrentUser().getTenantId();
-        CustomerId customerId = new CustomerId(toUUID(strCustomerId));
+        CustomerId customerId = new CustomerId(strCustomerId);
         checkCustomerId(customerId, Operation.READ);
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             return checkNotNull(assetService.findAssetInfosByTenantIdAndCustomerIdAndType(tenantId, customerId, type, pageLink));
-        } else if (assetProfileId != null && assetProfileId.length() > 0) {
-            AssetProfileId profileId = new AssetProfileId(toUUID(assetProfileId));
+        } else if (assetProfileId != null) {
+            AssetProfileId profileId = new AssetProfileId(assetProfileId);
             return checkNotNull(assetService.findAssetInfosByTenantIdAndCustomerIdAndAssetProfileId(tenantId, customerId, profileId, pageLink));
         } else {
             return checkNotNull(assetService.findAssetInfosByTenantIdAndCustomerId(tenantId, customerId, pageLink));

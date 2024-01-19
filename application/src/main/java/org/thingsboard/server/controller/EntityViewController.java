@@ -332,7 +332,7 @@ public class EntityViewController extends BaseController {
             @RequestParam(required = false) String sortOrder) throws ThingsboardException {
         TenantId tenantId = getCurrentUser().getTenantId();
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             return checkNotNull(entityViewService.findEntityViewInfosByTenantIdAndType(tenantId, type, pageLink));
         } else {
             return checkNotNull(entityViewService.findEntityViewInfosByTenantId(tenantId, pageLink));

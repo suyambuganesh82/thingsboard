@@ -32,16 +32,16 @@ import java.util.UUID;
 public interface NotificationRepository extends JpaRepository<NotificationEntity, UUID> {
 
     @Query("SELECT n FROM NotificationEntity n WHERE n.recipientId = :recipientId AND n.status <> :status " +
-            "AND (:searchText is NULL OR ilike(n.subject, concat('%', :searchText, '%')) = true " +
-            "OR ilike(n.text, concat('%', :searchText, '%')) = true)")
+            "AND (:searchText is NULL OR ilike(n.subject, CONCAT('%', CAST(:searchText AS string), '%')) = true " +
+            "OR ilike(n.text, CONCAT('%', CAST(:searchText AS string), '%')) = true)")
     Page<NotificationEntity> findByRecipientIdAndStatusNot(@Param("recipientId") UUID recipientId,
                                                            @Param("status") NotificationStatus status,
                                                            @Param("searchText") String searchText,
                                                            Pageable pageable);
 
     @Query("SELECT n FROM NotificationEntity n WHERE n.recipientId = :recipientId " +
-            "AND (:searchText is NULL OR ilike(n.subject, concat('%', :searchText, '%')) = true " +
-            "OR ilike(n.text, concat('%', :searchText, '%')) = true)")
+            "AND (:searchText is NULL OR ilike(n.subject, CONCAT('%', CAST(:searchText AS string), '%')) = true " +
+            "OR ilike(n.text, CONCAT('%', CAST(:searchText AS string), '%')) = true)")
     Page<NotificationEntity> findByRecipientId(@Param("recipientId") UUID recipientId,
                                                @Param("searchText") String searchText,
                                                Pageable pageable);

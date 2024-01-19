@@ -386,9 +386,9 @@ public class DeviceController extends BaseController {
         DeviceInfoFilter.DeviceInfoFilterBuilder filter = DeviceInfoFilter.builder();
         filter.tenantId(tenantId);
         filter.active(active);
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             filter.type(type);
-        } else if (deviceProfileId != null && deviceProfileId.length() > 0) {
+        } else if (deviceProfileId != null && !deviceProfileId.isEmpty()) {
             filter.deviceProfileId(new DeviceProfileId(toUUID(deviceProfileId)));
         }
         return checkNotNull(deviceService.findDeviceInfosByFilter(filter.build(), pageLink));

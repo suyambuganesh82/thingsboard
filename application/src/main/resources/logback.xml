@@ -34,8 +34,9 @@
     <!--    <logger name="org.thingsboard.server.service.install.update.DefaultDataUpdateService" level="DEBUG"/>-->
     <!-- Other useful logs -->
     <!--    <logger name="org.springframework.jdbc.core" level="TRACE" />-->
-    <!--    <logger name="org.hibernate.SQL" level="DEBUG" />-->
-    <!--    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" />-->
+    <!--        <logger name="org.hibernate.SQL" level="DEBUG" />-->
+    <!--        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" />-->
+    <!--        <logger name="org.hibernate.orm.jdbc.bind" level="TRACE" />-->
 
     <!--    <logger name="org.thingsboard.server.service.queue" level="TRACE" />-->
     <!--    <logger name="org.thingsboard.server.service.transport" level="TRACE" />-->
@@ -56,7 +57,7 @@
     <!-- Device actor message processor debug -->
     <!--    <logger name="org.thingsboard.server.actors.device.DeviceActorMessageProcessor" level="DEBUG" />-->
 
-    <logger name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver" level="OFF" />
+    <logger name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver" level="OFF"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

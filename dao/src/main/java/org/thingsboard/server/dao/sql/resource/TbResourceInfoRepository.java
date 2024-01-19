@@ -29,7 +29,7 @@ import java.util.UUID;
 public interface TbResourceInfoRepository extends JpaRepository<TbResourceInfoEntity, UUID> {
 
     @Query("SELECT tr FROM TbResourceInfoEntity tr WHERE " +
-            "(:searchText IS NULL OR ilike(tr.title, CONCAT('%', :searchText, '%')) = true) " +
+            "(:searchText IS NULL OR ilike(tr.title, CONCAT('%', CAST(:searchText AS string), '%')) = true) " +
             "AND (tr.tenantId = :tenantId " +
             "OR (tr.tenantId = :systemTenantId " +
             "AND NOT EXISTS " +
@@ -47,7 +47,7 @@ public interface TbResourceInfoRepository extends JpaRepository<TbResourceInfoEn
     @Query("SELECT ri FROM TbResourceInfoEntity ri WHERE " +
             "ri.tenantId = :tenantId " +
             "AND ri.resourceType IN :resourceTypes " +
-            "AND (:searchText IS NULL OR ilike(ri.title, CONCAT('%', :searchText, '%')) = true)")
+            "AND (:searchText IS NULL OR ilike(ri.title, CONCAT('%', CAST(:searchText AS string), '%')) = true)")
     Page<TbResourceInfoEntity> findTenantResourcesByTenantId(@Param("tenantId") UUID tenantId,
                                                              @Param("resourceTypes") List<String> resourceTypes,
                                                              @Param("searchText") String searchText,

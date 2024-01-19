@@ -23,7 +23,9 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.dialect.PostgreSQLJsonPGObjectJsonbType;
+import org.hibernate.type.SqlTypes;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.server.common.data.Device;
 import org.thingsboard.server.common.data.device.data.DeviceData;
@@ -71,8 +73,9 @@ public abstract class AbstractDeviceEntity<T extends Device> extends BaseSqlEnti
     @Column(name = ModelConstants.DEVICE_SOFTWARE_ID_PROPERTY, columnDefinition = "uuid")
     private UUID softwareId;
 
-    @Convert(converter = JsonConverter.class)
-    @JdbcType(PostgreSQLJsonPGObjectJsonbType.class)
+//    @Convert(converter = JsonConverter.class)
+//    @JdbcType(PostgreSQLJsonPGObjectJsonbType.class)
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = ModelConstants.DEVICE_DEVICE_DATA_PROPERTY, columnDefinition = "jsonb")
     private JsonNode deviceData;
 

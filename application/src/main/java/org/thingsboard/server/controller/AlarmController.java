@@ -482,7 +482,7 @@ public class AlarmController extends BaseController {
             @Parameter(description = ALARM_QUERY_STATUS_DESCRIPTION, schema = @Schema(allowableValues = {"ACTIVE_UNACK", "ACTIVE_ACK", "CLEARED_UNACK", "CLEARED_ACK"}))
             @RequestParam(required = false) String status,
             @Parameter(description = ALARM_QUERY_ASSIGNEE_DESCRIPTION)
-            @RequestParam(required = false) String assigneeId
+            @RequestParam(required = false) UUID assigneeId
     ) throws ThingsboardException {
         checkParameter("EntityId", strEntityId);
         checkParameter("EntityType", strEntityType);

@@ -18,6 +18,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
     <groupId>org.thingsboard</groupId>
     <artifactId>thingsboard</artifactId>
     <version>3.7.0-SNAPSHOT</version>
@@ -42,9 +48,9 @@
         <jakarta.xml.bind-api.version>4.0.0</jakarta.xml.bind-api.version>
         <javax.xml.bind-api.version>2.3.1</javax.xml.bind-api.version>
         <jaxb-runtime.version>4.0.2</jaxb-runtime.version>
-        <spring-boot.version>3.1.0</spring-boot.version>
-        <spring-data.version>3.1.0</spring-data.version>
-        <spring.version>6.0.9</spring.version>
+<!--        <spring-boot.version>3.2.1</spring-boot.version>-->
+<!--        <spring-data.version>3.1.0</spring-data.version>-->
+<!--        <spring.version>6.1.3</spring.version>-->
         <spring-redis.version>6.1.0</spring-redis.version>
         <spring-security.version>6.1.0</spring-security.version>
         <spring-data-redis.version>3.1.0</spring-data-redis.version>
@@ -67,9 +73,8 @@
         <apache-httpclient.version>4.5.13</apache-httpclient.version>
         <apache-httpcore.version>4.4.14</apache-httpcore.version>
         <joda-time.version>2.8.1</joda-time.version>
-        <jackson.version>2.13.4</jackson.version>
-        <jackson-databind.version>2.13.4.2</jackson-databind.version>
-        <fasterxml-classmate.version>1.3.4</fasterxml-classmate.version>
+        <jackson.version>2.16.1</jackson.version>
+        <fasterxml-classmate.version>1.7.0</fasterxml-classmate.version>
         <auth0-jwt.version>4.2.1</auth0-jwt.version>
         <json-schema-validator.version>2.2.6</json-schema-validator.version>
         <californium.version>3.0.0</californium.version>
@@ -82,23 +87,23 @@
         <protobuf.version>3.21.9</protobuf.version>
         <grpc.version>1.42.1</grpc.version>
         <tbel.version>1.1.5</tbel.version>
-        <lombok.version>1.18.26</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <paho.client.version>1.2.4</paho.client.version>
         <paho.mqttv5.client.version>1.2.5</paho.mqttv5.client.version>
-        <netty.version>4.1.93.Final</netty.version>
+        <netty.version>4.1.105.Final</netty.version>
         <netty-tcnative.version>2.0.61.Final</netty-tcnative.version>
-        <reactor-netty.version>1.1.7</reactor-netty.version>
+        <reactor-netty.version>1.1.15</reactor-netty.version>
         <os-maven-plugin.version>1.7.0</os-maven-plugin.version>
         <rabbitmq.version>4.8.0</rabbitmq.version>
         <surefire.version>3.0.0-M9</surefire.version>
         <jar-plugin.version>3.0.2</jar-plugin.version>
-        <springdoc-swagger.version>2.1.0</springdoc-swagger.version>
-        <swagger-annotations.version>2.2.9</swagger-annotations.version>
+        <springdoc-swagger.version>2.3.0</springdoc-swagger.version>
+        <swagger-annotations.version>2.2.20</swagger-annotations.version>
         <spatial4j.version>0.7</spatial4j.version>
         <jts.version>1.18.2</jts.version>
-        <bouncycastle.version>1.69</bouncycastle.version>
+        <bouncycastle.version>1.77</bouncycastle.version>
         <winsw.version>2.0.1</winsw.version>
-        <postgresql.driver.version>42.5.0</postgresql.driver.version>
+        <postgresql.driver.version>42.7.1</postgresql.driver.version>
         <sonar.exclusions>org/thingsboard/server/gen/**/*,
             org/thingsboard/server/extensions/core/plugin/telemetry/gen/**/*
         </sonar.exclusions>
@@ -114,7 +119,8 @@
         <snakeyaml.version>2.0</snakeyaml.version>
         <aws.sdk.version>1.11.747</aws.sdk.version>
         <pubsub.client.version>1.105.0</pubsub.client.version>
-        <google.common.protos.version>2.1.0</google.common.protos.version> <!-- required by io.grpc:grpc-protobuf:1.38.0-->
+        <google.common.protos.version>2.1.0
+        </google.common.protos.version> <!-- required by io.grpc:grpc-protobuf:1.38.0-->
         <azure-servicebus.version>3.6.7</azure-servicebus.version>
         <passay.version>1.5.0</passay.version>
         <ua-parser.version>1.5.4</ua-parser.version>
@@ -134,7 +140,8 @@
         <awaitility.version>4.1.0</awaitility.version>
         <dbunit.version>2.7.2</dbunit.version>
         <java-websocket.version>1.5.2</java-websocket.version>
-        <jupiter.version>5.9.3</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
+        <jupiter.version>5.9.3
+        </jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
         <json-path.version>2.6.0</json-path.version>
         <mock-server.version>5.15.0</mock-server.version>
         <spring-test-dbunit.version>1.3.0</spring-test-dbunit.version> <!-- 2016 -->
@@ -142,16 +149,16 @@
         <jeasy.version>5.0.0</jeasy.version>
         <!--      BLACKBOX TEST SCOPE     -->
         <testng.version>7.6.1</testng.version>
-        <assertj.version>3.23.1</assertj.version>
+        <assertj.version>3.25.1</assertj.version>
         <rest-assured.version>5.2.0</rest-assured.version>
-        <hamcrest.version>1.3</hamcrest.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <testcontainers.version>1.18.3</testcontainers.version>
         <zeroturnaround.version>1.12</zeroturnaround.version>
         <opensmpp.version>3.0.0</opensmpp.version>
         <jgit.version>6.1.0.202203080745-r</jgit.version>
         <exp4j.version>0.4.8</exp4j.version>
         <aerogear-otp.version>1.0.0</aerogear-otp.version>
-        <selenium.version>4.6.0</selenium.version>
+        <selenium.version>4.8.3</selenium.version>
         <webdrivermanager.version>5.2.0</webdrivermanager.version>
         <allure-testng.version>2.21.0</allure-testng.version>
         <allure-maven.version>2.12.0</allure-maven.version>
@@ -655,7 +662,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot.version}</version>
+<!--                    <version>${spring-boot.version}</version>-->
                 </plugin>
                 <plugin>
                     <groupId>org.thingsboard</groupId>
@@ -864,12 +871,12 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>com.mycila</groupId>-->
+<!--                <artifactId>license-maven-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
     </build>
 
     <dependencies>
@@ -1107,16 +1114,16 @@
                 <artifactId>jaxb-runtime</artifactId>
                 <version>${jaxb-runtime.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-security</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-security</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-oauth2-client</artifactId>
@@ -1127,58 +1134,58 @@
                 <artifactId>spring-security-oauth2-jose</artifactId>
                 <version>${spring-security.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-websocket</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-autoconfigure</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot.version}</version>
-                <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.vaadin.external.google</groupId>
-                        <artifactId>android-json</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-commons</artifactId>
-                <version>${spring-data.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-webflux</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.projectreactor.netty</groupId>
-                <artifactId>reactor-netty-http</artifactId>
-                <version>${reactor-netty.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework</groupId>-->
+<!--                <artifactId>spring-core</artifactId>-->
+<!--                <version>${spring.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-web</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-websocket</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-autoconfigure</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-test</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--                <scope>test</scope>-->
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>com.vaadin.external.google</groupId>-->
+<!--                        <artifactId>android-json</artifactId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.data</groupId>-->
+<!--                <artifactId>spring-data-commons</artifactId>-->
+<!--                <version>${spring-data.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-webflux</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>io.projectreactor.netty</groupId>-->
+<!--                <artifactId>reactor-netty-http</artifactId>-->
+<!--                <version>${reactor-netty.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
@@ -1189,26 +1196,26 @@
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.driver.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework</groupId>-->
+<!--                <artifactId>spring-context</artifactId>-->
+<!--                <version>${spring.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework</groupId>-->
+<!--                <artifactId>spring-context-support</artifactId>-->
+<!--                <version>${spring.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework</groupId>-->
+<!--                <artifactId>spring-tx</artifactId>-->
+<!--                <version>${spring.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework</groupId>-->
+<!--                <artifactId>spring-web</artifactId>-->
+<!--                <version>${spring.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-test</artifactId>
@@ -1449,7 +1456,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson-databind.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -1651,12 +1658,12 @@
                 <artifactId>tbel</artifactId>
                 <version>${tbel.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework</groupId>-->
+<!--                <artifactId>spring-test</artifactId>-->
+<!--                <version>${spring.version}</version>-->
+<!--                <scope>test</scope>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>io.takari.junit</groupId>
                 <artifactId>takari-cpsuite</artifactId>
@@ -1784,12 +1791,12 @@
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
+                <artifactId>bcprov-jdk18on</artifactId>
                 <version>${bouncycastle.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcpkix-jdk15on</artifactId>
+                <artifactId>bcpkix-jdk18on</artifactId>
                 <version>${bouncycastle.version}</version>
             </dependency>
             <dependency>
@@ -1810,11 +1817,11 @@
                 <version>${testcontainers.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-redis</artifactId>
-                <version>${spring-data-redis.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.data</groupId>-->
+<!--                <artifactId>spring-data-redis</artifactId>-->
+<!--                <version>${spring-data-redis.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.integration</groupId>
                 <artifactId>spring-integration-redis</artifactId>
@@ -1919,11 +1926,11 @@
                 <version>${java-websocket.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-actuator</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-core</artifactId>

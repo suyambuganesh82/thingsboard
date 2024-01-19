@@ -1,12 +1,12 @@
 /**
  * Copyright © 2016-2024 The Thingsboard Authors
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,10 +16,7 @@
 package org.thingsboard.server.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.MoreExecutors;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolation;
@@ -36,26 +33,7 @@ import org.springframework.web.context.request.async.AsyncRequestTimeoutExceptio
 import org.springframework.web.context.request.async.DeferredResult;
 import org.thingsboard.common.util.DonAsynchron;
 import org.thingsboard.server.cluster.TbClusterService;
-import org.thingsboard.server.common.data.Customer;
-import org.thingsboard.server.common.data.Dashboard;
-import org.thingsboard.server.common.data.DashboardInfo;
-import org.thingsboard.server.common.data.Device;
-import org.thingsboard.server.common.data.DeviceInfo;
-import org.thingsboard.server.common.data.DeviceProfile;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.EntityView;
-import org.thingsboard.server.common.data.EntityViewInfo;
-import org.thingsboard.server.common.data.HasName;
-import org.thingsboard.server.common.data.HasTenantId;
-import org.thingsboard.server.common.data.OtaPackage;
-import org.thingsboard.server.common.data.OtaPackageInfo;
-import org.thingsboard.server.common.data.StringUtils;
-import org.thingsboard.server.common.data.TbResource;
-import org.thingsboard.server.common.data.TbResourceInfo;
-import org.thingsboard.server.common.data.Tenant;
-import org.thingsboard.server.common.data.TenantInfo;
-import org.thingsboard.server.common.data.TenantProfile;
-import org.thingsboard.server.common.data.User;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.alarm.Alarm;
 import org.thingsboard.server.common.data.alarm.AlarmComment;
 import org.thingsboard.server.common.data.alarm.AlarmInfo;
@@ -67,31 +45,7 @@ import org.thingsboard.server.common.data.edge.Edge;
 import org.thingsboard.server.common.data.edge.EdgeInfo;
 import org.thingsboard.server.common.data.exception.ThingsboardErrorCode;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
-import org.thingsboard.server.common.data.id.AlarmCommentId;
-import org.thingsboard.server.common.data.id.AlarmId;
-import org.thingsboard.server.common.data.id.AssetId;
-import org.thingsboard.server.common.data.id.AssetProfileId;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.DashboardId;
-import org.thingsboard.server.common.data.id.DeviceId;
-import org.thingsboard.server.common.data.id.DeviceProfileId;
-import org.thingsboard.server.common.data.id.EdgeId;
-import org.thingsboard.server.common.data.id.EntityId;
-import org.thingsboard.server.common.data.id.EntityIdFactory;
-import org.thingsboard.server.common.data.id.EntityViewId;
-import org.thingsboard.server.common.data.id.HasId;
-import org.thingsboard.server.common.data.id.OtaPackageId;
-import org.thingsboard.server.common.data.id.QueueId;
-import org.thingsboard.server.common.data.id.RpcId;
-import org.thingsboard.server.common.data.id.RuleChainId;
-import org.thingsboard.server.common.data.id.RuleNodeId;
-import org.thingsboard.server.common.data.id.TbResourceId;
-import org.thingsboard.server.common.data.id.TenantId;
-import org.thingsboard.server.common.data.id.TenantProfileId;
-import org.thingsboard.server.common.data.id.UUIDBased;
-import org.thingsboard.server.common.data.id.UserId;
-import org.thingsboard.server.common.data.id.WidgetTypeId;
-import org.thingsboard.server.common.data.id.WidgetsBundleId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.page.SortOrder;
 import org.thingsboard.server.common.data.page.TimePageLink;
@@ -160,11 +114,7 @@ import org.thingsboard.server.service.sync.vc.EntitiesVersionControlService;
 import org.thingsboard.server.service.telemetry.AlarmSubscriptionService;
 import org.thingsboard.server.service.telemetry.TelemetrySubscriptionService;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -181,146 +131,104 @@ public abstract class BaseController {
     private final Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 
     /*Swagger UI description*/
-
-    @Autowired
-    private ThingsboardErrorResponseHandler errorResponseHandler;
-
     @Autowired
     protected AccessControlService accessControlService;
-
     @Autowired
     protected TenantService tenantService;
-
     @Autowired
     protected TenantProfileService tenantProfileService;
-
     @Autowired
     protected CustomerService customerService;
-
     @Autowired
     protected UserService userService;
-
     @Autowired
     protected TbUserSettingsService userSettingsService;
-
     @Autowired
     protected DeviceService deviceService;
-
     @Autowired
     protected DeviceProfileService deviceProfileService;
-
     @Autowired
     protected AssetService assetService;
-
     @Autowired
     protected AssetProfileService assetProfileService;
-
     @Autowired
     protected AlarmSubscriptionService alarmService;
-
     @Autowired
     protected AlarmCommentService alarmCommentService;
-
     @Autowired
     protected DeviceCredentialsService deviceCredentialsService;
-
     @Autowired
     protected WidgetsBundleService widgetsBundleService;
-
     @Autowired
     protected WidgetTypeService widgetTypeService;
-
     @Autowired
     protected DashboardService dashboardService;
-
     @Autowired
     protected OAuth2Service oAuth2Service;
-
     @Autowired
     protected OAuth2ConfigTemplateService oAuth2ConfigTemplateService;
-
     @Autowired
     protected ComponentDiscoveryService componentDescriptorService;
-
     @Autowired
     protected RuleChainService ruleChainService;
-
     @Autowired
     protected TbClusterService tbClusterService;
-
     @Autowired
     protected RelationService relationService;
-
     @Autowired
     protected AuditLogService auditLogService;
-
     @Autowired
     protected DeviceStateService deviceStateService;
-
     @Autowired
     protected EntityViewService entityViewService;
-
     @Autowired
     protected TelemetrySubscriptionService tsSubService;
-
     @Autowired
     protected AttributesService attributesService;
-
     @Autowired
     protected ClaimDevicesService claimDevicesService;
-
     @Autowired
     protected PartitionService partitionService;
-
     @Autowired
     protected ResourceService resourceService;
-
     @Autowired
     protected OtaPackageService otaPackageService;
-
     @Autowired
     protected OtaPackageStateService otaPackageStateService;
-
     @Autowired
     protected RpcService rpcService;
-
     @Autowired
     protected TbQueueProducerProvider producerProvider;
-
     @Autowired
     protected TbTenantProfileCache tenantProfileCache;
-
     @Autowired
     protected TbDeviceProfileCache deviceProfileCache;
-
     @Autowired
     protected TbAssetProfileCache assetProfileCache;
-
     @Autowired(required = false)
     protected EdgeService edgeService;
-
     @Autowired
     protected TbLogEntityActionService logEntityActionService;
-
     @Autowired
     protected EntityActionService entityActionService;
-
     @Autowired
     protected QueueService queueService;
-
     @Autowired
     protected EntitiesVersionControlService vcService;
-
     @Autowired
     protected ExportableEntitiesService entitiesService;
-
+    @Value("${edges.enabled}")
+    @Getter
+    protected boolean edgesEnabled;
+    @Autowired
+    private ThingsboardErrorResponseHandler errorResponseHandler;
     @Value("${server.log_controller_error_stack_trace}")
     @Getter
     private boolean logControllerErrorStackTrace;
 
-    @Value("${edges.enabled}")
-    @Getter
-    protected boolean edgesEnabled;
+    public static Exception toException(Throwable error) {
+        return error != null ? (Exception.class.isInstance(error) ? (Exception) error : new Exception(error)) : null;
+    }
 
     @ExceptionHandler(Exception.class)
     public void handleControllerException(Exception e, HttpServletResponse response) {
@@ -427,6 +335,12 @@ public abstract class BaseController {
 
     void checkParameter(String name, String param) throws ThingsboardException {
         if (StringUtils.isEmpty(param)) {
+            throw new ThingsboardException("Parameter '" + name + "' can't be empty!", ThingsboardErrorCode.BAD_REQUEST_PARAMS);
+        }
+    }
+
+    void checkParameter(String name, UUID param) throws ThingsboardException {
+        if (null == param) {
             throw new ThingsboardException("Parameter '" + name + "' can't be empty!", ThingsboardErrorCode.BAD_REQUEST_PARAMS);
         }
     }
@@ -774,10 +688,6 @@ public abstract class BaseController {
 
     protected <I extends EntityId> I emptyId(EntityType entityType) {
         return (I) EntityIdFactory.getByTypeAndUuid(entityType, ModelConstants.NULL_UUID);
-    }
-
-    public static Exception toException(Throwable error) {
-        return error != null ? (Exception.class.isInstance(error) ? (Exception) error : new Exception(error)) : null;
     }
 
     protected <E extends HasName & HasId<? extends EntityId>> void logEntityAction(SecurityUser user, EntityType entityType, E savedEntity, ActionType actionType) {

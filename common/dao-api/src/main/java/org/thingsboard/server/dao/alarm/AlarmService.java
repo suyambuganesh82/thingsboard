@@ -42,6 +42,7 @@ import org.thingsboard.server.dao.entity.EntityDaoService;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.UUID;
 
 
 public interface AlarmService extends EntityDaoService {
@@ -97,7 +98,7 @@ public interface AlarmService extends EntityDaoService {
     PageData<AlarmInfo> findCustomerAlarmsV2(TenantId tenantId, CustomerId customerId, AlarmQueryV2 query);
 
     AlarmSeverity findHighestAlarmSeverity(TenantId tenantId, EntityId entityId, AlarmSearchStatus alarmSearchStatus,
-                                           AlarmStatus alarmStatus, String assigneeId);
+                                           AlarmStatus alarmStatus, UUID assigneeId);
 
     Alarm findLatestActiveByOriginatorAndType(TenantId tenantId, EntityId originator, String type);
 

@@ -68,13 +68,7 @@ import org.thingsboard.server.dao.service.ConstraintValidator;
 import org.thingsboard.server.dao.service.DataValidator;
 import org.thingsboard.server.dao.tenant.TenantService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -308,7 +302,7 @@ public class BaseAlarmService extends AbstractCachedEntityService<TenantId, Page
 
     @Override
     public AlarmSeverity findHighestAlarmSeverity(TenantId tenantId, EntityId entityId, AlarmSearchStatus alarmSearchStatus,
-                                                  AlarmStatus alarmStatus, String assigneeId) {
+                                                  AlarmStatus alarmStatus, UUID assigneeId) {
         AlarmStatusFilter asf;
         if (alarmSearchStatus != null) {
             asf = AlarmStatusFilter.from(alarmSearchStatus);
