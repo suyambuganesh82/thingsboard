@@ -89,18 +89,6 @@
             <artifactId>http</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard.common.transport</groupId>
-            <artifactId>coap</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.thingsboard.common.transport</groupId>
-            <artifactId>lwm2m</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.thingsboard.common.transport</groupId>
-            <artifactId>snmp</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.thingsboard</groupId>
             <artifactId>dao</artifactId>
         </dependency>
@@ -264,13 +252,6 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.winsw</groupId>
-            <artifactId>winsw</artifactId>
-            <classifier>bin</classifier>
-            <type>exe</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.thingsboard</groupId>

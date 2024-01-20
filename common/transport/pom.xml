@@ -38,9 +38,6 @@
         <module>transport-api</module>
         <module>mqtt</module>
         <module>http</module>
-        <module>coap</module>
-        <module>lwm2m</module>
-        <module>snmp</module>
     </modules>
 
 </project>

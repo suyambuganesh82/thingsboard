@@ -40,7 +40,6 @@
         <pkg.package.phase>package</pkg.package.phase>
         <pkg.name>tb-vc-executor</pkg.name>
         <pkg.copyInstallScripts>false</pkg.copyInstallScripts>
-        <pkg.win.dist>${project.build.directory}/windows</pkg.win.dist>
         <pkg.implementationTitle>ThingsBoard Version Control Executor Service</pkg.implementationTitle>
         <pkg.mainClass>org.thingsboard.server.vc.ThingsboardVersionControlExecutorApplication</pkg.mainClass>
     </properties>

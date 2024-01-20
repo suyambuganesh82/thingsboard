@@ -102,7 +102,6 @@
         <spatial4j.version>0.7</spatial4j.version>
         <jts.version>1.18.2</jts.version>
         <bouncycastle.version>1.77</bouncycastle.version>
-        <winsw.version>2.0.1</winsw.version>
         <postgresql.driver.version>42.7.1</postgresql.driver.version>
         <sonar.exclusions>org/thingsboard/server/gen/**/*,
             org/thingsboard/server/extensions/core/plugin/telemetry/gen/**/*
@@ -298,44 +297,6 @@
                                     </configuration>
                                 </execution>
                                 <execution>
-                                    <id>copy-win-conf</id>
-                                    <phase>${pkg.process-resources.phase}</phase>
-                                    <goals>
-                                        <goal>copy-resources</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>${pkg.win.dist}/conf</outputDirectory>
-                                        <resources>
-                                            <resource>
-                                                <directory>src/main/resources</directory>
-                                                <excludes>
-                                                    <exclude>logback.xml</exclude>
-                                                    <exclude>${pkg.name}.yml</exclude>
-                                                </excludes>
-                                                <filtering>false</filtering>
-                                            </resource>
-                                            <resource>
-                                                <directory>src/main/resources</directory>
-                                                <includes>
-                                                    <include>${pkg.name}.yml</include>
-                                                </includes>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                            <resource>
-                                                <directory>src/main/conf</directory>
-                                                <excludes>
-                                                    <exclude>${pkg.name}.conf</exclude>
-                                                </excludes>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                        </resources>
-                                        <filters>
-                                            <filter>${main.dir}/packaging/${pkg.type}/filters/windows.properties
-                                            </filter>
-                                        </filters>
-                                    </configuration>
-                                </execution>
-                                <execution>
                                     <id>copy-control</id>
                                     <phase>${pkg.process-resources.phase}</phase>
                                     <goals>
@@ -378,49 +339,6 @@
                                     </configuration>
                                 </execution>
                                 <execution>
-                                    <id>copy-windows-control</id>
-                                    <phase>${pkg.process-resources.phase}</phase>
-                                    <goals>
-                                        <goal>copy-resources</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>${pkg.win.dist}</outputDirectory>
-                                        <resources>
-                                            <resource>
-                                                <directory>${main.dir}/packaging/${pkg.type}/scripts/windows</directory>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                        </resources>
-                                        <filters>
-                                            <filter>${main.dir}/packaging/${pkg.type}/filters/windows.properties
-                                            </filter>
-                                        </filters>
-                                    </configuration>
-                                </execution>
-                                <execution>
-                                    <id>copy-windows-install</id>
-                                    <phase>${pkg.process-resources.phase}</phase>
-                                    <goals>
-                                        <goal>copy-resources</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>${pkg.win.dist}/install</outputDirectory>
-                                        <resources>
-                                            <resource>
-                                                <directory>${main.dir}/packaging/${pkg.type}/scripts/install</directory>
-                                                <includes>
-                                                    <include>logback.xml</include>
-                                                </includes>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                        </resources>
-                                        <filters>
-                                            <filter>${main.dir}/packaging/${pkg.type}/filters/windows.properties
-                                            </filter>
-                                        </filters>
-                                    </configuration>
-                                </execution>
-                                <execution>
                                     <id>copy-data</id>
                                     <phase>${pkg.process-resources.phase}</phase>
                                     <goals>
@@ -457,31 +375,6 @@
                                                 <filtering>true</filtering>
                                             </resource>
                                         </resources>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-dependency-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <id>copy-winsw-service</id>
-                                    <phase>${pkg.package.phase}</phase>
-                                    <goals>
-                                        <goal>copy</goal>
-                                    </goals>
-                                    <configuration>
-                                        <artifactItems>
-                                            <artifactItem>
-                                                <groupId>com.sun.winsw</groupId>
-                                                <artifactId>winsw</artifactId>
-                                                <classifier>bin</classifier>
-                                                <type>exe</type>
-                                                <destFileName>service.exe</destFileName>
-                                            </artifactItem>
-                                        </artifactItems>
-                                        <outputDirectory>${pkg.win.dist}</outputDirectory>
                                     </configuration>
                                 </execution>
                             </executions>
@@ -535,7 +428,7 @@
                                 <tasks>
                                     <task>build</task>
                                     <task>buildDeb</task>
-                                    <task>buildRpm</task>
+<!--                                    <task>buildRpm</task>-->
                                 </tasks>
                                 <args>
                                     <arg>-PpackagingDir=${main.dir}/packaging</arg>
@@ -562,25 +455,25 @@
                                 </execution>
                             </executions>
                         </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-assembly-plugin</artifactId>
-                            <configuration>
-                                <finalName>${pkg.name}</finalName>
-                                <descriptors>
-                                    <descriptor>${main.dir}/packaging/${pkg.type}/assembly/windows.xml</descriptor>
-                                </descriptors>
-                            </configuration>
-                            <executions>
-                                <execution>
-                                    <id>assembly</id>
-                                    <phase>${pkg.package.phase}</phase>
-                                    <goals>
-                                        <goal>single</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
+<!--                        <plugin>-->
+<!--                            <groupId>org.apache.maven.plugins</groupId>-->
+<!--                            <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                            <configuration>-->
+<!--                                <finalName>${pkg.name}</finalName>-->
+<!--                                <descriptors>-->
+<!--                                    <descriptor>${main.dir}/packaging/${pkg.type}/assembly/windows.xml</descriptor>-->
+<!--                                </descriptors>-->
+<!--                            </configuration>-->
+<!--                            <executions>-->
+<!--                                <execution>-->
+<!--                                    <id>assembly</id>-->
+<!--                                    <phase>${pkg.package.phase}</phase>-->
+<!--                                    <goals>-->
+<!--                                        <goal>single</goal>-->
+<!--                                    </goals>-->
+<!--                                </execution>-->
+<!--                            </executions>-->
+<!--                        </plugin>-->
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-install-plugin</artifactId>
@@ -970,21 +863,6 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.thingsboard.common.transport</groupId>
-                <artifactId>coap</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.thingsboard.common.transport</groupId>
-                <artifactId>snmp</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.thingsboard.common.transport</groupId>
-                <artifactId>lwm2m</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.thingsboard.common</groupId>
                 <artifactId>edge-api</artifactId>
                 <version>${project.version}</version>
@@ -1002,11 +880,6 @@
             <dependency>
                 <groupId>org.thingsboard.common</groupId>
                 <artifactId>stats</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.thingsboard.common</groupId>
-                <artifactId>coap-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -1054,13 +927,6 @@
             </dependency>
             <dependency>
                 <groupId>org.thingsboard.msa.transport</groupId>
-                <artifactId>coap</artifactId>
-                <version>${project.version}</version>
-                <type>docker-info</type>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.thingsboard.msa.transport</groupId>
                 <artifactId>http</artifactId>
                 <version>${project.version}</version>
                 <type>docker-info</type>
@@ -1069,20 +935,6 @@
             <dependency>
                 <groupId>org.thingsboard.msa.transport</groupId>
                 <artifactId>mqtt</artifactId>
-                <version>${project.version}</version>
-                <type>docker-info</type>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.thingsboard.msa.transport</groupId>
-                <artifactId>lwm2m</artifactId>
-                <version>${project.version}</version>
-                <type>docker-info</type>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.thingsboard.msa.transport</groupId>
-                <artifactId>snmp</artifactId>
                 <version>${project.version}</version>
                 <type>docker-info</type>
                 <scope>test</scope>
@@ -1831,14 +1683,6 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.winsw</groupId>
-                <artifactId>winsw</artifactId>
-                <version>${winsw.version}</version>
-                <classifier>bin</classifier>
-                <type>exe</type>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
