@@ -1,12 +1,12 @@
 /**
  * Copyright © 2016-2024 The Thingsboard Authors
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,22 +21,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.mqtt.MqttConnAckMessage;
-import io.netty.handler.codec.mqtt.MqttConnectMessage;
-import io.netty.handler.codec.mqtt.MqttConnectReturnCode;
-import io.netty.handler.codec.mqtt.MqttFixedHeader;
-import io.netty.handler.codec.mqtt.MqttMessage;
-import io.netty.handler.codec.mqtt.MqttMessageBuilders;
-import io.netty.handler.codec.mqtt.MqttMessageIdVariableHeader;
-import io.netty.handler.codec.mqtt.MqttPubAckMessage;
-import io.netty.handler.codec.mqtt.MqttPublishMessage;
-import io.netty.handler.codec.mqtt.MqttQoS;
-import io.netty.handler.codec.mqtt.MqttSubAckMessage;
-import io.netty.handler.codec.mqtt.MqttSubAckPayload;
-import io.netty.handler.codec.mqtt.MqttSubscribeMessage;
-import io.netty.handler.codec.mqtt.MqttTopicSubscription;
-import io.netty.handler.codec.mqtt.MqttUnsubscribeMessage;
-import io.netty.handler.codec.mqtt.MqttVersion;
+import io.netty.handler.codec.mqtt.*;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
@@ -45,12 +30,8 @@ import io.netty.util.concurrent.GenericFutureListener;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.leshan.core.ResponseCode;
 import org.thingsboard.common.util.JacksonUtil;
-import org.thingsboard.server.common.data.DataConstants;
-import org.thingsboard.server.common.data.Device;
-import org.thingsboard.server.common.data.DeviceProfile;
-import org.thingsboard.server.common.data.DeviceTransportType;
-import org.thingsboard.server.common.data.StringUtils;
-import org.thingsboard.server.common.data.TransportPayloadType;
+import org.thingsboard.server.common.adaptor.AdaptorException;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.device.profile.MqttTopics;
 import org.thingsboard.server.common.data.exception.ThingsboardErrorCode;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
@@ -64,7 +45,6 @@ import org.thingsboard.server.common.msg.tools.TbRateLimitsException;
 import org.thingsboard.server.common.transport.SessionMsgListener;
 import org.thingsboard.server.common.transport.TransportService;
 import org.thingsboard.server.common.transport.TransportServiceCallback;
-import org.thingsboard.server.common.adaptor.AdaptorException;
 import org.thingsboard.server.common.transport.auth.SessionInfoCreator;
 import org.thingsboard.server.common.transport.auth.TransportDeviceInfo;
 import org.thingsboard.server.common.transport.auth.ValidateDeviceCredentialsResponse;
@@ -92,14 +72,10 @@ import org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugTopic;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -107,16 +83,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.amazonaws.util.StringUtils.UTF8;
-import static io.netty.handler.codec.mqtt.MqttMessageType.CONNECT;
-import static io.netty.handler.codec.mqtt.MqttMessageType.PINGRESP;
-import static io.netty.handler.codec.mqtt.MqttMessageType.SUBACK;
+import static io.netty.handler.codec.mqtt.MqttMessageType.*;
 import static io.netty.handler.codec.mqtt.MqttQoS.AT_LEAST_ONCE;
 import static io.netty.handler.codec.mqtt.MqttQoS.AT_MOST_ONCE;
-import static org.thingsboard.server.common.transport.service.DefaultTransportService.SESSION_EVENT_MSG_CLOSED;
-import static org.thingsboard.server.common.transport.service.DefaultTransportService.SESSION_EVENT_MSG_OPEN;
-import static org.thingsboard.server.common.transport.service.DefaultTransportService.SUBSCRIBE_TO_ATTRIBUTE_UPDATES_ASYNC_MSG;
-import static org.thingsboard.server.common.transport.service.DefaultTransportService.SUBSCRIBE_TO_RPC_ASYNC_MSG;
+import static org.thingsboard.server.common.transport.service.DefaultTransportService.*;
 import static org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugConnectionState.OFFLINE;
 import static org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugMessageType.NDEATH;
 import static org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugMetricUtil.getTsKvProto;
@@ -135,24 +105,19 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
     private static final String PAYLOAD_TOO_LARGE = "PAYLOAD_TOO_LARGE";
 
     private static final MqttQoS MAX_SUPPORTED_QOS_LVL = AT_LEAST_ONCE;
-
-    private final UUID sessionId;
-
     protected final MqttTransportContext context;
+    final DeviceSessionCtx deviceSessionCtx;
+    private final UUID sessionId;
     private final TransportService transportService;
     private final SchedulerComponent scheduler;
     private final SslHandler sslHandler;
     private final ConcurrentMap<MqttTopicMatcher, Integer> mqttQoSMap;
-
-    final DeviceSessionCtx deviceSessionCtx;
-    volatile InetSocketAddress address;
-    volatile GatewaySessionHandler gatewaySessionHandler;
-    volatile SparkplugNodeSessionHandler sparkplugSessionHandler;
-
     private final ConcurrentHashMap<String, String> otaPackSessions;
     private final ConcurrentHashMap<String, Integer> chunkSizes;
     private final ConcurrentMap<Integer, TransportProtos.ToDeviceRpcRequestMsg> rpcAwaitingAck;
-
+    volatile InetSocketAddress address;
+    volatile GatewaySessionHandler gatewaySessionHandler;
+    volatile SparkplugNodeSessionHandler sparkplugSessionHandler;
     private TopicType attrSubTopicType;
     private TopicType rpcSubTopicType;
     private TopicType attrReqTopicType;
@@ -169,6 +134,37 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
         this.otaPackSessions = new ConcurrentHashMap<>();
         this.chunkSizes = new ConcurrentHashMap<>();
         this.rpcAwaitingAck = new ConcurrentHashMap<>();
+    }
+
+    private static MqttSubAckMessage createSubAckMessage(Integer msgId, List<Integer> grantedQoSList) {
+        MqttFixedHeader mqttFixedHeader =
+                new MqttFixedHeader(SUBACK, false, AT_MOST_ONCE, false, 0);
+        MqttMessageIdVariableHeader mqttMessageIdVariableHeader = MqttMessageIdVariableHeader.from(msgId);
+        MqttSubAckPayload mqttSubAckPayload = new MqttSubAckPayload(grantedQoSList);
+        return new MqttSubAckMessage(mqttFixedHeader, mqttMessageIdVariableHeader, mqttSubAckPayload);
+    }
+
+    private static int getMinSupportedQos(MqttQoS reqQoS) {
+        return Math.min(reqQoS.value(), MAX_SUPPORTED_QOS_LVL.value());
+    }
+
+    private static MqttVersion getMqttVersion(int versionCode) {
+        switch (versionCode) {
+            case 3:
+                return MqttVersion.MQTT_3_1;
+            case 5:
+                return MqttVersion.MQTT_5;
+            default:
+                return MqttVersion.MQTT_3_1_1;
+        }
+    }
+
+    public static MqttMessage createMqttPubAckMsg(DeviceSessionCtx deviceSessionCtx, int requestId, ReturnCode returnCode) {
+        MqttMessageBuilders.PubAckBuilder pubAckMsgBuilder = MqttMessageBuilders.pubAck().packetId(requestId);
+        if (MqttVersion.MQTT_5.equals(deviceSessionCtx.getMqttVersion())) {
+            pubAckMsgBuilder.reasonCode(returnCode.byteValue());
+        }
+        return pubAckMsgBuilder.build();
     }
 
     @Override
@@ -556,7 +552,7 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
     }
 
     private void getOtaPackageCallback(ChannelHandlerContext ctx, MqttPublishMessage mqttMsg, int msgId, Matcher fwMatcher, OtaPackageType type) {
-        String payload = mqttMsg.content().toString(UTF8);
+        String payload = mqttMsg.content().toString(StandardCharsets.UTF_8);
         int chunkSize = StringUtils.isNotEmpty(payload) ? Integer.parseInt(payload) : 0;
         String requestId = fwMatcher.group("requestId");
         int chunk = Integer.parseInt(fwMatcher.group("chunk"));
@@ -612,76 +608,6 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
         };
     }
 
-    private class DeviceProvisionCallback implements TransportServiceCallback<ProvisionDeviceResponseMsg> {
-        private final ChannelHandlerContext ctx;
-        private final int msgId;
-        private final TransportProtos.ProvisionDeviceRequestMsg msg;
-
-        DeviceProvisionCallback(ChannelHandlerContext ctx, int msgId, TransportProtos.ProvisionDeviceRequestMsg msg) {
-            this.ctx = ctx;
-            this.msgId = msgId;
-            this.msg = msg;
-        }
-
-        @Override
-        public void onSuccess(TransportProtos.ProvisionDeviceResponseMsg provisionResponseMsg) {
-            log.trace("[{}] Published msg: {}", sessionId, msg);
-            ack(ctx, msgId, ReturnCode.SUCCESS);
-            try {
-                if (deviceSessionCtx.getProvisionPayloadType().equals(TransportPayloadType.JSON)) {
-                    deviceSessionCtx.getContext().getJsonMqttAdaptor().convertToPublish(deviceSessionCtx, provisionResponseMsg).ifPresent(deviceSessionCtx.getChannel()::writeAndFlush);
-                } else {
-                    deviceSessionCtx.getContext().getProtoMqttAdaptor().convertToPublish(deviceSessionCtx, provisionResponseMsg).ifPresent(deviceSessionCtx.getChannel()::writeAndFlush);
-                }
-                scheduler.schedule((Callable<ChannelFuture>) ctx::close, 60, TimeUnit.SECONDS);
-            } catch (Exception e) {
-                log.trace("[{}] Failed to convert device provision response to MQTT msg", sessionId, e);
-            }
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            log.trace("[{}] Failed to publish msg: {}", sessionId, msg, e);
-            ack(ctx, msgId, ReturnCode.IMPLEMENTATION_SPECIFIC);
-            closeCtx(ctx);
-        }
-    }
-
-    private class OtaPackageCallback implements TransportServiceCallback<TransportProtos.GetOtaPackageResponseMsg> {
-        private final ChannelHandlerContext ctx;
-        private final int msgId;
-        private final TransportProtos.GetOtaPackageRequestMsg msg;
-        private final String requestId;
-        private final int chunkSize;
-        private final int chunk;
-
-        OtaPackageCallback(ChannelHandlerContext ctx, int msgId, TransportProtos.GetOtaPackageRequestMsg msg, String requestId, int chunkSize, int chunk) {
-            this.ctx = ctx;
-            this.msgId = msgId;
-            this.msg = msg;
-            this.requestId = requestId;
-            this.chunkSize = chunkSize;
-            this.chunk = chunk;
-        }
-
-        @Override
-        public void onSuccess(TransportProtos.GetOtaPackageResponseMsg response) {
-            if (TransportProtos.ResponseStatus.SUCCESS.equals(response.getResponseStatus())) {
-                OtaPackageId firmwareId = new OtaPackageId(new UUID(response.getOtaPackageIdMSB(), response.getOtaPackageIdLSB()));
-                otaPackSessions.put(requestId, firmwareId.toString());
-                sendOtaPackage(ctx, msgId, firmwareId.toString(), requestId, chunkSize, chunk, OtaPackageType.valueOf(response.getType()));
-            } else {
-                sendOtaPackageError(ctx, response.getResponseStatus().toString());
-            }
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            log.trace("[{}] Failed to get firmware: {}", sessionId, msg, e);
-            closeCtx(ctx);
-        }
-    }
-
     private void sendOtaPackage(ChannelHandlerContext ctx, int msgId, String firmwareId, String requestId, int chunkSize, int chunk, OtaPackageType type) {
         log.trace("[{}] Send firmware [{}] to device!", sessionId, firmwareId);
         ack(ctx, msgId, ReturnCode.SUCCESS);
@@ -715,7 +641,7 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
         for (MqttTopicSubscription subscription : mqttMsg.payload().topicSubscriptions()) {
             String topic = subscription.topicName();
             MqttQoS reqQoS = subscription.qualityOfService();
-            if (deviceSessionCtx.isDeviceSubscriptionAttributesTopic(topic)){
+            if (deviceSessionCtx.isDeviceSubscriptionAttributesTopic(topic)) {
                 processAttributesSubscribe(grantedQoSList, topic, reqQoS, TopicType.V1);
                 activityReported = true;
                 continue;
@@ -1035,37 +961,6 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
         }
     }
 
-    private static MqttSubAckMessage createSubAckMessage(Integer msgId, List<Integer> grantedQoSList) {
-        MqttFixedHeader mqttFixedHeader =
-                new MqttFixedHeader(SUBACK, false, AT_MOST_ONCE, false, 0);
-        MqttMessageIdVariableHeader mqttMessageIdVariableHeader = MqttMessageIdVariableHeader.from(msgId);
-        MqttSubAckPayload mqttSubAckPayload = new MqttSubAckPayload(grantedQoSList);
-        return new MqttSubAckMessage(mqttFixedHeader, mqttMessageIdVariableHeader, mqttSubAckPayload);
-    }
-
-    private static int getMinSupportedQos(MqttQoS reqQoS) {
-        return Math.min(reqQoS.value(), MAX_SUPPORTED_QOS_LVL.value());
-    }
-
-    private static MqttVersion getMqttVersion(int versionCode) {
-        switch (versionCode) {
-            case 3:
-                return MqttVersion.MQTT_3_1;
-            case 5:
-                return MqttVersion.MQTT_5;
-            default:
-                return MqttVersion.MQTT_3_1_1;
-        }
-    }
-
-    public static MqttMessage createMqttPubAckMsg(DeviceSessionCtx deviceSessionCtx, int requestId, ReturnCode returnCode) {
-        MqttMessageBuilders.PubAckBuilder pubAckMsgBuilder = MqttMessageBuilders.pubAck().packetId(requestId);
-        if (MqttVersion.MQTT_5.equals(deviceSessionCtx.getMqttVersion())) {
-            pubAckMsgBuilder.reasonCode(returnCode.byteValue());
-        }
-        return pubAckMsgBuilder.build();
-    }
-
     private boolean checkConnected(ChannelHandlerContext ctx, MqttMessage msg) {
         if (deviceSessionCtx.isConnected()) {
             return true;
@@ -1225,8 +1120,8 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
                         SparkplugTopic sparkplugTopic = new SparkplugTopic(sparkplugSessionHandler.getSparkplugTopicNode(),
                                 SparkplugMessageType.NCMD);
                         sparkplugSessionHandler.createSparkplugMqttPublishMsg(tsKvProto,
-                                sparkplugTopic.toString(),
-                                sparkplugSessionHandler.getNodeBirthMetrics().get(tsKvProto.getKv().getKey()))
+                                        sparkplugTopic.toString(),
+                                        sparkplugSessionHandler.getNodeBirthMetrics().get(tsKvProto.getKv().getKey()))
                                 .ifPresent(sparkplugSessionHandler::writeAndFlush);
                     }
                 });
@@ -1281,8 +1176,8 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
             SparkplugTopic sparkplugTopic = new SparkplugTopic(sparkplugSessionHandler.getSparkplugTopicNode(),
                     messageType);
             sparkplugSessionHandler.createSparkplugMqttPublishMsg(tsKvProto,
-                    sparkplugTopic.toString(),
-                    sparkplugSessionHandler.getNodeBirthMetrics().get(tsKvProto.getKv().getKey()))
+                            sparkplugTopic.toString(),
+                            sparkplugSessionHandler.getNodeBirthMetrics().get(tsKvProto.getKv().getKey()))
                     .ifPresent(payload -> sendToDeviceRpcRequest(payload, rpcRequest, deviceSessionCtx.getSessionInfo()));
         } else {
             sendErrorRpcResponse(deviceSessionCtx.getSessionInfo(), rpcRequest.getRequestId(),
@@ -1373,6 +1268,76 @@ public class MqttTransportHandler extends ChannelInboundHandlerAdapter implement
         String payload = JacksonUtil.toString(SparkplugRpcResponseBody.builder().result(result.getName()).result(successMsg).build());
         TransportProtos.ToDeviceRpcResponseMsg msg = TransportProtos.ToDeviceRpcResponseMsg.newBuilder().setRequestId(requestId).setError(payload).build();
         transportService.process(sessionInfo, msg, null);
+    }
+
+    private class DeviceProvisionCallback implements TransportServiceCallback<ProvisionDeviceResponseMsg> {
+        private final ChannelHandlerContext ctx;
+        private final int msgId;
+        private final TransportProtos.ProvisionDeviceRequestMsg msg;
+
+        DeviceProvisionCallback(ChannelHandlerContext ctx, int msgId, TransportProtos.ProvisionDeviceRequestMsg msg) {
+            this.ctx = ctx;
+            this.msgId = msgId;
+            this.msg = msg;
+        }
+
+        @Override
+        public void onSuccess(TransportProtos.ProvisionDeviceResponseMsg provisionResponseMsg) {
+            log.trace("[{}] Published msg: {}", sessionId, msg);
+            ack(ctx, msgId, ReturnCode.SUCCESS);
+            try {
+                if (deviceSessionCtx.getProvisionPayloadType().equals(TransportPayloadType.JSON)) {
+                    deviceSessionCtx.getContext().getJsonMqttAdaptor().convertToPublish(deviceSessionCtx, provisionResponseMsg).ifPresent(deviceSessionCtx.getChannel()::writeAndFlush);
+                } else {
+                    deviceSessionCtx.getContext().getProtoMqttAdaptor().convertToPublish(deviceSessionCtx, provisionResponseMsg).ifPresent(deviceSessionCtx.getChannel()::writeAndFlush);
+                }
+                scheduler.schedule((Callable<ChannelFuture>) ctx::close, 60, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                log.trace("[{}] Failed to convert device provision response to MQTT msg", sessionId, e);
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            log.trace("[{}] Failed to publish msg: {}", sessionId, msg, e);
+            ack(ctx, msgId, ReturnCode.IMPLEMENTATION_SPECIFIC);
+            closeCtx(ctx);
+        }
+    }
+
+    private class OtaPackageCallback implements TransportServiceCallback<TransportProtos.GetOtaPackageResponseMsg> {
+        private final ChannelHandlerContext ctx;
+        private final int msgId;
+        private final TransportProtos.GetOtaPackageRequestMsg msg;
+        private final String requestId;
+        private final int chunkSize;
+        private final int chunk;
+
+        OtaPackageCallback(ChannelHandlerContext ctx, int msgId, TransportProtos.GetOtaPackageRequestMsg msg, String requestId, int chunkSize, int chunk) {
+            this.ctx = ctx;
+            this.msgId = msgId;
+            this.msg = msg;
+            this.requestId = requestId;
+            this.chunkSize = chunkSize;
+            this.chunk = chunk;
+        }
+
+        @Override
+        public void onSuccess(TransportProtos.GetOtaPackageResponseMsg response) {
+            if (TransportProtos.ResponseStatus.SUCCESS.equals(response.getResponseStatus())) {
+                OtaPackageId firmwareId = new OtaPackageId(new UUID(response.getOtaPackageIdMSB(), response.getOtaPackageIdLSB()));
+                otaPackSessions.put(requestId, firmwareId.toString());
+                sendOtaPackage(ctx, msgId, firmwareId.toString(), requestId, chunkSize, chunk, OtaPackageType.valueOf(response.getType()));
+            } else {
+                sendOtaPackageError(ctx, response.getResponseStatus().toString());
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            log.trace("[{}] Failed to get firmware: {}", sessionId, msg, e);
+            closeCtx(ctx);
+        }
     }
 
 }

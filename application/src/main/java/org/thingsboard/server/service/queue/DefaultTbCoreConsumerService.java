@@ -79,7 +79,6 @@ import org.thingsboard.server.queue.provider.TbCoreQueueFactory;
 import org.thingsboard.server.queue.util.AfterStartUp;
 import org.thingsboard.server.queue.util.TbCoreComponent;
 import org.thingsboard.server.service.apiusage.TbApiUsageStateService;
-import org.thingsboard.server.service.edge.EdgeNotificationService;
 import org.thingsboard.server.service.notification.NotificationSchedulerService;
 import org.thingsboard.server.service.ota.OtaPackageStateService;
 import org.thingsboard.server.service.profile.TbAssetProfileCache;
@@ -136,7 +135,6 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
     private final TbLocalSubscriptionService localSubscriptionService;
     private final SubscriptionManagerService subscriptionManagerService;
     private final TbCoreDeviceRpcService tbCoreDeviceRpcService;
-    private final EdgeNotificationService edgeNotificationService;
     private final OtaPackageStateService firmwareStateService;
     private final GitVersionControlQueueService vcQueueService;
     private final NotificationSchedulerService notificationSchedulerService;
@@ -162,7 +160,6 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
                                         TbApiUsageStateService statsService,
                                         TbTenantProfileCache tenantProfileCache,
                                         TbApiUsageStateService apiUsageStateService,
-                                        EdgeNotificationService edgeNotificationService,
                                         OtaPackageStateService firmwareStateService,
                                         GitVersionControlQueueService vcQueueService,
                                         PartitionService partitionService,
@@ -179,7 +176,6 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
         this.localSubscriptionService = localSubscriptionService;
         this.subscriptionManagerService = subscriptionManagerService;
         this.tbCoreDeviceRpcService = tbCoreDeviceRpcService;
-        this.edgeNotificationService = edgeNotificationService;
         this.stats = new TbCoreConsumerStats(statsFactory);
         this.statsService = statsService;
         this.firmwareStateService = firmwareStateService;
@@ -657,7 +653,6 @@ public class DefaultTbCoreConsumerService extends AbstractConsumerService<ToCore
         if (statsEnabled) {
             stats.log(edgeNotificationMsg);
         }
-        edgeNotificationService.pushNotificationToEdge(edgeNotificationMsg, callback);
     }
 
     private void forwardToDeviceActor(TransportToDeviceActorMsg toDeviceActorMsg, TbCallback callback) {

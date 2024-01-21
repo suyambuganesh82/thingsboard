@@ -94,7 +94,6 @@ import org.thingsboard.server.queue.discovery.PartitionService;
 import org.thingsboard.server.queue.discovery.TbServiceInfoProvider;
 import org.thingsboard.server.service.apiusage.TbApiUsageStateService;
 import org.thingsboard.server.service.component.ComponentDiscoveryService;
-import org.thingsboard.server.service.edge.rpc.EdgeRpcService;
 import org.thingsboard.server.service.entitiy.entityview.TbEntityViewService;
 import org.thingsboard.server.service.executors.DbCallbackExecutorService;
 import org.thingsboard.server.service.executors.ExternalCallExecutorService;
@@ -416,11 +415,6 @@ public class ActorSystemContext {
     @Autowired(required = false)
     @Getter
     private EdgeEventService edgeEventService;
-
-    @Lazy
-    @Autowired(required = false)
-    @Getter
-    private EdgeRpcService edgeRpcService;
 
     @Lazy
     @Autowired(required = false)

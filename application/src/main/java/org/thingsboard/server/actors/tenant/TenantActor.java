@@ -54,7 +54,6 @@ import org.thingsboard.server.common.msg.queue.QueueToRuleEngineMsg;
 import org.thingsboard.server.common.msg.queue.RuleEngineException;
 import org.thingsboard.server.common.msg.queue.ServiceType;
 import org.thingsboard.server.common.msg.rule.engine.DeviceDeleteMsg;
-import org.thingsboard.server.service.edge.rpc.EdgeRpcService;
 import org.thingsboard.server.service.transport.msg.TransportToDeviceActorMsgWrapper;
 
 import java.util.HashSet;
@@ -176,7 +175,7 @@ public class TenantActor extends RuleChainManagerActor {
             case EDGE_EVENT_UPDATE_TO_EDGE_SESSION_MSG:
             case EDGE_SYNC_REQUEST_TO_EDGE_SESSION_MSG:
             case EDGE_SYNC_RESPONSE_FROM_EDGE_SESSION_MSG:
-                onToEdgeSessionMsg((EdgeSessionMsg) msg);
+//                onToEdgeSessionMsg((EdgeSessionMsg) msg);
                 break;
             default:
                 return false;
@@ -251,16 +250,6 @@ public class TenantActor extends RuleChainManagerActor {
                 initRuleChains();
             }
         }
-        if (msg.getEntityId().getEntityType() == EntityType.EDGE) {
-            EdgeId edgeId = new EdgeId(msg.getEntityId().getId());
-            EdgeRpcService edgeRpcService = systemContext.getEdgeRpcService();
-            if (msg.getEvent() == ComponentLifecycleEvent.DELETED) {
-                edgeRpcService.deleteEdge(tenantId, edgeId);
-            } else if (msg.getEvent() == ComponentLifecycleEvent.UPDATED) {
-                Edge edge = systemContext.getEdgeService().findEdgeById(tenantId, edgeId);
-                edgeRpcService.updateEdge(tenantId, edge);
-            }
-        }
         if (msg.getEntityId().getEntityType() == EntityType.DEVICE && ComponentLifecycleEvent.DELETED == msg.getEvent()) {
             DeviceId deviceId = (DeviceId) msg.getEntityId();
             onToDeviceActorMsg(new DeviceDeleteMsg(tenantId, deviceId), true);
@@ -288,10 +277,6 @@ public class TenantActor extends RuleChainManagerActor {
                 () -> DefaultActorService.DEVICE_DISPATCHER_NAME,
                 () -> new DeviceActorCreator(systemContext, tenantId, deviceId),
                 () -> true);
-    }
-
-    private void onToEdgeSessionMsg(EdgeSessionMsg msg) {
-        systemContext.getEdgeRpcService().onToEdgeSessionMsg(tenantId, msg);
     }
 
     private ApiUsageState getApiUsageState() {
