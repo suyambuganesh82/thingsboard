@@ -1,0 +1,313 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ToVersionControlServiceMsg",
+    "definitions": {
+        "ToVersionControlServiceMsg": {
+            "properties": {
+                "nodeId": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "vcSettings": {
+                    "$ref": "#/definitions/transport.RepositorySettingsProto",
+                    "additionalProperties": true
+                },
+                "initRepositoryRequest": {
+                    "$ref": "#/definitions/transport.GenericRepositoryRequestMsg",
+                    "additionalProperties": true
+                },
+                "testRepositoryRequest": {
+                    "$ref": "#/definitions/transport.GenericRepositoryRequestMsg",
+                    "additionalProperties": true
+                },
+                "clearRepositoryRequest": {
+                    "$ref": "#/definitions/transport.GenericRepositoryRequestMsg",
+                    "additionalProperties": true
+                },
+                "commitRequest": {
+                    "$ref": "#/definitions/transport.CommitRequestMsg",
+                    "additionalProperties": true
+                },
+                "listVersionRequest": {
+                    "$ref": "#/definitions/transport.ListVersionsRequestMsg",
+                    "additionalProperties": true
+                },
+                "listEntitiesRequest": {
+                    "$ref": "#/definitions/transport.ListEntitiesRequestMsg",
+                    "additionalProperties": true
+                },
+                "listBranchesRequest": {
+                    "$ref": "#/definitions/transport.ListBranchesRequestMsg",
+                    "additionalProperties": true
+                },
+                "entityContentRequest": {
+                    "$ref": "#/definitions/transport.EntityContentRequestMsg",
+                    "additionalProperties": true
+                },
+                "entitiesContentRequest": {
+                    "$ref": "#/definitions/transport.EntitiesContentRequestMsg",
+                    "additionalProperties": true
+                },
+                "versionsDiffRequest": {
+                    "$ref": "#/definitions/transport.VersionsDiffRequestMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Version Control Service Msg"
+        },
+        "transport.AbortMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Abort Msg"
+        },
+        "transport.AddMsg": {
+            "properties": {
+                "relativePath": {
+                    "type": "string"
+                },
+                "entityDataJsonChunk": {
+                    "type": "string"
+                },
+                "chunkedMsgId": {
+                    "type": "string"
+                },
+                "chunkIndex": {
+                    "type": "integer"
+                },
+                "chunksCount": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Add Msg"
+        },
+        "transport.CommitRequestMsg": {
+            "properties": {
+                "txId": {
+                    "type": "string",
+                    "description": "To correlate prepare, add, delete and push messages"
+                },
+                "prepareMsg": {
+                    "$ref": "#/definitions/transport.PrepareMsg",
+                    "additionalProperties": true
+                },
+                "addMsg": {
+                    "$ref": "#/definitions/transport.AddMsg",
+                    "additionalProperties": true
+                },
+                "deleteMsg": {
+                    "$ref": "#/definitions/transport.DeleteMsg",
+                    "additionalProperties": true
+                },
+                "pushMsg": {
+                    "$ref": "#/definitions/transport.PushMsg",
+                    "additionalProperties": true
+                },
+                "abortMsg": {
+                    "$ref": "#/definitions/transport.AbortMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Commit Request Msg",
+            "description": "*TB Core to Version Control Service"
+        },
+        "transport.DeleteMsg": {
+            "properties": {
+                "relativePath": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Delete Msg"
+        },
+        "transport.EntitiesContentRequestMsg": {
+            "properties": {
+                "versionId": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entities Content Request Msg"
+        },
+        "transport.EntityContentRequestMsg": {
+            "properties": {
+                "versionId": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Content Request Msg"
+        },
+        "transport.GenericRepositoryRequestMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Generic Repository Request Msg"
+        },
+        "transport.ListBranchesRequestMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Branches Request Msg"
+        },
+        "transport.ListEntitiesRequestMsg": {
+            "properties": {
+                "versionId": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Entities Request Msg"
+        },
+        "transport.ListVersionsRequestMsg": {
+            "properties": {
+                "branchName": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "textSearch": {
+                    "type": "string"
+                },
+                "sortProperty": {
+                    "type": "string"
+                },
+                "sortDirection": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Versions Request Msg"
+        },
+        "transport.PrepareMsg": {
+            "properties": {
+                "commitMsg": {
+                    "type": "string"
+                },
+                "branchName": {
+                    "type": "string"
+                },
+                "authorName": {
+                    "type": "string"
+                },
+                "authorEmail": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Prepare Msg"
+        },
+        "transport.PushMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Push Msg"
+        },
+        "transport.RepositorySettingsProto": {
+            "properties": {
+                "repositoryUri": {
+                    "type": "string"
+                },
+                "authMethod": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "privateKeyFileName": {
+                    "type": "string"
+                },
+                "privateKey": {
+                    "type": "string"
+                },
+                "privateKeyPassword": {
+                    "type": "string"
+                },
+                "defaultBranch": {
+                    "type": "string"
+                },
+                "readOnly": {
+                    "type": "boolean"
+                },
+                "showMergeCommits": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Repository Settings Proto"
+        },
+        "transport.VersionsDiffRequestMsg": {
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "versionId1": {
+                    "type": "string"
+                },
+                "versionId2": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Versions Diff Request Msg"
+        }
+    }
+}

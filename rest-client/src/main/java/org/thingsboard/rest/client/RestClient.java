@@ -1010,7 +1010,7 @@ public class RestClient implements Closeable {
         params.put("customerTitle", title);
         try {
             ResponseEntity<Customer> customerEntity = restTemplate.getForEntity(baseURL + "/api/tenant/customers?customerTitle={customerTitle}", Customer.class, params);
-            return Optional.of(customerEntity.getBody());
+            return Optional.ofNullable(customerEntity.getBody());
         } catch (HttpClientErrorException exception) {
             if (exception.getStatusCode() == HttpStatus.NOT_FOUND) {
                 return Optional.empty();

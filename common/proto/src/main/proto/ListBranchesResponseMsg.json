@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ListBranchesResponseMsg",
+    "definitions": {
+        "ListBranchesResponseMsg": {
+            "properties": {
+                "branches": {
+                    "items": {
+                        "$ref": "#/definitions/transport.BranchInfoProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Branches Response Msg"
+        },
+        "transport.BranchInfoProto": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "isDefault": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Branch Info Proto"
+        }
+    }
+}

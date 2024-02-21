@@ -45,9 +45,9 @@ public abstract class MqttDeviceAwareSessionContext extends DeviceAwareSessionCo
                 .stream()
                 .filter(entry -> entry.getKey().matches(topic))
                 .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
+                .toList();
         if (!qosList.isEmpty()) {
-            return MqttQoS.valueOf(qosList.get(0));
+            return MqttQoS.valueOf(qosList.getFirst());
         } else {
             return MqttQoS.AT_LEAST_ONCE;
         }

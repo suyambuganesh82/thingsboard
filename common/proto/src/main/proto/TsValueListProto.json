@@ -1,0 +1,70 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TsValueListProto",
+    "definitions": {
+        "TsValueListProto": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "tsValue": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TsValueProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Ts Value List Proto"
+        },
+        "transport.TsValueProto": {
+            "properties": {
+                "ts": {
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "BOOLEAN_V",
+                        0,
+                        "LONG_V",
+                        1,
+                        "DOUBLE_V",
+                        2,
+                        "STRING_V",
+                        3,
+                        "JSON_V",
+                        4
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Key Value Type"
+                },
+                "bool_v": {
+                    "type": "boolean"
+                },
+                "long_v": {
+                    "type": "string"
+                },
+                "double_v": {
+                    "type": "number"
+                },
+                "string_v": {
+                    "type": "string"
+                },
+                "json_v": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Ts Value Proto"
+        }
+    }
+}

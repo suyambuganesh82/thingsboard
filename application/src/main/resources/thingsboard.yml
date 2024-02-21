@@ -708,6 +708,16 @@ spring.jpa.properties.hibernate.dialect: "${SPRING_JPA_DIALECT:org.thingsboard.s
 
 # SQL DAO Configuration parameters
 spring:
+  pulsar:
+#    defaults:
+#      type-mappings:
+#        - message-type: io.triveni.broker.mqtt.message.MqttMessage
+#          schema-info:
+#            schema-type: JSON
+    admin:
+      service-url: "${PULSAR_ADMIN_URL:http://localhost:8088}"
+    client:
+      service-url: "${PULSAR_CLIENT_URL:pulsar://localhost:6650}"
   data:
     jpa:
       repositories:
@@ -911,7 +921,7 @@ transport:
   # Local MQTT transport parameters
   mqtt:
     # Enable/disable mqtt transport protocol.
-    enabled: "${MQTT_ENABLED:true}"
+    enabled: "${MQTT_ENABLED:false}"
     # MQTT bind-address
     bind_address: "${MQTT_BIND_ADDRESS:0.0.0.0}"
     # MQTT bind port
@@ -1329,6 +1339,19 @@ queue:
     # Interval in milliseconds to poll messages
     poll_interval: "${TB_QUEUE_TRANSPORT_NOTIFICATIONS_POLL_INTERVAL_MS:25}"
 
+pulsar:
+  config:
+    rpc-device-request-topic: rpc-device-request
+    rpc-device-response-topic: rpc-device-response
+    rpc-device-response-subscription: rpc-device-response-subscription
+    mqtt-device-publish-topic: mqtt-device-publish
+    mqtt-device-publish-subscription: mqtt-device-publish-subscription
+    mqtt-device-publish-partition: 5
+    mqtt-device-subscribe-topic: mqtt-device-subscribe
+    mqtt-device-subscribe-subscription: mqtt-device-subscribe-subscription
+    mqtt-client-event-topic: mqtt-client-event
+    mqtt-client-event-subscription: mqtt-client-event-subscription
+    mqtt-client-event-partition: 5
 # Event configuration parameters
 event:
   debug:

@@ -1,0 +1,61 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TenantProto",
+    "definitions": {
+        "TenantProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "tenantProfileIdMSB": {
+                    "type": "string"
+                },
+                "tenantProfileIdLSB": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "address2": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "additionalInfo": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tenant Proto"
+        }
+    }
+}

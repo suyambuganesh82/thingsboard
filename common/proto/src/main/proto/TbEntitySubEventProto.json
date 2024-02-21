@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TbEntitySubEventProto",
+    "definitions": {
+        "TbEntitySubEventProto": {
+            "properties": {
+                "serviceId": {
+                    "type": "string"
+                },
+                "seqNumber": {
+                    "type": "integer"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "notifications": {
+                    "type": "boolean"
+                },
+                "alarms": {
+                    "type": "boolean"
+                },
+                "tsAllKeys": {
+                    "type": "boolean"
+                },
+                "tsKeys": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "attrAllKeys": {
+                    "type": "boolean"
+                },
+                "attrKeys": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "*\n TB Core Data Structures",
+            "description": "* TB Core Data Structures"
+        }
+    }
+}

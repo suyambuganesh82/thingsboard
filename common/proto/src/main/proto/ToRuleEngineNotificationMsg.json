@@ -1,0 +1,216 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ToRuleEngineNotificationMsg",
+    "definitions": {
+        "ToRuleEngineNotificationMsg": {
+            "properties": {
+                "fromDeviceRpcResponse": {
+                    "$ref": "#/definitions/transport.FromDeviceRPCResponseProto",
+                    "additionalProperties": true
+                },
+                "queueUpdateMsg": {
+                    "$ref": "#/definitions/transport.QueueUpdateMsg",
+                    "additionalProperties": true
+                },
+                "queueDeleteMsg": {
+                    "$ref": "#/definitions/transport.QueueDeleteMsg",
+                    "additionalProperties": true
+                },
+                "componentLifecycle": {
+                    "$ref": "#/definitions/transport.ComponentLifecycleMsgProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Rule Engine Notification Msg"
+        },
+        "transport.ComponentLifecycleMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "enum": [
+                        "UNSPECIFIED",
+                        0,
+                        "TENANT",
+                        1,
+                        "CUSTOMER",
+                        2,
+                        "USER",
+                        3,
+                        "DASHBOARD",
+                        4,
+                        "ASSET",
+                        5,
+                        "DEVICE",
+                        6,
+                        "ALARM",
+                        7,
+                        "RULE_CHAIN",
+                        11,
+                        "RULE_NODE",
+                        12,
+                        "ENTITY_VIEW",
+                        15,
+                        "WIDGETS_BUNDLE",
+                        16,
+                        "WIDGET_TYPE",
+                        17,
+                        "TENANT_PROFILE",
+                        20,
+                        "DEVICE_PROFILE",
+                        21,
+                        "ASSET_PROFILE",
+                        22,
+                        "API_USAGE_STATE",
+                        23,
+                        "TB_RESOURCE",
+                        24,
+                        "OTA_PACKAGE",
+                        25,
+                        "EDGE",
+                        26,
+                        "RPC",
+                        27,
+                        "QUEUE",
+                        28,
+                        "NOTIFICATION_TARGET",
+                        29,
+                        "NOTIFICATION_TEMPLATE",
+                        30,
+                        "NOTIFICATION_REQUEST",
+                        31,
+                        "NOTIFICATION",
+                        32,
+                        "NOTIFICATION_RULE",
+                        33
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Entity Type Proto",
+                    "description": "* Common data structures"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "event": {
+                    "enum": [
+                        "CREATED",
+                        0,
+                        "STARTED",
+                        1,
+                        "ACTIVATED",
+                        2,
+                        "SUSPENDED",
+                        3,
+                        "UPDATED",
+                        4,
+                        "STOPPED",
+                        5,
+                        "DELETED",
+                        6,
+                        "FAILED",
+                        7,
+                        "DEACTIVATED",
+                        8
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Component Lifecycle Event"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Component Lifecycle Msg Proto"
+        },
+        "transport.FromDeviceRPCResponseProto": {
+            "properties": {
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "response": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "From Device RPC Response Proto"
+        },
+        "transport.QueueDeleteMsg": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "queueIdMSB": {
+                    "type": "string"
+                },
+                "queueIdLSB": {
+                    "type": "string"
+                },
+                "queueName": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Queue Delete Msg"
+        },
+        "transport.QueueUpdateMsg": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "queueIdMSB": {
+                    "type": "string"
+                },
+                "queueIdLSB": {
+                    "type": "string"
+                },
+                "queueName": {
+                    "type": "string"
+                },
+                "queueTopic": {
+                    "type": "string"
+                },
+                "partitions": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Queue Update Msg"
+        }
+    }
+}

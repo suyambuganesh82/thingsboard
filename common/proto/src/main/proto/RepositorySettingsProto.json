@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/RepositorySettingsProto",
+    "definitions": {
+        "RepositorySettingsProto": {
+            "properties": {
+                "repositoryUri": {
+                    "type": "string"
+                },
+                "authMethod": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "privateKeyFileName": {
+                    "type": "string"
+                },
+                "privateKey": {
+                    "type": "string"
+                },
+                "privateKeyPassword": {
+                    "type": "string"
+                },
+                "defaultBranch": {
+                    "type": "string"
+                },
+                "readOnly": {
+                    "type": "boolean"
+                },
+                "showMergeCommits": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Repository Settings Proto"
+        }
+    }
+}

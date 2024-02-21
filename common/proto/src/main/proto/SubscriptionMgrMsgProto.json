@@ -1,0 +1,561 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/SubscriptionMgrMsgProto",
+    "definitions": {
+        "SubscriptionMgrMsgProto": {
+            "properties": {
+                "telemetrySub": {
+                    "$ref": "#/definitions/transport.TbTimeSeriesSubscriptionProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "attributeSub": {
+                    "$ref": "#/definitions/transport.TbAttributeSubscriptionProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "subClose": {
+                    "$ref": "#/definitions/transport.TbSubscriptionCloseProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "tsUpdate": {
+                    "$ref": "#/definitions/transport.TbTimeSeriesUpdateProto",
+                    "additionalProperties": true
+                },
+                "attrUpdate": {
+                    "$ref": "#/definitions/transport.TbAttributeUpdateProto",
+                    "additionalProperties": true
+                },
+                "attrDelete": {
+                    "$ref": "#/definitions/transport.TbAttributeDeleteProto",
+                    "additionalProperties": true
+                },
+                "alarmSub": {
+                    "$ref": "#/definitions/transport.TbAlarmSubscriptionProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "alarmUpdate": {
+                    "$ref": "#/definitions/transport.TbAlarmUpdateProto",
+                    "additionalProperties": true
+                },
+                "alarmDelete": {
+                    "$ref": "#/definitions/transport.TbAlarmDeleteProto",
+                    "additionalProperties": true
+                },
+                "tsDelete": {
+                    "$ref": "#/definitions/transport.TbTimeSeriesDeleteProto",
+                    "additionalProperties": true
+                },
+                "notificationsSub": {
+                    "$ref": "#/definitions/transport.NotificationsSubscriptionProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "notificationsCountSub": {
+                    "$ref": "#/definitions/transport.NotificationsCountSubscriptionProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "notificationUpdate": {
+                    "$ref": "#/definitions/transport.NotificationUpdateProto",
+                    "additionalProperties": true
+                },
+                "notificationRequestUpdate": {
+                    "$ref": "#/definitions/transport.NotificationRequestUpdateProto",
+                    "additionalProperties": true
+                },
+                "subEvent": {
+                    "$ref": "#/definitions/transport.TbEntitySubEventProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Subscription Mgr Msg Proto"
+        },
+        "transport.KeyValueProto": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "BOOLEAN_V",
+                        0,
+                        "LONG_V",
+                        1,
+                        "DOUBLE_V",
+                        2,
+                        "STRING_V",
+                        3,
+                        "JSON_V",
+                        4
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Key Value Type"
+                },
+                "bool_v": {
+                    "type": "boolean"
+                },
+                "long_v": {
+                    "type": "string"
+                },
+                "double_v": {
+                    "type": "number"
+                },
+                "string_v": {
+                    "type": "string"
+                },
+                "json_v": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Key Value Proto"
+        },
+        "transport.NotificationRequestUpdateProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "update": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Notification Request Update Proto"
+        },
+        "transport.NotificationUpdateProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "recipientIdMSB": {
+                    "type": "string"
+                },
+                "recipientIdLSB": {
+                    "type": "string"
+                },
+                "update": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Notification Update Proto"
+        },
+        "transport.NotificationsCountSubscriptionProto": {
+            "properties": {
+                "sub": {
+                    "$ref": "#/definitions/transport.TbSubscriptionProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Notifications Count Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.NotificationsSubscriptionProto": {
+            "properties": {
+                "sub": {
+                    "$ref": "#/definitions/transport.TbSubscriptionProto",
+                    "additionalProperties": true
+                },
+                "limit": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Notifications Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbAlarmDeleteProto": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "alarm": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Alarm Delete Proto"
+        },
+        "transport.TbAlarmSubscriptionProto": {
+            "properties": {
+                "sub": {
+                    "$ref": "#/definitions/transport.TbSubscriptionProto",
+                    "additionalProperties": true
+                },
+                "ts": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Alarm Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbAlarmUpdateProto": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "alarm": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Alarm Update Proto"
+        },
+        "transport.TbAttributeDeleteProto": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "keys": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "notifyDevice": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Attribute Delete Proto"
+        },
+        "transport.TbAttributeSubscriptionProto": {
+            "properties": {
+                "sub": {
+                    "$ref": "#/definitions/transport.TbSubscriptionProto",
+                    "additionalProperties": true
+                },
+                "allKeys": {
+                    "type": "boolean"
+                },
+                "keyStates": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TbSubscriptionKetStateProto"
+                    },
+                    "type": "array"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Attribute Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbAttributeUpdateProto": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "data": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TsKvProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Attribute Update Proto"
+        },
+        "transport.TbEntitySubEventProto": {
+            "properties": {
+                "serviceId": {
+                    "type": "string"
+                },
+                "seqNumber": {
+                    "type": "integer"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "notifications": {
+                    "type": "boolean"
+                },
+                "alarms": {
+                    "type": "boolean"
+                },
+                "tsAllKeys": {
+                    "type": "boolean"
+                },
+                "tsKeys": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "attrAllKeys": {
+                    "type": "boolean"
+                },
+                "attrKeys": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "*\n TB Core Data Structures",
+            "description": "* TB Core Data Structures"
+        },
+        "transport.TbSubscriptionCloseProto": {
+            "properties": {
+                "sessionId": {
+                    "type": "string"
+                },
+                "subscriptionId": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Close Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbSubscriptionKetStateProto": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "ts": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Ket State Proto"
+        },
+        "transport.TbSubscriptionProto": {
+            "properties": {
+                "serviceId": {
+                    "type": "string"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
+                "subscriptionId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbTimeSeriesDeleteProto": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "keys": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Time Series Delete Proto"
+        },
+        "transport.TbTimeSeriesSubscriptionProto": {
+            "properties": {
+                "sub": {
+                    "$ref": "#/definitions/transport.TbSubscriptionProto",
+                    "additionalProperties": true
+                },
+                "allKeys": {
+                    "type": "boolean"
+                },
+                "keyStates": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TbSubscriptionKetStateProto"
+                    },
+                    "type": "array"
+                },
+                "startTime": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "latestValues": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Time Series Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbTimeSeriesUpdateProto": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "data": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TsKvProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Time Series Update Proto"
+        },
+        "transport.TsKvProto": {
+            "properties": {
+                "ts": {
+                    "type": "string"
+                },
+                "kv": {
+                    "$ref": "#/definitions/transport.KeyValueProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Ts Kv Proto"
+        }
+    }
+}

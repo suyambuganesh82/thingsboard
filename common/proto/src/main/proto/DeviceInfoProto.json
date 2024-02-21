@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/DeviceInfoProto",
+    "definitions": {
+        "DeviceInfoProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "additionalInfo": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "customerIdMSB": {
+                    "type": "string"
+                },
+                "customerIdLSB": {
+                    "type": "string"
+                },
+                "powerMode": {
+                    "type": "string"
+                },
+                "edrxCycle": {
+                    "type": "string"
+                },
+                "psmActivityTimer": {
+                    "type": "string"
+                },
+                "pagingTransmissionWindow": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Info Proto"
+        }
+    }
+}

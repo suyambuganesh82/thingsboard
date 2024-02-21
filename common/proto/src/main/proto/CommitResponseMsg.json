@@ -1,0 +1,34 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CommitResponseMsg",
+    "definitions": {
+        "CommitResponseMsg": {
+            "properties": {
+                "ts": {
+                    "type": "string"
+                },
+                "commitId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "added": {
+                    "type": "integer"
+                },
+                "modified": {
+                    "type": "integer"
+                },
+                "removed": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Commit Response Msg"
+        }
+    }
+}

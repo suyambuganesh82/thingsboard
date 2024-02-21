@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/VersionsDiffResponseMsg",
+    "definitions": {
+        "VersionsDiffResponseMsg": {
+            "properties": {
+                "diff": {
+                    "items": {
+                        "$ref": "#/definitions/transport.EntityVersionsDiff"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Versions Diff Response Msg"
+        },
+        "transport.EntityVersionsDiff": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "entityDataAtVersion1": {
+                    "type": "string"
+                },
+                "entityDataAtVersion2": {
+                    "type": "string"
+                },
+                "rawDiff": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Versions Diff"
+        }
+    }
+}

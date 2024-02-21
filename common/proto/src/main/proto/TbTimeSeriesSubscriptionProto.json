@@ -1,0 +1,81 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TbTimeSeriesSubscriptionProto",
+    "definitions": {
+        "TbTimeSeriesSubscriptionProto": {
+            "properties": {
+                "sub": {
+                    "$ref": "#/definitions/transport.TbSubscriptionProto",
+                    "additionalProperties": true
+                },
+                "allKeys": {
+                    "type": "boolean"
+                },
+                "keyStates": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TbSubscriptionKetStateProto"
+                    },
+                    "type": "array"
+                },
+                "startTime": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "latestValues": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Time Series Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbSubscriptionKetStateProto": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "ts": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Ket State Proto"
+        },
+        "transport.TbSubscriptionProto": {
+            "properties": {
+                "serviceId": {
+                    "type": "string"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
+                "subscriptionId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        }
+    }
+}

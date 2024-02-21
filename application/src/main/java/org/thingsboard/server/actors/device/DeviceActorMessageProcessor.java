@@ -1,12 +1,12 @@
 /**
  * Copyright © 2016-2024 The Thingsboard Authors
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,8 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
+import io.triveni.broker.mqtt.message.MqttClientEvent;
+import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.thingsboard.common.util.JacksonUtil;
@@ -28,11 +30,7 @@ import org.thingsboard.common.util.LinkedHashMapRemoveEldest;
 import org.thingsboard.server.actors.ActorSystemContext;
 import org.thingsboard.server.actors.TbActorCtx;
 import org.thingsboard.server.actors.shared.AbstractContextAwareMsgProcessor;
-import org.thingsboard.server.common.data.AttributeScope;
-import org.thingsboard.server.common.data.DataConstants;
-import org.thingsboard.server.common.data.Device;
-import org.thingsboard.server.common.data.EdgeUtils;
-import org.thingsboard.server.common.data.StringUtils;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.edge.EdgeEvent;
 import org.thingsboard.server.common.data.edge.EdgeEventActionType;
 import org.thingsboard.server.common.data.edge.EdgeEventType;
@@ -46,8 +44,6 @@ import org.thingsboard.server.common.data.kv.KvEntry;
 import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.page.SortOrder;
-import org.thingsboard.server.common.data.relation.EntityRelation;
-import org.thingsboard.server.common.data.relation.RelationTypeGroup;
 import org.thingsboard.server.common.data.rpc.Rpc;
 import org.thingsboard.server.common.data.rpc.RpcError;
 import org.thingsboard.server.common.data.rpc.RpcStatus;
@@ -57,11 +53,7 @@ import org.thingsboard.server.common.data.security.DeviceCredentialsType;
 import org.thingsboard.server.common.msg.TbActorMsg;
 import org.thingsboard.server.common.msg.TbMsgMetaData;
 import org.thingsboard.server.common.msg.queue.TbCallback;
-import org.thingsboard.server.common.msg.rpc.FromDeviceRpcResponse;
-import org.thingsboard.server.common.msg.rpc.FromDeviceRpcResponseActorMsg;
-import org.thingsboard.server.common.msg.rpc.RemoveRpcActorMsg;
-import org.thingsboard.server.common.msg.rpc.ToDeviceRpcRequest;
-import org.thingsboard.server.common.msg.rpc.ToDeviceRpcRequestActorMsg;
+import org.thingsboard.server.common.msg.rpc.*;
 import org.thingsboard.server.common.msg.rule.engine.DeviceAttributesEventNotificationMsg;
 import org.thingsboard.server.common.msg.rule.engine.DeviceCredentialsUpdateNotificationMsg;
 import org.thingsboard.server.common.msg.rule.engine.DeviceEdgeUpdateMsg;
@@ -69,45 +61,12 @@ import org.thingsboard.server.common.msg.rule.engine.DeviceNameOrTypeUpdateMsg;
 import org.thingsboard.server.common.msg.timeout.DeviceActorServerSideRpcTimeoutMsg;
 import org.thingsboard.server.common.util.KvProtoUtil;
 import org.thingsboard.server.gen.transport.TransportProtos;
-import org.thingsboard.server.gen.transport.TransportProtos.AttributeUpdateNotificationMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ClaimDeviceMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.DeviceSessionsCacheEntry;
-import org.thingsboard.server.gen.transport.TransportProtos.GetAttributeRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetAttributeResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.KeyValueProto;
-import org.thingsboard.server.gen.transport.TransportProtos.KeyValueType;
-import org.thingsboard.server.gen.transport.TransportProtos.SessionCloseNotificationProto;
-import org.thingsboard.server.gen.transport.TransportProtos.SessionEvent;
-import org.thingsboard.server.gen.transport.TransportProtos.SessionEventMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.SessionInfoProto;
-import org.thingsboard.server.gen.transport.TransportProtos.SessionSubscriptionInfoProto;
-import org.thingsboard.server.gen.transport.TransportProtos.SessionType;
-import org.thingsboard.server.gen.transport.TransportProtos.SubscribeToAttributeUpdatesMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.SubscribeToRPCMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.SubscriptionInfoProto;
-import org.thingsboard.server.gen.transport.TransportProtos.ToDeviceRpcRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ToDeviceRpcResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ToDeviceRpcResponseStatusMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ToTransportMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ToTransportUpdateCredentialsProto;
-import org.thingsboard.server.gen.transport.TransportProtos.TransportToDeviceActorMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.TsKvProto;
+import org.thingsboard.server.gen.transport.TransportProtos.*;
+import org.thingsboard.server.service.pulsar.queue.msg.MqttClientEventToDeviceActorMsg;
 import org.thingsboard.server.service.rpc.RpcSubmitStrategy;
 import org.thingsboard.server.service.transport.msg.TransportToDeviceActorMsgWrapper;
 
-import jakarta.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -164,30 +123,10 @@ public class DeviceActorMessageProcessor extends AbstractContextAwareMsgProcesso
             this.defaultMetaData = new TbMsgMetaData();
             this.defaultMetaData.putValue("deviceName", deviceName);
             this.defaultMetaData.putValue("deviceType", deviceType);
-            if (systemContext.isEdgesEnabled()) {
-                this.edgeId = findRelatedEdgeId();
-            }
             return true;
         } else {
             return false;
         }
-    }
-
-    private EdgeId findRelatedEdgeId() {
-        List<EntityRelation> result =
-                systemContext.getRelationService().findByToAndType(tenantId, deviceId, EntityRelation.CONTAINS_TYPE, RelationTypeGroup.COMMON);
-        if (result != null && result.size() > 0) {
-            EntityRelation relationToEdge = result.get(0);
-            if (relationToEdge.getFrom() != null && relationToEdge.getFrom().getId() != null) {
-                log.trace("[{}][{}] found edge [{}] for device", tenantId, deviceId, relationToEdge.getFrom().getId());
-                return new EdgeId(relationToEdge.getFrom().getId());
-            } else {
-                log.trace("[{}][{}] edge relation is empty {}", tenantId, deviceId, relationToEdge);
-            }
-        } else {
-            log.trace("[{}][{}] device doesn't have any related edge", tenantId, deviceId);
-        }
-        return null;
     }
 
     void processRpcRequest(TbActorCtx context, ToDeviceRpcRequestActorMsg msg) {
@@ -220,7 +159,7 @@ public class DeviceActorMessageProcessor extends AbstractContextAwareMsgProcesso
                 log.error("[{}][{}][{}] Failed to save RPC request to edge queue {}", tenantId, deviceId, edgeId.getId(), request, e);
             }
         } else if (isSendNewRpcAvailable()) {
-            sent = rpcSubscriptions.size() > 0;
+            sent = !rpcSubscriptions.isEmpty();
             Set<UUID> syncSessionSet = new HashSet<>();
             rpcSubscriptions.forEach((sessionId, sessionInfo) -> {
                 log.debug("[{}][{}][{}][{}] send RPC request to transport ...", deviceId, sessionId, rpcId, requestId);
@@ -434,6 +373,85 @@ public class DeviceActorMessageProcessor extends AbstractContextAwareMsgProcesso
         };
     }
 
+    void process(MqttClientEventToDeviceActorMsg mqttClientEventActorMsg) {
+        MqttClientEvent mqttClientEvent = mqttClientEventActorMsg.getMsg();
+        TbCallback callback = mqttClientEventActorMsg.getCallback();
+        log.debug("Received mqttClientEvent message id [{}] for device [{}]", mqttClientEventActorMsg.getMsg().id(), deviceId.getId());
+
+        switch (mqttClientEvent.mqttClientStatus()) {
+            case CONNECTED -> processMqttClientConnected(mqttClientEvent);
+            case DISCONNECTED -> processMqttClientDisconnected(mqttClientEvent);
+            case SUBSCRIBED -> processMqttClientSubscribed(mqttClientEvent);
+            case ONLINE -> processMqttClientOnline(mqttClientEvent);
+            default -> logClientStatus(mqttClientEvent);
+        }
+        if (null != callback) {
+            callback.onSuccess(); //commit the message
+        }
+    }
+
+    private void processMqttClientSubscribed(MqttClientEvent mqttClientEvent) {
+        //From handleSessionActivity#hasSubscriptionInfo
+
+        UUID sessionId = mqttClientEvent.mqttSessionInfo().sessionId();
+        SessionInfoMetaData sessionMD = sessions.get(sessionId);
+        if (sessionMD != null) {
+            sessionMD.setLastActivityTime(mqttClientEvent.lastActivityTime());
+            sessionMD.setSubscribedToAttributes(true);
+            sessionMD.setSubscribedToRPC(true);
+
+            attributeSubscriptions.putIfAbsent(sessionId, sessionMD.getSessionInfo());
+            rpcSubscriptions.putIfAbsent(sessionId, sessionMD.getSessionInfo());
+        }
+        systemContext.getDeviceStateService().onDeviceActivity(tenantId, deviceId, mqttClientEvent.lastActivityTime());
+        if (sessionMD != null) {
+            dumpSessions();
+        }
+
+    }
+
+    private void processMqttClientDisconnected(MqttClientEvent mqttClientEvent) {
+        UUID sessionId = mqttClientEvent.mqttSessionInfo().sessionId();
+        log.debug("[{}][{}] Cancelling subscriptions for closed session.", deviceId, sessionId);
+        sessions.remove(sessionId);
+        attributeSubscriptions.remove(sessionId);
+        rpcSubscriptions.remove(sessionId);
+        //TODO check this when implementing RPC requests
+        clearAwaitRpcResponseScheduler();
+        if (sessions.isEmpty()) {
+            reportSessionClose();
+        }
+        dumpSessions();
+    }
+
+    private void processMqttClientConnected(MqttClientEvent mqttClientEvent) {
+        UUID sessionId = mqttClientEvent.mqttSessionInfo().sessionId();
+        String clientIdentifier = mqttClientEvent.mqttSessionInfo().clientIdentifier();
+        if (sessions.containsKey(sessionId)) {
+            log.debug("[{}][{}] Received duplicate session open event.", deviceId, sessionId);
+            return;
+        }
+        log.debug("[{}] Processing new session: [{}] Current sessions size: {}", deviceId, sessionId, sessions.size());
+        //TODO use MqttServerNodeInfo
+        //sessions.put(sessionId, new SessionInfoMetaData(new SessionInfo(SessionType.ASYNC, sessionInfo.getNodeId())));
+        sessions.put(sessionId, new SessionInfoMetaData(new SessionInfo(SessionType.ASYNC, clientIdentifier)));
+        if (sessions.size() == 1) {
+            reportSessionOpen();
+        }
+        systemContext.getDeviceStateService().onDeviceActivity(tenantId, deviceId, mqttClientEvent.lastActivityTime());
+        dumpSessions();
+    }
+
+    private void logClientStatus(MqttClientEvent mqttClientEvent) {
+        log.error("Received MqttClientEvent [{}] with unknown status [{}] ", mqttClientEvent.id(), mqttClientEvent.mqttClientStatus());
+    }
+
+    private void processMqttClientOnline(MqttClientEvent mqttClientEvent) {
+        Long lastActivityTime = mqttClientEvent.lastActivityTime();
+        log.debug("[{}] Processing new online event: Last activity time: [{}]", deviceId, lastActivityTime);
+        systemContext.getDeviceStateService().onDeviceActivity(tenantId, deviceId, lastActivityTime);
+    }
+
     void process(TransportToDeviceActorMsgWrapper wrapper) {
         TransportToDeviceActorMsg msg = wrapper.getMsg();
         TbCallback callback = wrapper.getCallback();
@@ -584,7 +602,7 @@ public class DeviceActorMessageProcessor extends AbstractContextAwareMsgProcesso
     }
 
     void processAttributesUpdate(DeviceAttributesEventNotificationMsg msg) {
-        if (attributeSubscriptions.size() > 0) {
+        if (!attributeSubscriptions.isEmpty()) {
             boolean hasNotificationData = false;
             AttributeUpdateNotificationMsg.Builder notification = AttributeUpdateNotificationMsg.newBuilder();
             if (msg.isDeleted()) {
@@ -599,7 +617,7 @@ public class DeviceActorMessageProcessor extends AbstractContextAwareMsgProcesso
             } else {
                 if (DataConstants.SHARED_SCOPE.equals(msg.getScope())) {
                     List<AttributeKvEntry> attributes = new ArrayList<>(msg.getValues());
-                    if (attributes.size() > 0) {
+                    if (!attributes.isEmpty()) {
                         List<TsKvProto> sharedUpdated = msg.getValues().stream().map(t -> KvProtoUtil.toTsKvProto(t.getLastUpdateTs(), t))
                                 .collect(Collectors.toList());
                         if (!sharedUpdated.isEmpty()) {

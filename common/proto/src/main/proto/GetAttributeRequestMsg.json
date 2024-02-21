@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetAttributeRequestMsg",
+    "definitions": {
+        "GetAttributeRequestMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "clientAttributeNames": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "sharedAttributeNames": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "onlyShared": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Attribute Request Msg"
+        }
+    }
+}

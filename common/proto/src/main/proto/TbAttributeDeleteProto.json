@@ -1,0 +1,40 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TbAttributeDeleteProto",
+    "definitions": {
+        "TbAttributeDeleteProto": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "keys": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "notifyDevice": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Attribute Delete Proto"
+        }
+    }
+}

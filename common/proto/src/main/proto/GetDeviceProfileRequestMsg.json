@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetDeviceProfileRequestMsg",
+    "definitions": {
+        "GetDeviceProfileRequestMsg": {
+            "properties": {
+                "profileIdMSB": {
+                    "type": "string"
+                },
+                "profileIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Device Profile Request Msg"
+        }
+    }
+}

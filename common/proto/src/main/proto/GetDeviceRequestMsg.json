@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetDeviceRequestMsg",
+    "definitions": {
+        "GetDeviceRequestMsg": {
+            "properties": {
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Device Request Msg"
+        }
+    }
+}

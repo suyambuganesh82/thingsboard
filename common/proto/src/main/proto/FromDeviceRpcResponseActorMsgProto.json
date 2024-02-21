@@ -1,0 +1,51 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/FromDeviceRpcResponseActorMsgProto",
+    "definitions": {
+        "FromDeviceRpcResponseActorMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "requestId": {
+                    "type": "integer"
+                },
+                "rpcResponse": {
+                    "$ref": "#/definitions/transport.FromDeviceRPCResponseProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "From Device Rpc Response Actor Msg Proto"
+        },
+        "transport.FromDeviceRPCResponseProto": {
+            "properties": {
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "response": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "From Device RPC Response Proto"
+        }
+    }
+}

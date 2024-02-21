@@ -96,6 +96,7 @@ public class AppActor extends ContextAwareActor {
             case QUEUE_TO_RULE_ENGINE_MSG:
                 onQueueToRuleEngineMsg((QueueToRuleEngineMsg) msg);
                 break;
+            case MQTT_CLIENT_EVENT_TO_DEVICE_ACTOR:
             case TRANSPORT_TO_DEVICE_ACTOR_MSG:
                 onToDeviceActorMsg((TenantAwareMsg) msg, false);
                 break;

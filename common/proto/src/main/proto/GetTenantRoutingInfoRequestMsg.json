@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetTenantRoutingInfoRequestMsg",
+    "definitions": {
+        "GetTenantRoutingInfoRequestMsg": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Tenant Routing Info Request Msg"
+        }
+    }
+}

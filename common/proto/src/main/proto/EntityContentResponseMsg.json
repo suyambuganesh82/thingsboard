@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/EntityContentResponseMsg",
+    "definitions": {
+        "EntityContentResponseMsg": {
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "chunkIndex": {
+                    "type": "integer"
+                },
+                "chunksCount": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Content Response Msg"
+        }
+    }
+}

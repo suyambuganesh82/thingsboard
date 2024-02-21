@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/LifecycleEventProto",
+    "definitions": {
+        "LifecycleEventProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "serviceId": {
+                    "type": "string"
+                },
+                "lcEventType": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "error": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Lifecycle Event Proto"
+        }
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ServiceInfo",
+    "definitions": {
+        "ServiceInfo": {
+            "properties": {
+                "serviceId": {
+                    "type": "string"
+                },
+                "serviceTypes": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "transports": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "systemInfo": {
+                    "$ref": "#/definitions/transport.SystemInfoProto",
+                    "additionalProperties": true
+                },
+                "assignedTenantProfiles": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Service Info",
+            "description": "* Service Discovery Data Structures;"
+        },
+        "transport.SystemInfoProto": {
+            "properties": {
+                "cpuUsage": {
+                    "type": "string"
+                },
+                "cpuCount": {
+                    "type": "string"
+                },
+                "memoryUsage": {
+                    "type": "string"
+                },
+                "totalMemory": {
+                    "type": "string"
+                },
+                "diskUsage": {
+                    "type": "string"
+                },
+                "totalDiscSpace": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "System Info Proto"
+        }
+    }
+}

@@ -1,0 +1,91 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/SessionSubscriptionInfoProto",
+    "definitions": {
+        "SessionSubscriptionInfoProto": {
+            "properties": {
+                "sessionInfo": {
+                    "$ref": "#/definitions/transport.SessionInfoProto",
+                    "additionalProperties": true
+                },
+                "subscriptionInfo": {
+                    "$ref": "#/definitions/transport.SubscriptionInfoProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Session Subscription Info Proto"
+        },
+        "transport.SessionInfoProto": {
+            "properties": {
+                "nodeId": {
+                    "type": "string"
+                },
+                "sessionIdMSB": {
+                    "type": "string"
+                },
+                "sessionIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "gwSessionIdMSB": {
+                    "type": "string"
+                },
+                "gwSessionIdLSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "customerIdMSB": {
+                    "type": "string"
+                },
+                "customerIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Session Info Proto",
+            "description": "* Transport Service Data Structures;"
+        },
+        "transport.SubscriptionInfoProto": {
+            "properties": {
+                "lastActivityTime": {
+                    "type": "string"
+                },
+                "attributeSubscription": {
+                    "type": "boolean"
+                },
+                "rpcSubscription": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Subscription Info Proto",
+            "description": "Used to report session state to tb-Service and persist this state in the cache on the tb-Service level."
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetTenantRoutingInfoResponseMsg",
+    "definitions": {
+        "GetTenantRoutingInfoResponseMsg": {
+            "properties": {
+                "isolatedTbRuleEngine": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Tenant Routing Info Response Msg"
+        }
+    }
+}

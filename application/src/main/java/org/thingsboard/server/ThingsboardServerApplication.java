@@ -17,9 +17,11 @@ package org.thingsboard.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.thingsboard.server.queue.pulsar.config.PulsarConfig;
 
 import java.util.Arrays;
 
@@ -27,6 +29,7 @@ import java.util.Arrays;
 @EnableAsync
 @EnableScheduling
 @ComponentScan({"org.thingsboard.server", "org.thingsboard.script"})
+@EnableConfigurationProperties({PulsarConfig.class})
 public class ThingsboardServerApplication {
 
     private static final String SPRING_CONFIG_NAME_KEY = "--spring.config.name";

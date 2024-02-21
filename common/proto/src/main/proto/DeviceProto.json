@@ -1,0 +1,75 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/DeviceProto",
+    "definitions": {
+        "DeviceProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceLabel": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "additionalInfo": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "customerIdMSB": {
+                    "type": "string"
+                },
+                "customerIdLSB": {
+                    "type": "string"
+                },
+                "deviceData": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "firmwareIdMSB": {
+                    "type": "string"
+                },
+                "firmwareIdLSB": {
+                    "type": "string"
+                },
+                "softwareIdMSB": {
+                    "type": "string"
+                },
+                "softwareIdLSB": {
+                    "type": "string"
+                },
+                "externalIdMSB": {
+                    "type": "string"
+                },
+                "externalIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Proto"
+        }
+    }
+}

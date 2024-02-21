@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/PrepareMsg",
+    "definitions": {
+        "PrepareMsg": {
+            "properties": {
+                "commitMsg": {
+                    "type": "string"
+                },
+                "branchName": {
+                    "type": "string"
+                },
+                "authorName": {
+                    "type": "string"
+                },
+                "authorEmail": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Prepare Msg"
+        }
+    }
+}

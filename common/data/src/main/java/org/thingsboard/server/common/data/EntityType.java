@@ -68,7 +68,7 @@ public enum EntityType {
     }
 
     public static final List<String> NORMAL_NAMES = EnumSet.allOf(EntityType.class).stream()
-            .map(EntityType::getNormalName).collect(Collectors.toUnmodifiableList());
+            .map(EntityType::getNormalName).toList();
 
     @Getter
     private final String normalName = StringUtils.capitalize(StringUtils.removeStart(name(), "TB_")

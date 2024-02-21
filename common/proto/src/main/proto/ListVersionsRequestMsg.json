@@ -1,0 +1,40 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ListVersionsRequestMsg",
+    "definitions": {
+        "ListVersionsRequestMsg": {
+            "properties": {
+                "branchName": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "textSearch": {
+                    "type": "string"
+                },
+                "sortProperty": {
+                    "type": "string"
+                },
+                "sortDirection": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Versions Request Msg"
+        }
+    }
+}

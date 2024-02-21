@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/SessionInfoProto",
+    "definitions": {
+        "SessionInfoProto": {
+            "properties": {
+                "nodeId": {
+                    "type": "string"
+                },
+                "sessionIdMSB": {
+                    "type": "string"
+                },
+                "sessionIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "gwSessionIdMSB": {
+                    "type": "string"
+                },
+                "gwSessionIdLSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "customerIdMSB": {
+                    "type": "string"
+                },
+                "customerIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Session Info Proto",
+            "description": "* Transport Service Data Structures;"
+        }
+    }
+}

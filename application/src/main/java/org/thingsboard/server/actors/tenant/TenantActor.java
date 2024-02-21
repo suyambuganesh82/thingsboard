@@ -79,7 +79,7 @@ public class TenantActor extends RuleChainManagerActor {
     @Override
     public void init(TbActorCtx ctx) throws TbActorException {
         super.init(ctx);
-        log.debug("[{}] Starting tenant actor.", tenantId);
+        log.info("[{}] Starting tenant actor.", tenantId);
         try {
             Tenant tenant = systemContext.getTenantService().findTenantById(tenantId);
             if (tenant == null) {
@@ -151,6 +151,7 @@ public class TenantActor extends RuleChainManagerActor {
             case QUEUE_TO_RULE_ENGINE_MSG:
                 onQueueToRuleEngineMsg((QueueToRuleEngineMsg) msg);
                 break;
+            case MQTT_CLIENT_EVENT_TO_DEVICE_ACTOR:
             case TRANSPORT_TO_DEVICE_ACTOR_MSG:
                 onToDeviceActorMsg((DeviceAwareMsg) msg, false);
                 break;

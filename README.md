@@ -40,3 +40,7 @@ Collect and Visualize your IoT data in minutes by following this [guide](https:/
 ## Licenses
 
 This project is released under [Apache 2.0 License](./LICENSE).
+
+https://github.com/chrusty/protoc-gen-jsonschema
+export PATH="$HOME/go/bin:$PATH"
+protoc --jsonschema_out=. --proto_path=./ ./queue.proto --experimental_allow_proto3_optional=true

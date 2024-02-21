@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TenantProfileProto",
+    "definitions": {
+        "TenantProfileProto": {
+            "properties": {
+                "tenantProfileIdMSB": {
+                    "type": "string"
+                },
+                "tenantProfileIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "isDefault": {
+                    "type": "boolean"
+                },
+                "isolatedTbRuleEngine": {
+                    "type": "boolean"
+                },
+                "profileData": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tenant Profile Proto"
+        }
+    }
+}

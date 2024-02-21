@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/EntityVersionsDiff",
+    "definitions": {
+        "EntityVersionsDiff": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "entityDataAtVersion1": {
+                    "type": "string"
+                },
+                "entityDataAtVersion2": {
+                    "type": "string"
+                },
+                "rawDiff": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Versions Diff"
+        }
+    }
+}

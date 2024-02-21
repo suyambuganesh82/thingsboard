@@ -1,0 +1,428 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TransportToDeviceActorMsg",
+    "definitions": {
+        "TransportToDeviceActorMsg": {
+            "properties": {
+                "sessionInfo": {
+                    "$ref": "#/definitions/transport.SessionInfoProto",
+                    "additionalProperties": true
+                },
+                "sessionEvent": {
+                    "$ref": "#/definitions/transport.SessionEventMsg",
+                    "additionalProperties": true
+                },
+                "getAttributes": {
+                    "$ref": "#/definitions/transport.GetAttributeRequestMsg",
+                    "additionalProperties": true
+                },
+                "subscribeToAttributes": {
+                    "$ref": "#/definitions/transport.SubscribeToAttributeUpdatesMsg",
+                    "additionalProperties": true
+                },
+                "subscribeToRPC": {
+                    "$ref": "#/definitions/transport.SubscribeToRPCMsg",
+                    "additionalProperties": true
+                },
+                "toDeviceRPCCallResponse": {
+                    "$ref": "#/definitions/transport.ToDeviceRpcResponseMsg",
+                    "additionalProperties": true
+                },
+                "subscriptionInfo": {
+                    "$ref": "#/definitions/transport.SubscriptionInfoProto",
+                    "additionalProperties": true
+                },
+                "claimDevice": {
+                    "$ref": "#/definitions/transport.ClaimDeviceMsg",
+                    "additionalProperties": true
+                },
+                "provisionDevice": {
+                    "$ref": "#/definitions/transport.ProvisionDeviceRequestMsg",
+                    "additionalProperties": true
+                },
+                "rpcResponseStatusMsg": {
+                    "$ref": "#/definitions/transport.ToDeviceRpcResponseStatusMsg",
+                    "additionalProperties": true
+                },
+                "sendPendingRPC": {
+                    "$ref": "#/definitions/transport.SendPendingRPCMsg",
+                    "additionalProperties": true
+                },
+                "uplinkNotificationMsg": {
+                    "$ref": "#/definitions/transport.UplinkNotificationMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Transport To Device Actor Msg"
+        },
+        "transport.ClaimDeviceMsg": {
+            "properties": {
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "secretKey": {
+                    "type": "string"
+                },
+                "durationMs": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Claim Device Msg"
+        },
+        "transport.CredentialsDataProto": {
+            "properties": {
+                "validateDeviceTokenRequestMsg": {
+                    "$ref": "#/definitions/transport.ValidateDeviceTokenRequestMsg",
+                    "additionalProperties": true
+                },
+                "validateDeviceX509CertRequestMsg": {
+                    "$ref": "#/definitions/transport.ValidateDeviceX509CertRequestMsg",
+                    "additionalProperties": true
+                },
+                "validateBasicMqttCredRequestMsg": {
+                    "$ref": "#/definitions/transport.ValidateBasicMqttCredRequestMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Credentials Data Proto"
+        },
+        "transport.GetAttributeRequestMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "clientAttributeNames": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "sharedAttributeNames": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "onlyShared": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Attribute Request Msg"
+        },
+        "transport.ProvisionDeviceCredentialsMsg": {
+            "properties": {
+                "provisionDeviceKey": {
+                    "type": "string"
+                },
+                "provisionDeviceSecret": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provision Device Credentials Msg"
+        },
+        "transport.ProvisionDeviceRequestMsg": {
+            "properties": {
+                "deviceName": {
+                    "type": "string"
+                },
+                "credentialsType": {
+                    "enum": [
+                        "ACCESS_TOKEN",
+                        0,
+                        "X509_CERTIFICATE",
+                        1,
+                        "MQTT_BASIC",
+                        2,
+                        "LWM2M_CREDENTIALS",
+                        3
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Credentials Type"
+                },
+                "provisionDeviceCredentialsMsg": {
+                    "$ref": "#/definitions/transport.ProvisionDeviceCredentialsMsg",
+                    "additionalProperties": true
+                },
+                "credentialsDataProto": {
+                    "$ref": "#/definitions/transport.CredentialsDataProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provision Device Request Msg"
+        },
+        "transport.SendPendingRPCMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Send Pending RPC Msg"
+        },
+        "transport.SessionEventMsg": {
+            "properties": {
+                "sessionType": {
+                    "enum": [
+                        "SYNC",
+                        0,
+                        "ASYNC",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Session Type"
+                },
+                "event": {
+                    "enum": [
+                        "OPEN",
+                        0,
+                        "CLOSED",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Session Event"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Session Event Msg",
+            "description": "* Transport Service Messages;"
+        },
+        "transport.SessionInfoProto": {
+            "properties": {
+                "nodeId": {
+                    "type": "string"
+                },
+                "sessionIdMSB": {
+                    "type": "string"
+                },
+                "sessionIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "gwSessionIdMSB": {
+                    "type": "string"
+                },
+                "gwSessionIdLSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "customerIdMSB": {
+                    "type": "string"
+                },
+                "customerIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Session Info Proto",
+            "description": "* Transport Service Data Structures;"
+        },
+        "transport.SubscribeToAttributeUpdatesMsg": {
+            "properties": {
+                "unsubscribe": {
+                    "type": "boolean"
+                },
+                "sessionType": {
+                    "enum": [
+                        "SYNC",
+                        0,
+                        "ASYNC",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Session Type"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Subscribe To Attribute Updates Msg"
+        },
+        "transport.SubscribeToRPCMsg": {
+            "properties": {
+                "unsubscribe": {
+                    "type": "boolean"
+                },
+                "sessionType": {
+                    "enum": [
+                        "SYNC",
+                        0,
+                        "ASYNC",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Session Type"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Subscribe To RPC Msg"
+        },
+        "transport.SubscriptionInfoProto": {
+            "properties": {
+                "lastActivityTime": {
+                    "type": "string"
+                },
+                "attributeSubscription": {
+                    "type": "boolean"
+                },
+                "rpcSubscription": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Subscription Info Proto",
+            "description": "Used to report session state to tb-Service and persist this state in the cache on the tb-Service level."
+        },
+        "transport.ToDeviceRpcResponseMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "payload": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Device Rpc Response Msg"
+        },
+        "transport.ToDeviceRpcResponseStatusMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Device Rpc Response Status Msg"
+        },
+        "transport.UplinkNotificationMsg": {
+            "properties": {
+                "uplinkTs": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Uplink Notification Msg"
+        },
+        "transport.ValidateBasicMqttCredRequestMsg": {
+            "properties": {
+                "clientId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validate Basic Mqtt Cred Request Msg"
+        },
+        "transport.ValidateDeviceTokenRequestMsg": {
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validate Device Token Request Msg"
+        },
+        "transport.ValidateDeviceX509CertRequestMsg": {
+            "properties": {
+                "hash": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validate Device X 509 Cert Request Msg"
+        }
+    }
+}

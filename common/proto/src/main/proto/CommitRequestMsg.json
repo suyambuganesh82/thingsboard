@@ -1,0 +1,99 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/CommitRequestMsg",
+    "definitions": {
+        "CommitRequestMsg": {
+            "properties": {
+                "txId": {
+                    "type": "string",
+                    "description": "To correlate prepare, add, delete and push messages"
+                },
+                "prepareMsg": {
+                    "$ref": "#/definitions/transport.PrepareMsg",
+                    "additionalProperties": true
+                },
+                "addMsg": {
+                    "$ref": "#/definitions/transport.AddMsg",
+                    "additionalProperties": true
+                },
+                "deleteMsg": {
+                    "$ref": "#/definitions/transport.DeleteMsg",
+                    "additionalProperties": true
+                },
+                "pushMsg": {
+                    "$ref": "#/definitions/transport.PushMsg",
+                    "additionalProperties": true
+                },
+                "abortMsg": {
+                    "$ref": "#/definitions/transport.AbortMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Commit Request Msg",
+            "description": "*TB Core to Version Control Service"
+        },
+        "transport.AbortMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Abort Msg"
+        },
+        "transport.AddMsg": {
+            "properties": {
+                "relativePath": {
+                    "type": "string"
+                },
+                "entityDataJsonChunk": {
+                    "type": "string"
+                },
+                "chunkedMsgId": {
+                    "type": "string"
+                },
+                "chunkIndex": {
+                    "type": "integer"
+                },
+                "chunksCount": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Add Msg"
+        },
+        "transport.DeleteMsg": {
+            "properties": {
+                "relativePath": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Delete Msg"
+        },
+        "transport.PrepareMsg": {
+            "properties": {
+                "commitMsg": {
+                    "type": "string"
+                },
+                "branchName": {
+                    "type": "string"
+                },
+                "authorName": {
+                    "type": "string"
+                },
+                "authorEmail": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Prepare Msg"
+        },
+        "transport.PushMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Push Msg"
+        }
+    }
+}

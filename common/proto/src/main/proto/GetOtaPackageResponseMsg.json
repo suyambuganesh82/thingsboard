@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetOtaPackageResponseMsg",
+    "definitions": {
+        "GetOtaPackageResponseMsg": {
+            "properties": {
+                "responseStatus": {
+                    "enum": [
+                        "UNKNOWN",
+                        0,
+                        "SUCCESS",
+                        1,
+                        "NOT_FOUND",
+                        2,
+                        "FAILURE",
+                        3
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Response Status"
+                },
+                "otaPackageIdMSB": {
+                    "type": "string"
+                },
+                "otaPackageIdLSB": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "fileName": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Ota Package Response Msg"
+        }
+    }
+}

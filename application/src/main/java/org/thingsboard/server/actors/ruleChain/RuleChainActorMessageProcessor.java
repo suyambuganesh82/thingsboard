@@ -204,7 +204,7 @@ public class RuleChainActorMessageProcessor extends ComponentMsgProcessor<RuleCh
         if (!checkMsgValid(msg)) {
             return;
         }
-        log.trace("[{}][{}] Processing message [{}]: {}", entityId, firstId, msg.getId(), msg);
+        log.info("[{}][{}] Processing message [{}]: {}", entityId, firstId, msg.getId(), msg);
         if (envelope.getRelationTypes() == null || envelope.getRelationTypes().isEmpty()) {
             onTellNext(msg, true);
         } else {
@@ -224,10 +224,10 @@ public class RuleChainActorMessageProcessor extends ComponentMsgProcessor<RuleCh
                 targetCtx = nodeActors.get(targetId);
             }
             if (targetCtx != null) {
-                log.trace("[{}][{}] Pushing message to target rule node", entityId, targetId);
+                log.info("[{}][{}] Pushing message to target rule node", entityId, targetId);
                 pushMsgToNode(targetCtx, msg, NA_RELATION_TYPE);
             } else {
-                log.trace("[{}][{}] Rule node does not exist. Probably old message", entityId, targetId);
+                log.info("[{}][{}] Rule node does not exist. Probably old message", entityId, targetId);
                 msg.getCallback().onSuccess();
             }
         } catch (RuleNodeException rne) {

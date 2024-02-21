@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/EntitiesContentResponseMsg",
+    "definitions": {
+        "EntitiesContentResponseMsg": {
+            "properties": {
+                "item": {
+                    "$ref": "#/definitions/transport.EntityContentResponseMsg",
+                    "additionalProperties": true
+                },
+                "itemIdx": {
+                    "type": "integer"
+                },
+                "itemsCount": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entities Content Response Msg"
+        },
+        "transport.EntityContentResponseMsg": {
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "chunkIndex": {
+                    "type": "integer"
+                },
+                "chunksCount": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Content Response Msg"
+        }
+    }
+}

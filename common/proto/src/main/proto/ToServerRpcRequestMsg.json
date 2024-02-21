@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ToServerRpcRequestMsg",
+    "definitions": {
+        "ToServerRpcRequestMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "methodName": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Server Rpc Request Msg"
+        }
+    }
+}

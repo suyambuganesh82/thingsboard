@@ -55,7 +55,6 @@ import org.thingsboard.server.transport.mqtt.adaptors.JsonMqttAdaptor;
 import org.thingsboard.server.transport.mqtt.adaptors.MqttTransportAdaptor;
 import org.thingsboard.server.transport.mqtt.adaptors.ProtoMqttAdaptor;
 import org.thingsboard.server.transport.mqtt.util.ReturnCode;
-import org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugConnectionState;
 
 import jakarta.annotation.Nullable;
 import java.util.ArrayList;
@@ -77,9 +76,6 @@ import static org.thingsboard.server.common.transport.service.DefaultTransportSe
 import static org.thingsboard.server.common.transport.service.DefaultTransportService.SESSION_EVENT_MSG_OPEN;
 import static org.thingsboard.server.common.transport.service.DefaultTransportService.SUBSCRIBE_TO_ATTRIBUTE_UPDATES_ASYNC_MSG;
 import static org.thingsboard.server.common.transport.service.DefaultTransportService.SUBSCRIBE_TO_RPC_ASYNC_MSG;
-import static org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugConnectionState.OFFLINE;
-import static org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugMessageType.STATE;
-import static org.thingsboard.server.transport.mqtt.util.sparkplug.SparkplugMessageType.messageName;
 
 /**
  * Created by ashvayka on 19.01.17.
@@ -164,14 +160,6 @@ public abstract class AbstractGatewaySessionHandler<T extends AbstractGatewayDev
         }
     }
 
-    public void onDevicesDisconnect() {
-        devices.forEach(this::deregisterSession);
-    }
-
-    public void onDeviceDeleted(String deviceName) {
-        deregisterSession(deviceName);
-    }
-
     public String getNodeId() {
         return context.getNodeId();
     }
@@ -182,15 +170,6 @@ public abstract class AbstractGatewaySessionHandler<T extends AbstractGatewayDev
 
     public MqttTransportAdaptor getPayloadAdaptor() {
         return deviceSessionCtx.getPayloadAdaptor();
-    }
-
-    void deregisterSession(String deviceName) {
-        MqttDeviceAwareSessionContext deviceSessionCtx = devices.remove(deviceName);
-        if (deviceSessionCtx != null) {
-            deregisterSession(deviceName, deviceSessionCtx);
-        } else {
-            log.debug("[{}][{}][{}] Device [{}] was already removed from the gateway session", gateway.getTenantId(), gateway.getDeviceId(), sessionId, deviceName);
-        }
     }
 
     public ChannelFuture writeAndFlush(MqttMessage mqttMessage) {
@@ -337,7 +316,6 @@ public abstract class AbstractGatewaySessionHandler<T extends AbstractGatewayDev
     }
 
     void processOnDisconnect(MqttPublishMessage msg, String deviceName) {
-        deregisterSession(deviceName);
         ack(msg, ReturnCode.SUCCESS);
     }
 
@@ -734,25 +712,6 @@ public abstract class AbstractGatewaySessionHandler<T extends AbstractGatewayDev
         if (msgId > 0) {
             writeAndFlush(MqttTransportHandler.createMqttPubAckMsg(deviceSessionCtx, msgId, returnCode));
         }
-    }
-
-    private void deregisterSession(String deviceName, MqttDeviceAwareSessionContext deviceSessionCtx) {
-        if (this.deviceSessionCtx.isSparkplug()) {
-            sendSparkplugStateOnTelemetry(deviceSessionCtx.getSessionInfo(),
-                    deviceSessionCtx.getDeviceInfo().getDeviceName(), OFFLINE, new Date().getTime());
-        }
-        transportService.deregisterSession(deviceSessionCtx.getSessionInfo());
-        transportService.process(deviceSessionCtx.getSessionInfo(), SESSION_EVENT_MSG_CLOSED, null);
-        log.debug("[{}][{}][{}] Removed device [{}] from the gateway session", gateway.getTenantId(), gateway.getDeviceId(), sessionId, deviceName);
-    }
-
-    public void sendSparkplugStateOnTelemetry(TransportProtos.SessionInfoProto sessionInfo, String deviceName, SparkplugConnectionState connectionState, long ts) {
-        TransportProtos.KeyValueProto.Builder keyValueProtoBuilder = TransportProtos.KeyValueProto.newBuilder();
-        keyValueProtoBuilder.setKey(messageName(STATE));
-        keyValueProtoBuilder.setType(TransportProtos.KeyValueType.STRING_V);
-        keyValueProtoBuilder.setStringV(connectionState.name());
-        TransportProtos.PostTelemetryMsg postTelemetryMsg = postTelemetryMsgCreated(keyValueProtoBuilder.build(), ts);
-        transportService.process(sessionInfo, postTelemetryMsg, getPubAckCallback(channel, deviceName, -1, postTelemetryMsg));
     }
 
     private <T> TransportServiceCallback<Void> getPubAckCallback(final ChannelHandlerContext ctx, final String deviceName, final int msgId, final T msg) {

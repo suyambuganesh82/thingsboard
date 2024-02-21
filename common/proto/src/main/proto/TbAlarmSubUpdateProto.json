@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TbAlarmSubUpdateProto",
+    "definitions": {
+        "TbAlarmSubUpdateProto": {
+            "properties": {
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "errorCode": {
+                    "type": "integer"
+                },
+                "errorMsg": {
+                    "type": "string"
+                },
+                "alarm": {
+                    "type": "string"
+                },
+                "deleted": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Alarm Sub Update Proto"
+        }
+    }
+}

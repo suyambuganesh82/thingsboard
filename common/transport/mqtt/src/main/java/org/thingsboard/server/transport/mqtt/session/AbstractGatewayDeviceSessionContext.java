@@ -129,7 +129,6 @@ public abstract class AbstractGatewayDeviceSessionContext<T extends AbstractGate
     @Override
     public void onRemoteSessionCloseCommand(UUID sessionId, TransportProtos.SessionCloseNotificationProto sessionCloseNotification) {
         log.trace("[{}] Received the remote command to close the session: {}", sessionId, sessionCloseNotification.getMessage());
-        parent.deregisterSession(getDeviceInfo().getDeviceName());
     }
 
     @Override
@@ -139,7 +138,6 @@ public abstract class AbstractGatewayDeviceSessionContext<T extends AbstractGate
 
     @Override
     public void onDeviceDeleted(DeviceId deviceId) {
-        parent.onDeviceDeleted(this.getSessionInfo().getDeviceName());
     }
 
     private boolean isAckExpected(MqttMessage message) {

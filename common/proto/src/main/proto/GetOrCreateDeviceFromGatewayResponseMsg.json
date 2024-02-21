@@ -1,0 +1,180 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetOrCreateDeviceFromGatewayResponseMsg",
+    "definitions": {
+        "GetOrCreateDeviceFromGatewayResponseMsg": {
+            "properties": {
+                "deviceInfo": {
+                    "$ref": "#/definitions/transport.DeviceInfoProto",
+                    "additionalProperties": true
+                },
+                "deviceProfile": {
+                    "$ref": "#/definitions/transport.DeviceProfileProto",
+                    "additionalProperties": true
+                },
+                "error": {
+                    "enum": [
+                        "UNKNOWN_TRANSPORT_API_ERROR",
+                        0,
+                        "ENTITY_LIMIT",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Transport Api Request Error Code"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Or Create Device From Gateway Response Msg"
+        },
+        "transport.DeviceInfoProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "additionalInfo": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "customerIdMSB": {
+                    "type": "string"
+                },
+                "customerIdLSB": {
+                    "type": "string"
+                },
+                "powerMode": {
+                    "type": "string"
+                },
+                "edrxCycle": {
+                    "type": "string"
+                },
+                "psmActivityTimer": {
+                    "type": "string"
+                },
+                "pagingTransmissionWindow": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Info Proto"
+        },
+        "transport.DeviceProfileProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isDefault": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "transportType": {
+                    "type": "string"
+                },
+                "provisionType": {
+                    "type": "string"
+                },
+                "defaultRuleChainIdMSB": {
+                    "type": "string"
+                },
+                "defaultRuleChainIdLSB": {
+                    "type": "string"
+                },
+                "defaultDashboardIdMSB": {
+                    "type": "string"
+                },
+                "defaultDashboardIdLSB": {
+                    "type": "string"
+                },
+                "defaultQueueName": {
+                    "type": "string"
+                },
+                "deviceProfileData": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "provisionDeviceKey": {
+                    "type": "string"
+                },
+                "firmwareIdMSB": {
+                    "type": "string"
+                },
+                "firmwareIdLSB": {
+                    "type": "string"
+                },
+                "softwareIdMSB": {
+                    "type": "string"
+                },
+                "softwareIdLSB": {
+                    "type": "string"
+                },
+                "defaultEdgeRuleChainIdMSB": {
+                    "type": "string"
+                },
+                "defaultEdgeRuleChainIdLSB": {
+                    "type": "string"
+                },
+                "externalIdMSB": {
+                    "type": "string"
+                },
+                "externalIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Profile Proto"
+        }
+    }
+}

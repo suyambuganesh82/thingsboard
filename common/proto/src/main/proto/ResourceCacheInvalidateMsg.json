@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ResourceCacheInvalidateMsg",
+    "definitions": {
+        "ResourceCacheInvalidateMsg": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "keys": {
+                    "items": {
+                        "$ref": "#/definitions/transport.ImageCacheKeyProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Resource Cache Invalidate Msg"
+        },
+        "transport.ImageCacheKeyProto": {
+            "properties": {
+                "resourceKey": {
+                    "type": "string"
+                },
+                "publicResourceKey": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Image Cache Key Proto"
+        }
+    }
+}

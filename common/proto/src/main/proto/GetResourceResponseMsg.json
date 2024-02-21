@@ -1,0 +1,82 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetResourceResponseMsg",
+    "definitions": {
+        "GetResourceResponseMsg": {
+            "properties": {
+                "resource": {
+                    "$ref": "#/definitions/transport.TbResourceProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Resource Response Msg"
+        },
+        "transport.TbResourceProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "resourceIdMSB": {
+                    "type": "string"
+                },
+                "resourceIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "resourceType": {
+                    "type": "string"
+                },
+                "resourceKey": {
+                    "type": "string"
+                },
+                "isPublic": {
+                    "type": "boolean"
+                },
+                "publicResourceKey": {
+                    "type": "string"
+                },
+                "searchText": {
+                    "type": "string"
+                },
+                "etag": {
+                    "type": "string"
+                },
+                "fileName": {
+                    "type": "string"
+                },
+                "resourceDescriptor": {
+                    "type": "string"
+                },
+                "externalIdMSB": {
+                    "type": "string"
+                },
+                "externalIdLSB": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "preview": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Resource Proto"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetSnmpDevicesResponseMsg",
+    "definitions": {
+        "GetSnmpDevicesResponseMsg": {
+            "properties": {
+                "ids": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "hasNextPage": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Snmp Devices Response Msg"
+        }
+    }
+}

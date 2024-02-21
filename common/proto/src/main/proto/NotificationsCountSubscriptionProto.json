@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/NotificationsCountSubscriptionProto",
+    "definitions": {
+        "NotificationsCountSubscriptionProto": {
+            "properties": {
+                "sub": {
+                    "$ref": "#/definitions/transport.TbSubscriptionProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Notifications Count Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbSubscriptionProto": {
+            "properties": {
+                "serviceId": {
+                    "type": "string"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
+                "subscriptionId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        }
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/SessionEventMsg",
+    "definitions": {
+        "SessionEventMsg": {
+            "properties": {
+                "sessionType": {
+                    "enum": [
+                        "SYNC",
+                        0,
+                        "ASYNC",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Session Type"
+                },
+                "event": {
+                    "enum": [
+                        "OPEN",
+                        0,
+                        "CLOSED",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Session Event"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Session Event Msg",
+            "description": "* Transport Service Messages;"
+        }
+    }
+}

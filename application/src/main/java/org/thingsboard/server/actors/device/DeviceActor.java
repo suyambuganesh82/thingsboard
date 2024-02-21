@@ -30,6 +30,7 @@ import org.thingsboard.server.common.msg.timeout.DeviceActorServerSideRpcTimeout
 import org.thingsboard.server.common.msg.rpc.FromDeviceRpcResponseActorMsg;
 import org.thingsboard.server.common.msg.rpc.RemoveRpcActorMsg;
 import org.thingsboard.server.common.msg.rpc.ToDeviceRpcRequestActorMsg;
+import org.thingsboard.server.service.pulsar.queue.msg.MqttClientEventToDeviceActorMsg;
 import org.thingsboard.server.service.transport.msg.TransportToDeviceActorMsgWrapper;
 
 @Slf4j
@@ -58,6 +59,9 @@ public class DeviceActor extends ContextAwareActor {
     @Override
     protected boolean doProcess(TbActorMsg msg) {
         switch (msg.getMsgType()) {
+            case MQTT_CLIENT_EVENT_TO_DEVICE_ACTOR:
+                processor.process((MqttClientEventToDeviceActorMsg) msg);
+                break;
             case TRANSPORT_TO_DEVICE_ACTOR_MSG:
                 processor.process((TransportToDeviceActorMsgWrapper) msg);
                 break;

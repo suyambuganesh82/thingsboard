@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/VersionsDiffRequestMsg",
+    "definitions": {
+        "VersionsDiffRequestMsg": {
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "versionId1": {
+                    "type": "string"
+                },
+                "versionId2": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Versions Diff Request Msg"
+        }
+    }
+}

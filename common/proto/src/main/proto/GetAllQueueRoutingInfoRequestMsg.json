@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetAllQueueRoutingInfoRequestMsg",
+    "definitions": {
+        "GetAllQueueRoutingInfoRequestMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get All Queue Routing Info Request Msg"
+        }
+    }
+}

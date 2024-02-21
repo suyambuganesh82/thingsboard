@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GenericRepositoryRequestMsg",
+    "definitions": {
+        "GenericRepositoryRequestMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Generic Repository Request Msg"
+        }
+    }
+}

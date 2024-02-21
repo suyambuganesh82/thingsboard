@@ -1,0 +1,211 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/TransportToRuleEngineMsg",
+    "definitions": {
+        "TransportToRuleEngineMsg": {
+            "properties": {
+                "sessionInfo": {
+                    "$ref": "#/definitions/transport.SessionInfoProto",
+                    "additionalProperties": true
+                },
+                "postTelemetry": {
+                    "$ref": "#/definitions/transport.PostTelemetryMsg",
+                    "additionalProperties": true
+                },
+                "postAttributes": {
+                    "$ref": "#/definitions/transport.PostAttributeMsg",
+                    "additionalProperties": true
+                },
+                "toDeviceRPCCallResponse": {
+                    "$ref": "#/definitions/transport.ToDeviceRpcResponseMsg",
+                    "additionalProperties": true
+                },
+                "toServerRPCCallRequest": {
+                    "$ref": "#/definitions/transport.ToServerRpcRequestMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Transport To Rule Engine Msg"
+        },
+        "transport.KeyValueProto": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "BOOLEAN_V",
+                        0,
+                        "LONG_V",
+                        1,
+                        "DOUBLE_V",
+                        2,
+                        "STRING_V",
+                        3,
+                        "JSON_V",
+                        4
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Key Value Type"
+                },
+                "bool_v": {
+                    "type": "boolean"
+                },
+                "long_v": {
+                    "type": "string"
+                },
+                "double_v": {
+                    "type": "number"
+                },
+                "string_v": {
+                    "type": "string"
+                },
+                "json_v": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Key Value Proto"
+        },
+        "transport.PostAttributeMsg": {
+            "properties": {
+                "kv": {
+                    "items": {
+                        "$ref": "#/definitions/transport.KeyValueProto"
+                    },
+                    "type": "array"
+                },
+                "shared": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Post Attribute Msg"
+        },
+        "transport.PostTelemetryMsg": {
+            "properties": {
+                "tsKvList": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TsKvListProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Post Telemetry Msg"
+        },
+        "transport.SessionInfoProto": {
+            "properties": {
+                "nodeId": {
+                    "type": "string"
+                },
+                "sessionIdMSB": {
+                    "type": "string"
+                },
+                "sessionIdLSB": {
+                    "type": "string"
+                },
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "gwSessionIdMSB": {
+                    "type": "string"
+                },
+                "gwSessionIdLSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "customerIdMSB": {
+                    "type": "string"
+                },
+                "customerIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Session Info Proto",
+            "description": "* Transport Service Data Structures;"
+        },
+        "transport.ToDeviceRpcResponseMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "payload": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Device Rpc Response Msg"
+        },
+        "transport.ToServerRpcRequestMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "methodName": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Server Rpc Request Msg"
+        },
+        "transport.TsKvListProto": {
+            "properties": {
+                "ts": {
+                    "type": "string"
+                },
+                "kv": {
+                    "items": {
+                        "$ref": "#/definitions/transport.KeyValueProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Ts Kv List Proto"
+        }
+    }
+}

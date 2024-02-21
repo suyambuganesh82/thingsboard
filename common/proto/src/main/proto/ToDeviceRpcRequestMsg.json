@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ToDeviceRpcRequestMsg",
+    "definitions": {
+        "ToDeviceRpcRequestMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "methodName": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "string"
+                },
+                "expirationTime": {
+                    "type": "string"
+                },
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "oneway": {
+                    "type": "boolean"
+                },
+                "persisted": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Device Rpc Request Msg"
+        }
+    }
+}

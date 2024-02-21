@@ -1,0 +1,307 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/LocalSubscriptionServiceMsgProto",
+    "definitions": {
+        "LocalSubscriptionServiceMsgProto": {
+            "properties": {
+                "subUpdate": {
+                    "$ref": "#/definitions/transport.TbSubscriptionUpdateProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "alarmSubUpdate": {
+                    "$ref": "#/definitions/transport.TbAlarmSubscriptionUpdateProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "notificationsSubUpdate": {
+                    "$ref": "#/definitions/transport.NotificationsSubscriptionUpdateProto",
+                    "additionalProperties": true,
+                    "description": "DEPRECATED. FOR REMOVAL"
+                },
+                "subEventCallback": {
+                    "$ref": "#/definitions/transport.TbEntitySubEventCallbackProto",
+                    "additionalProperties": true
+                },
+                "tsUpdate": {
+                    "$ref": "#/definitions/transport.TbSubUpdateProto",
+                    "additionalProperties": true
+                },
+                "attrUpdate": {
+                    "$ref": "#/definitions/transport.TbSubUpdateProto",
+                    "additionalProperties": true
+                },
+                "alarmUpdate": {
+                    "$ref": "#/definitions/transport.TbAlarmSubUpdateProto",
+                    "additionalProperties": true
+                },
+                "notificationsUpdate": {
+                    "$ref": "#/definitions/transport.NotificationsSubUpdateProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Local Subscription Service Msg Proto"
+        },
+        "transport.NotificationsSubUpdateProto": {
+            "properties": {
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "notificationUpdate": {
+                    "type": "string"
+                },
+                "notificationRequestUpdate": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Notifications Sub Update Proto"
+        },
+        "transport.NotificationsSubscriptionUpdateProto": {
+            "properties": {
+                "sessionId": {
+                    "type": "string"
+                },
+                "subscriptionId": {
+                    "type": "integer"
+                },
+                "notificationUpdate": {
+                    "type": "string"
+                },
+                "notificationRequestUpdate": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Notifications Subscription Update Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbAlarmSubUpdateProto": {
+            "properties": {
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "errorCode": {
+                    "type": "integer"
+                },
+                "errorMsg": {
+                    "type": "string"
+                },
+                "alarm": {
+                    "type": "string"
+                },
+                "deleted": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Alarm Sub Update Proto"
+        },
+        "transport.TbAlarmSubscriptionUpdateProto": {
+            "properties": {
+                "sessionId": {
+                    "type": "string"
+                },
+                "subscriptionId": {
+                    "type": "integer"
+                },
+                "errorCode": {
+                    "type": "integer"
+                },
+                "errorMsg": {
+                    "type": "string"
+                },
+                "alarm": {
+                    "type": "string"
+                },
+                "deleted": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Alarm Subscription Update Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbEntitySubEventCallbackProto": {
+            "properties": {
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "seqNumber": {
+                    "type": "integer"
+                },
+                "attributesUpdateTs": {
+                    "type": "string"
+                },
+                "timeSeriesUpdateTs": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Entity Sub Event Callback Proto"
+        },
+        "transport.TbSubUpdateProto": {
+            "properties": {
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "errorCode": {
+                    "type": "integer"
+                },
+                "errorMsg": {
+                    "type": "string"
+                },
+                "data": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TsValueListProto"
+                    },
+                    "type": "array"
+                },
+                "scope": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Sub Update Proto"
+        },
+        "transport.TbSubscriptionUpdateProto": {
+            "properties": {
+                "sessionId": {
+                    "type": "string"
+                },
+                "subscriptionId": {
+                    "type": "integer"
+                },
+                "errorCode": {
+                    "type": "integer"
+                },
+                "errorMsg": {
+                    "type": "string"
+                },
+                "data": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TbSubscriptionUpdateValueListProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Update Proto",
+            "description": "DEPRECATED. FOR REMOVAL"
+        },
+        "transport.TbSubscriptionUpdateTsValue": {
+            "properties": {
+                "ts": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Update Ts Value"
+        },
+        "transport.TbSubscriptionUpdateValueListProto": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "tsValue": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TbSubscriptionUpdateTsValue"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tb Subscription Update Value List Proto"
+        },
+        "transport.TsValueListProto": {
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "tsValue": {
+                    "items": {
+                        "$ref": "#/definitions/transport.TsValueProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Ts Value List Proto"
+        },
+        "transport.TsValueProto": {
+            "properties": {
+                "ts": {
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "BOOLEAN_V",
+                        0,
+                        "LONG_V",
+                        1,
+                        "DOUBLE_V",
+                        2,
+                        "STRING_V",
+                        3,
+                        "JSON_V",
+                        4
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Key Value Type"
+                },
+                "bool_v": {
+                    "type": "boolean"
+                },
+                "long_v": {
+                    "type": "string"
+                },
+                "double_v": {
+                    "type": "number"
+                },
+                "string_v": {
+                    "type": "string"
+                },
+                "json_v": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Ts Value Proto"
+        }
+    }
+}

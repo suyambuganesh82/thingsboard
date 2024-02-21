@@ -1,0 +1,113 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ProvisionDeviceRequestMsg",
+    "definitions": {
+        "ProvisionDeviceRequestMsg": {
+            "properties": {
+                "deviceName": {
+                    "type": "string"
+                },
+                "credentialsType": {
+                    "enum": [
+                        "ACCESS_TOKEN",
+                        0,
+                        "X509_CERTIFICATE",
+                        1,
+                        "MQTT_BASIC",
+                        2,
+                        "LWM2M_CREDENTIALS",
+                        3
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Credentials Type"
+                },
+                "provisionDeviceCredentialsMsg": {
+                    "$ref": "#/definitions/transport.ProvisionDeviceCredentialsMsg",
+                    "additionalProperties": true
+                },
+                "credentialsDataProto": {
+                    "$ref": "#/definitions/transport.CredentialsDataProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provision Device Request Msg"
+        },
+        "transport.CredentialsDataProto": {
+            "properties": {
+                "validateDeviceTokenRequestMsg": {
+                    "$ref": "#/definitions/transport.ValidateDeviceTokenRequestMsg",
+                    "additionalProperties": true
+                },
+                "validateDeviceX509CertRequestMsg": {
+                    "$ref": "#/definitions/transport.ValidateDeviceX509CertRequestMsg",
+                    "additionalProperties": true
+                },
+                "validateBasicMqttCredRequestMsg": {
+                    "$ref": "#/definitions/transport.ValidateBasicMqttCredRequestMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Credentials Data Proto"
+        },
+        "transport.ProvisionDeviceCredentialsMsg": {
+            "properties": {
+                "provisionDeviceKey": {
+                    "type": "string"
+                },
+                "provisionDeviceSecret": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provision Device Credentials Msg"
+        },
+        "transport.ValidateBasicMqttCredRequestMsg": {
+            "properties": {
+                "clientId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validate Basic Mqtt Cred Request Msg"
+        },
+        "transport.ValidateDeviceTokenRequestMsg": {
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validate Device Token Request Msg"
+        },
+        "transport.ValidateDeviceX509CertRequestMsg": {
+            "properties": {
+                "hash": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validate Device X 509 Cert Request Msg"
+        }
+    }
+}

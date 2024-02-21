@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/NotificationRuleProcessorMsg",
+    "definitions": {
+        "NotificationRuleProcessorMsg": {
+            "properties": {
+                "trigger": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Notification Rule Processor Msg"
+        }
+    }
+}

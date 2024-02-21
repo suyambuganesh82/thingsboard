@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/EdgeEventUpdateMsgProto",
+    "definitions": {
+        "EdgeEventUpdateMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "edgeIdMSB": {
+                    "type": "string"
+                },
+                "edgeIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Edge Event Update Msg Proto"
+        }
+    }
+}

@@ -1,0 +1,400 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/EntityUpdateMsg",
+    "definitions": {
+        "EntityUpdateMsg": {
+            "properties": {
+                "tenant": {
+                    "$ref": "#/definitions/transport.TenantProto",
+                    "additionalProperties": true
+                },
+                "tenantProfile": {
+                    "$ref": "#/definitions/transport.TenantProfileProto",
+                    "additionalProperties": true
+                },
+                "device": {
+                    "$ref": "#/definitions/transport.DeviceProto",
+                    "additionalProperties": true
+                },
+                "deviceProfile": {
+                    "$ref": "#/definitions/transport.DeviceProfileProto",
+                    "additionalProperties": true
+                },
+                "apiUsageState": {
+                    "$ref": "#/definitions/transport.ApiUsageStateProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Update Msg"
+        },
+        "transport.ApiUsageStateProto": {
+            "properties": {
+                "tenantProfileIdMSB": {
+                    "type": "string"
+                },
+                "tenantProfileIdLSB": {
+                    "type": "string"
+                },
+                "apiUsageStateIdMSB": {
+                    "type": "string"
+                },
+                "apiUsageStateIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "entityType": {
+                    "enum": [
+                        "UNSPECIFIED",
+                        0,
+                        "TENANT",
+                        1,
+                        "CUSTOMER",
+                        2,
+                        "USER",
+                        3,
+                        "DASHBOARD",
+                        4,
+                        "ASSET",
+                        5,
+                        "DEVICE",
+                        6,
+                        "ALARM",
+                        7,
+                        "RULE_CHAIN",
+                        11,
+                        "RULE_NODE",
+                        12,
+                        "ENTITY_VIEW",
+                        15,
+                        "WIDGETS_BUNDLE",
+                        16,
+                        "WIDGET_TYPE",
+                        17,
+                        "TENANT_PROFILE",
+                        20,
+                        "DEVICE_PROFILE",
+                        21,
+                        "ASSET_PROFILE",
+                        22,
+                        "API_USAGE_STATE",
+                        23,
+                        "TB_RESOURCE",
+                        24,
+                        "OTA_PACKAGE",
+                        25,
+                        "EDGE",
+                        26,
+                        "RPC",
+                        27,
+                        "QUEUE",
+                        28,
+                        "NOTIFICATION_TARGET",
+                        29,
+                        "NOTIFICATION_TEMPLATE",
+                        30,
+                        "NOTIFICATION_REQUEST",
+                        31,
+                        "NOTIFICATION",
+                        32,
+                        "NOTIFICATION_RULE",
+                        33
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Entity Type Proto",
+                    "description": "* Common data structures"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "transportState": {
+                    "type": "string"
+                },
+                "dbStorageState": {
+                    "type": "string"
+                },
+                "reExecState": {
+                    "type": "string"
+                },
+                "jsExecState": {
+                    "type": "string"
+                },
+                "tbelExecState": {
+                    "type": "string"
+                },
+                "emailExecState": {
+                    "type": "string"
+                },
+                "smsExecState": {
+                    "type": "string"
+                },
+                "alarmExecState": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Api Usage State Proto"
+        },
+        "transport.DeviceProfileProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "isDefault": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "transportType": {
+                    "type": "string"
+                },
+                "provisionType": {
+                    "type": "string"
+                },
+                "defaultRuleChainIdMSB": {
+                    "type": "string"
+                },
+                "defaultRuleChainIdLSB": {
+                    "type": "string"
+                },
+                "defaultDashboardIdMSB": {
+                    "type": "string"
+                },
+                "defaultDashboardIdLSB": {
+                    "type": "string"
+                },
+                "defaultQueueName": {
+                    "type": "string"
+                },
+                "deviceProfileData": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "provisionDeviceKey": {
+                    "type": "string"
+                },
+                "firmwareIdMSB": {
+                    "type": "string"
+                },
+                "firmwareIdLSB": {
+                    "type": "string"
+                },
+                "softwareIdMSB": {
+                    "type": "string"
+                },
+                "softwareIdLSB": {
+                    "type": "string"
+                },
+                "defaultEdgeRuleChainIdMSB": {
+                    "type": "string"
+                },
+                "defaultEdgeRuleChainIdLSB": {
+                    "type": "string"
+                },
+                "externalIdMSB": {
+                    "type": "string"
+                },
+                "externalIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Profile Proto"
+        },
+        "transport.DeviceProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceLabel": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                },
+                "additionalInfo": {
+                    "type": "string"
+                },
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "customerIdMSB": {
+                    "type": "string"
+                },
+                "customerIdLSB": {
+                    "type": "string"
+                },
+                "deviceData": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                },
+                "firmwareIdMSB": {
+                    "type": "string"
+                },
+                "firmwareIdLSB": {
+                    "type": "string"
+                },
+                "softwareIdMSB": {
+                    "type": "string"
+                },
+                "softwareIdLSB": {
+                    "type": "string"
+                },
+                "externalIdMSB": {
+                    "type": "string"
+                },
+                "externalIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Proto"
+        },
+        "transport.TenantProfileProto": {
+            "properties": {
+                "tenantProfileIdMSB": {
+                    "type": "string"
+                },
+                "tenantProfileIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "isDefault": {
+                    "type": "boolean"
+                },
+                "isolatedTbRuleEngine": {
+                    "type": "boolean"
+                },
+                "profileData": {
+                    "type": "string",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tenant Profile Proto"
+        },
+        "transport.TenantProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "tenantProfileIdMSB": {
+                    "type": "string"
+                },
+                "tenantProfileIdLSB": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "address2": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "additionalInfo": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tenant Proto"
+        }
+    }
+}

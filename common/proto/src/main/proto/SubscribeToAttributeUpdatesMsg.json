@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/SubscribeToAttributeUpdatesMsg",
+    "definitions": {
+        "SubscribeToAttributeUpdatesMsg": {
+            "properties": {
+                "unsubscribe": {
+                    "type": "boolean"
+                },
+                "sessionType": {
+                    "enum": [
+                        "SYNC",
+                        0,
+                        "ASYNC",
+                        1
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Session Type"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Subscribe To Attribute Updates Msg"
+        }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/QueueDeleteMsg",
+    "definitions": {
+        "QueueDeleteMsg": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "queueIdMSB": {
+                    "type": "string"
+                },
+                "queueIdLSB": {
+                    "type": "string"
+                },
+                "queueName": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Queue Delete Msg"
+        }
+    }
+}

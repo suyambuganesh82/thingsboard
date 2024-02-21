@@ -1,0 +1,449 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/ToDeviceActorNotificationMsgProto",
+    "definitions": {
+        "ToDeviceActorNotificationMsgProto": {
+            "properties": {
+                "deviceEdgeUpdateMsg": {
+                    "$ref": "#/definitions/transport.DeviceEdgeUpdateMsgProto",
+                    "additionalProperties": true
+                },
+                "deviceNameOrTypeMsg": {
+                    "$ref": "#/definitions/transport.DeviceNameOrTypeUpdateMsgProto",
+                    "additionalProperties": true
+                },
+                "deviceAttributesEventMsg": {
+                    "$ref": "#/definitions/transport.DeviceAttributesEventMsgProto",
+                    "additionalProperties": true
+                },
+                "deviceCredentialsUpdateMsg": {
+                    "$ref": "#/definitions/transport.DeviceCredentialsUpdateMsgProto",
+                    "additionalProperties": true
+                },
+                "toDeviceRpcRequestMsg": {
+                    "$ref": "#/definitions/transport.ToDeviceRpcRequestActorMsgProto",
+                    "additionalProperties": true
+                },
+                "fromDeviceRpcResponseMsg": {
+                    "$ref": "#/definitions/transport.FromDeviceRpcResponseActorMsgProto",
+                    "additionalProperties": true
+                },
+                "removeRpcActorMsg": {
+                    "$ref": "#/definitions/transport.RemoveRpcActorMsgProto",
+                    "additionalProperties": true
+                },
+                "deviceDeleteMsg": {
+                    "$ref": "#/definitions/transport.DeviceDeleteMsgProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Device Actor Notification Msg Proto"
+        },
+        "transport.AttributeKey": {
+            "properties": {
+                "scope": {
+                    "enum": [
+                        "CLIENT_SCOPE",
+                        0,
+                        "SERVER_SCOPE",
+                        1,
+                        "SHARED_SCOPE",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Attribute Scope Proto"
+                },
+                "attributeKey": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Attribute Key"
+        },
+        "transport.AttributeValueProto": {
+            "properties": {
+                "lastUpdateTs": {
+                    "type": "string"
+                },
+                "type": {
+                    "enum": [
+                        "BOOLEAN_V",
+                        0,
+                        "LONG_V",
+                        1,
+                        "DOUBLE_V",
+                        2,
+                        "STRING_V",
+                        3,
+                        "JSON_V",
+                        4
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Key Value Type"
+                },
+                "has_v": {
+                    "type": "boolean"
+                },
+                "bool_v": {
+                    "type": "boolean"
+                },
+                "long_v": {
+                    "type": "string"
+                },
+                "double_v": {
+                    "type": "number"
+                },
+                "string_v": {
+                    "type": "string"
+                },
+                "json_v": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Attribute Value Proto"
+        },
+        "transport.DeviceAttributesEventMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deletedKeys": {
+                    "items": {
+                        "$ref": "#/definitions/transport.AttributeKey"
+                    },
+                    "type": "array"
+                },
+                "scope": {
+                    "enum": [
+                        "CLIENT_SCOPE",
+                        0,
+                        "SERVER_SCOPE",
+                        1,
+                        "SHARED_SCOPE",
+                        2
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Attribute Scope Proto"
+                },
+                "values": {
+                    "items": {
+                        "$ref": "#/definitions/transport.AttributeValueProto"
+                    },
+                    "type": "array"
+                },
+                "deleted": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Attributes Event Msg Proto"
+        },
+        "transport.DeviceCredentialsProto": {
+            "properties": {
+                "credentialsIdMSB": {
+                    "type": "string"
+                },
+                "credentialsIdLSB": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "credentialsType": {
+                    "enum": [
+                        "ACCESS_TOKEN",
+                        0,
+                        "X509_CERTIFICATE",
+                        1,
+                        "MQTT_BASIC",
+                        2,
+                        "LWM2M_CREDENTIALS",
+                        3
+                    ],
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Credentials Type"
+                },
+                "credentialsId": {
+                    "type": "string"
+                },
+                "credentialsValue": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Credentials Proto"
+        },
+        "transport.DeviceCredentialsUpdateMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deviceCredentials": {
+                    "$ref": "#/definitions/transport.DeviceCredentialsProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Credentials Update Msg Proto"
+        },
+        "transport.DeviceDeleteMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Delete Msg Proto"
+        },
+        "transport.DeviceEdgeUpdateMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "edgeIdMSB": {
+                    "type": "string"
+                },
+                "edgeIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Edge Update Msg Proto"
+        },
+        "transport.DeviceNameOrTypeUpdateMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "deviceName": {
+                    "type": "string"
+                },
+                "deviceType": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Device Name Or Type Update Msg Proto"
+        },
+        "transport.FromDeviceRPCResponseProto": {
+            "properties": {
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "response": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "From Device RPC Response Proto"
+        },
+        "transport.FromDeviceRpcResponseActorMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "requestId": {
+                    "type": "integer"
+                },
+                "rpcResponse": {
+                    "$ref": "#/definitions/transport.FromDeviceRPCResponseProto",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "From Device Rpc Response Actor Msg Proto"
+        },
+        "transport.RemoveRpcActorMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Remove Rpc Actor Msg Proto"
+        },
+        "transport.ToDeviceRpcRequestActorMsgProto": {
+            "properties": {
+                "tenantIdMSB": {
+                    "type": "string"
+                },
+                "tenantIdLSB": {
+                    "type": "string"
+                },
+                "deviceIdMSB": {
+                    "type": "string"
+                },
+                "deviceIdLSB": {
+                    "type": "string"
+                },
+                "serviceId": {
+                    "type": "string"
+                },
+                "toDeviceRpcRequestMsg": {
+                    "$ref": "#/definitions/transport.ToDeviceRpcRequestMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Device Rpc Request Actor Msg Proto"
+        },
+        "transport.ToDeviceRpcRequestMsg": {
+            "properties": {
+                "requestId": {
+                    "type": "integer"
+                },
+                "methodName": {
+                    "type": "string"
+                },
+                "params": {
+                    "type": "string"
+                },
+                "expirationTime": {
+                    "type": "string"
+                },
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "oneway": {
+                    "type": "boolean"
+                },
+                "persisted": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "To Device Rpc Request Msg"
+        }
+    }
+}

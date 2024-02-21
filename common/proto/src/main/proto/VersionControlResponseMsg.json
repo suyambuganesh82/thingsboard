@@ -1,0 +1,254 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/VersionControlResponseMsg",
+    "definitions": {
+        "VersionControlResponseMsg": {
+            "properties": {
+                "requestIdMSB": {
+                    "type": "string"
+                },
+                "requestIdLSB": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "genericResponse": {
+                    "$ref": "#/definitions/transport.GenericRepositoryResponseMsg",
+                    "additionalProperties": true
+                },
+                "commitResponse": {
+                    "$ref": "#/definitions/transport.CommitResponseMsg",
+                    "additionalProperties": true
+                },
+                "listBranchesResponse": {
+                    "$ref": "#/definitions/transport.ListBranchesResponseMsg",
+                    "additionalProperties": true
+                },
+                "listEntitiesResponse": {
+                    "$ref": "#/definitions/transport.ListEntitiesResponseMsg",
+                    "additionalProperties": true
+                },
+                "listVersionsResponse": {
+                    "$ref": "#/definitions/transport.ListVersionsResponseMsg",
+                    "additionalProperties": true
+                },
+                "entityContentResponse": {
+                    "$ref": "#/definitions/transport.EntityContentResponseMsg",
+                    "additionalProperties": true
+                },
+                "entitiesContentResponse": {
+                    "$ref": "#/definitions/transport.EntitiesContentResponseMsg",
+                    "additionalProperties": true
+                },
+                "versionsDiffResponse": {
+                    "$ref": "#/definitions/transport.VersionsDiffResponseMsg",
+                    "additionalProperties": true
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Version Control Response Msg"
+        },
+        "transport.BranchInfoProto": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "isDefault": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Branch Info Proto"
+        },
+        "transport.CommitResponseMsg": {
+            "properties": {
+                "ts": {
+                    "type": "string"
+                },
+                "commitId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "added": {
+                    "type": "integer"
+                },
+                "modified": {
+                    "type": "integer"
+                },
+                "removed": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Commit Response Msg"
+        },
+        "transport.EntitiesContentResponseMsg": {
+            "properties": {
+                "item": {
+                    "$ref": "#/definitions/transport.EntityContentResponseMsg",
+                    "additionalProperties": true
+                },
+                "itemIdx": {
+                    "type": "integer"
+                },
+                "itemsCount": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entities Content Response Msg"
+        },
+        "transport.EntityContentResponseMsg": {
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "chunkIndex": {
+                    "type": "integer"
+                },
+                "chunksCount": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Content Response Msg"
+        },
+        "transport.EntityVersionProto": {
+            "properties": {
+                "ts": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Version Proto"
+        },
+        "transport.EntityVersionsDiff": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                },
+                "entityDataAtVersion1": {
+                    "type": "string"
+                },
+                "entityDataAtVersion2": {
+                    "type": "string"
+                },
+                "rawDiff": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Entity Versions Diff"
+        },
+        "transport.GenericRepositoryResponseMsg": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Generic Repository Response Msg"
+        },
+        "transport.ListBranchesResponseMsg": {
+            "properties": {
+                "branches": {
+                    "items": {
+                        "$ref": "#/definitions/transport.BranchInfoProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Branches Response Msg"
+        },
+        "transport.ListEntitiesResponseMsg": {
+            "properties": {
+                "entities": {
+                    "items": {
+                        "$ref": "#/definitions/transport.VersionedEntityInfoProto"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Entities Response Msg"
+        },
+        "transport.ListVersionsResponseMsg": {
+            "properties": {
+                "versions": {
+                    "items": {
+                        "$ref": "#/definitions/transport.EntityVersionProto"
+                    },
+                    "type": "array"
+                },
+                "totalPages": {
+                    "type": "integer"
+                },
+                "totalElements": {
+                    "type": "string"
+                },
+                "hasNext": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "List Versions Response Msg"
+        },
+        "transport.VersionedEntityInfoProto": {
+            "properties": {
+                "entityType": {
+                    "type": "string"
+                },
+                "entityIdMSB": {
+                    "type": "string"
+                },
+                "entityIdLSB": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Versioned Entity Info Proto"
+        },
+        "transport.VersionsDiffResponseMsg": {
+            "properties": {
+                "diff": {
+                    "items": {
+                        "$ref": "#/definitions/transport.EntityVersionsDiff"
+                    },
+                    "type": "array"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Versions Diff Response Msg"
+        }
+    }
+}

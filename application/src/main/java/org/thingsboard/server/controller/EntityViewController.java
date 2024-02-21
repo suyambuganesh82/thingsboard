@@ -223,7 +223,7 @@ public class EntityViewController extends BaseController {
         CustomerId customerId = new CustomerId(toUUID(strCustomerId));
         checkCustomerId(customerId, Operation.READ);
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             return checkNotNull(entityViewService.findEntityViewsByTenantIdAndCustomerIdAndType(tenantId, customerId, pageLink, type));
         } else {
             return checkNotNull(entityViewService.findEntityViewsByTenantIdAndCustomerId(tenantId, customerId, pageLink));
@@ -256,7 +256,7 @@ public class EntityViewController extends BaseController {
         CustomerId customerId = new CustomerId(toUUID(strCustomerId));
         checkCustomerId(customerId, Operation.READ);
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             return checkNotNull(entityViewService.findEntityViewInfosByTenantIdAndCustomerIdAndType(tenantId, customerId, type, pageLink));
         } else {
             return checkNotNull(entityViewService.findEntityViewInfosByTenantIdAndCustomerId(tenantId, customerId, pageLink));
@@ -285,7 +285,7 @@ public class EntityViewController extends BaseController {
         TenantId tenantId = getCurrentUser().getTenantId();
         PageLink pageLink = createPageLink(pageSize, page, textSearch, sortProperty, sortOrder);
 
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             return checkNotNull(entityViewService.findEntityViewByTenantIdAndType(tenantId, pageLink, type));
         } else {
             return checkNotNull(entityViewService.findEntityViewByTenantId(tenantId, pageLink));
@@ -444,7 +444,7 @@ public class EntityViewController extends BaseController {
         checkEdgeId(edgeId, Operation.READ);
         TimePageLink pageLink = createTimePageLink(pageSize, page, textSearch, sortProperty, sortOrder, startTime, endTime);
         PageData<EntityView> nonFilteredResult;
-        if (type != null && type.trim().length() > 0) {
+        if (type != null && !type.trim().isEmpty()) {
             nonFilteredResult = entityViewService.findEntityViewsByTenantIdAndEdgeIdAndType(tenantId, edgeId, type, pageLink);
         } else {
             nonFilteredResult = entityViewService.findEntityViewsByTenantIdAndEdgeId(tenantId, edgeId, pageLink);

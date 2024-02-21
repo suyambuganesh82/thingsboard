@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$ref": "#/definitions/GetDeviceResponseMsg",
+    "definitions": {
+        "GetDeviceResponseMsg": {
+            "properties": {
+                "deviceProfileIdMSB": {
+                    "type": "string"
+                },
+                "deviceProfileIdLSB": {
+                    "type": "string"
+                },
+                "deviceTransportConfiguration": {
+                    "type": "string",
+                    "description": "Json",
+                    "format": "binary",
+                    "binaryEncoding": "base64"
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Get Device Response Msg"
+        }
+    }
+}
