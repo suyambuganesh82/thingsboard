@@ -14,7 +14,8 @@
 # limitations under the License.
 #
 
-FROM thingsboard/openjdk17:bookworm-slim
+#FROM thingsboard/openjdk17:bookworm-slim
+FROM europe-docker.pkg.dev/sangam-iot/docker/openjdk21:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \

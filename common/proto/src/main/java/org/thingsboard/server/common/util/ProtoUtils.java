@@ -31,8 +31,6 @@ import org.thingsboard.server.common.data.ResourceType;
 import org.thingsboard.server.common.data.TbResource;
 import org.thingsboard.server.common.data.Tenant;
 import org.thingsboard.server.common.data.TenantProfile;
-import org.thingsboard.server.common.data.device.data.CoapDeviceTransportConfiguration;
-import org.thingsboard.server.common.data.device.data.Lwm2mDeviceTransportConfiguration;
 import org.thingsboard.server.common.data.device.data.PowerMode;
 import org.thingsboard.server.common.data.device.data.PowerSavingConfiguration;
 import org.thingsboard.server.common.data.id.ApiUsageStateId;
@@ -1028,29 +1026,6 @@ public class ProtoUtils {
                 .setDeviceProfileIdMSB(device.getDeviceProfileId().getId().getMostSignificantBits())
                 .setDeviceProfileIdLSB(device.getDeviceProfileId().getId().getLeastSignificantBits())
                 .setAdditionalInfo(JacksonUtil.toString(device.getAdditionalInfo()));
-
-        PowerSavingConfiguration psmConfiguration = null;
-        switch (device.getDeviceData().getTransportConfiguration().getType()) {
-            case LWM2M:
-                psmConfiguration = (Lwm2mDeviceTransportConfiguration) device.getDeviceData().getTransportConfiguration();
-                break;
-            case COAP:
-                psmConfiguration = (CoapDeviceTransportConfiguration) device.getDeviceData().getTransportConfiguration();
-                break;
-        }
-
-        if (psmConfiguration != null) {
-            PowerMode powerMode = psmConfiguration.getPowerMode();
-            if (powerMode != null) {
-                builder.setPowerMode(powerMode.name());
-                if (powerMode.equals(PowerMode.PSM)) {
-                    builder.setPsmActivityTimer(checkLong(psmConfiguration.getPsmActivityTimer()));
-                } else if (powerMode.equals(PowerMode.E_DRX)) {
-                    builder.setEdrxCycle(checkLong(psmConfiguration.getEdrxCycle()));
-                    builder.setPagingTransmissionWindow(checkLong(psmConfiguration.getPagingTransmissionWindow()));
-                }
-            }
-        }
         return builder.build();
     }
 

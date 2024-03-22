@@ -36,7 +36,6 @@ import org.thingsboard.server.common.data.Tenant;
 import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.audit.ActionType;
 import org.thingsboard.server.common.data.id.TbResourceId;
-import org.thingsboard.server.common.data.lwm2m.LwM2mObject;
 import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.security.Authority;
@@ -664,34 +663,6 @@ public class TbResourceControllerTest extends AbstractControllerTest {
         assertThat(savedResource.getFileName()).isEqualTo("new-module.js");
         assertThat(savedResource.getEtag()).isNotEqualTo(resource.getEtag());
         assertThat(download(savedResource.getId())).asBase64Encoded().isEqualTo(newData);
-    }
-
-    @Test
-    public void testGetLwm2mListObjectsPage() throws Exception {
-        loginTenantAdmin();
-
-        List<TbResource> resources = loadLwm2mResources();
-
-        List<LwM2mObject> objects =
-                doGetTyped("/api/resource/lwm2m/page?pageSize=100&page=0", new TypeReference<>() {});
-        Assert.assertNotNull(objects);
-        Assert.assertEquals(resources.size(), objects.size());
-
-        removeLoadResources(resources);
-    }
-
-    @Test
-    public void testGetLwm2mListObjects() throws Exception {
-        loginTenantAdmin();
-
-        List<TbResource> resources = loadLwm2mResources();
-
-        List<LwM2mObject> objects =
-                doGetTyped("/api/resource/lwm2m?sortProperty=id&sortOrder=ASC&objectIds=3_1.0,5_1.0,19_1.1", new TypeReference<>() {});
-        Assert.assertNotNull(objects);
-        Assert.assertEquals(3, objects.size());
-
-        removeLoadResources(resources);
     }
 
     private TbResource save(TbResource tbResource) throws Exception {

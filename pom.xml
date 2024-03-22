@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version>
+        <version>3.3.0-M3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.thingsboard</groupId>
@@ -37,6 +37,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <main.dir>${basedir}</main.dir>
+        <resource.delimiter>${*}</resource.delimiter>
         <pkg.disabled>true</pkg.disabled>
         <pkg.process-resources.phase>none</pkg.process-resources.phase>
         <pkg.package.phase>none</pkg.package.phase>
@@ -138,7 +139,7 @@
         <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
         <antisamy.version>1.7.3</antisamy.version>
         <snmp4j.version>2.8.5</snmp4j.version>
-        <pulsar.version>3.2.0</pulsar.version>
+        <pulsar.version>3.2.1</pulsar.version>
         <!--         TEST SCOPE         -->
         <awaitility.version>4.1.0</awaitility.version>
         <dbunit.version>2.7.2</dbunit.version>
@@ -410,58 +411,6 @@
                 <artifactId>spring-security-oauth2-jose</artifactId>
                 <version>${spring-security.version}</version>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework</groupId>-->
-            <!--                <artifactId>spring-core</artifactId>-->
-            <!--                <version>${spring.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.boot</groupId>-->
-            <!--                <artifactId>spring-boot-starter-web</artifactId>-->
-            <!--                <version>${spring-boot.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.boot</groupId>-->
-            <!--                <artifactId>spring-boot-starter-websocket</artifactId>-->
-            <!--                <version>${spring-boot.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.boot</groupId>-->
-            <!--                <artifactId>spring-boot-autoconfigure</artifactId>-->
-            <!--                <version>${spring-boot.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.boot</groupId>-->
-            <!--                <artifactId>spring-boot-starter-test</artifactId>-->
-            <!--                <version>${spring-boot.version}</version>-->
-            <!--                <scope>test</scope>-->
-            <!--                <exclusions>-->
-            <!--                    <exclusion>-->
-            <!--                        <groupId>com.vaadin.external.google</groupId>-->
-            <!--                        <artifactId>android-json</artifactId>-->
-            <!--                    </exclusion>-->
-            <!--                </exclusions>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.boot</groupId>-->
-            <!--                <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-            <!--                <version>${spring-boot.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.data</groupId>-->
-            <!--                <artifactId>spring-data-commons</artifactId>-->
-            <!--                <version>${spring-data.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.boot</groupId>-->
-            <!--                <artifactId>spring-boot-starter-webflux</artifactId>-->
-            <!--                <version>${spring-boot.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>io.projectreactor.netty</groupId>-->
-            <!--                <artifactId>reactor-netty-http</artifactId>-->
-            <!--                <version>${reactor-netty.version}</version>-->
-            <!--            </dependency>-->
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
@@ -472,26 +421,6 @@
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.driver.version}</version>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework</groupId>-->
-            <!--                <artifactId>spring-context</artifactId>-->
-            <!--                <version>${spring.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework</groupId>-->
-            <!--                <artifactId>spring-context-support</artifactId>-->
-            <!--                <version>${spring.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework</groupId>-->
-            <!--                <artifactId>spring-tx</artifactId>-->
-            <!--                <version>${spring.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework</groupId>-->
-            <!--                <artifactId>spring-web</artifactId>-->
-            <!--                <version>${spring.version}</version>-->
-            <!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-test</artifactId>
@@ -523,11 +452,6 @@
                 <groupId>antlr</groupId>
                 <artifactId>antlr</artifactId>
                 <version>${antlr.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.rabbitmq</groupId>
-                <artifactId>amqp-client</artifactId>
-                <version>${rabbitmq.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.mail</groupId>
@@ -791,50 +715,6 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.leshan</groupId>
-                <artifactId>leshan-server-cf</artifactId>
-                <version>${leshan.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.leshan</groupId>
-                <artifactId>leshan-client-cf</artifactId>
-                <version>${leshan.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.leshan</groupId>
-                <artifactId>leshan-server-redis</artifactId>
-                <version>${leshan.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.leshan</groupId>
-                <artifactId>leshan-core</artifactId>
-                <version>${leshan.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.californium</groupId>
-                <artifactId>californium-core</artifactId>
-                <version>${californium.version}</version>
-                <type>test-jar</type>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.californium</groupId>
-                <artifactId>californium-core</artifactId>
-                <version>${californium.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.californium</groupId>
-                <artifactId>element-connector</artifactId>
-                <version>${californium.version}</version>
-                <type>test-jar</type>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.californium</groupId>
-                <artifactId>scandium</artifactId>
-                <version>${californium.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>${gson.version}</version>
@@ -934,12 +814,6 @@
                 <artifactId>tbel</artifactId>
                 <version>${tbel.version}</version>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework</groupId>-->
-            <!--                <artifactId>spring-test</artifactId>-->
-            <!--                <version>${spring.version}</version>-->
-            <!--                <scope>test</scope>-->
-            <!--            </dependency>-->
             <dependency>
                 <groupId>io.takari.junit</groupId>
                 <artifactId>takari-cpsuite</artifactId>
@@ -1093,11 +967,6 @@
                 <version>${testcontainers.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.data</groupId>-->
-            <!--                <artifactId>spring-data-redis</artifactId>-->
-            <!--                <version>${spring-data-redis.version}</version>-->
-            <!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.integration</groupId>
                 <artifactId>spring-integration-redis</artifactId>
@@ -1154,21 +1023,6 @@
                 <version>${google.common.protos.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-servicebus</artifactId>
-                <version>${azure-servicebus.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.nimbusds</groupId>
-                        <artifactId>content-type</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.ow2.asm</groupId>
-                        <artifactId>asm</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>org.passay</groupId>
                 <artifactId>passay</artifactId>
                 <version>${passay.version}</version>
@@ -1194,11 +1048,6 @@
                 <version>${java-websocket.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>org.springframework.boot</groupId>-->
-            <!--                <artifactId>spring-boot-starter-actuator</artifactId>-->
-            <!--                <version>${spring-boot.version}</version>-->
-            <!--            </dependency>-->
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-core</artifactId>
@@ -1409,7 +1258,7 @@
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-resources-plugin</artifactId>
-                            <version>3.2.0</version>
+                            <version>3.3.1</version>
                             <executions>
                                 <execution>
                                     <id>copy-conf</id>
@@ -1654,25 +1503,25 @@
                                 </execution>
                             </executions>
                         </plugin>
-                        <!--                        <plugin>-->
-                        <!--                            <groupId>org.apache.maven.plugins</groupId>-->
-                        <!--                            <artifactId>maven-assembly-plugin</artifactId>-->
-                        <!--                            <configuration>-->
-                        <!--                                <finalName>${pkg.name}</finalName>-->
-                        <!--                                <descriptors>-->
-                        <!--                                    <descriptor>${main.dir}/packaging/${pkg.type}/assembly/windows.xml</descriptor>-->
-                        <!--                                </descriptors>-->
-                        <!--                            </configuration>-->
-                        <!--                            <executions>-->
-                        <!--                                <execution>-->
-                        <!--                                    <id>assembly</id>-->
-                        <!--                                    <phase>${pkg.package.phase}</phase>-->
-                        <!--                                    <goals>-->
-                        <!--                                        <goal>single</goal>-->
-                        <!--                                    </goals>-->
-                        <!--                                </execution>-->
-                        <!--                            </executions>-->
-                        <!--                        </plugin>-->
+<!--                        <plugin>-->
+<!--                            <groupId>org.apache.maven.plugins</groupId>-->
+<!--                            <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                            <configuration>-->
+<!--                                <finalName>${pkg.name}</finalName>-->
+<!--                                <descriptors>-->
+<!--                                    <descriptor>${main.dir}/packaging/${pkg.type}/assembly/windows.xml</descriptor>-->
+<!--                                </descriptors>-->
+<!--                            </configuration>-->
+<!--                            <executions>-->
+<!--                                <execution>-->
+<!--                                    <id>assembly</id>-->
+<!--                                    <phase>${pkg.package.phase}</phase>-->
+<!--                                    <goals>-->
+<!--                                        <goal>single</goal>-->
+<!--                                    </goals>-->
+<!--                                </execution>-->
+<!--                            </executions>-->
+<!--                        </plugin>-->
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-install-plugin</artifactId>
@@ -1734,7 +1583,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -2011,4 +1860,19 @@
             <url>https://oss.sonatype.org/content/groups/public</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

@@ -18,12 +18,10 @@ package org.thingsboard.server.dao.service.validator;
 import com.google.protobuf.Descriptors;
 import com.google.protobuf.DynamicMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.leshan.core.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
 import org.thingsboard.server.common.data.DashboardInfo;
 import org.thingsboard.server.common.data.DeviceProfile;
@@ -64,6 +62,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.PKIXParameters;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -139,36 +138,11 @@ public class DeviceProfileDataValidator extends AbstractHasOtaPackageValidator<D
         }
         DeviceProfileTransportConfiguration transportConfiguration = deviceProfile.getProfileData().getTransportConfiguration();
         transportConfiguration.validate();
-        if (transportConfiguration instanceof MqttDeviceProfileTransportConfiguration) {
-            MqttDeviceProfileTransportConfiguration mqttTransportConfiguration = (MqttDeviceProfileTransportConfiguration) transportConfiguration;
-            if (mqttTransportConfiguration.getTransportPayloadTypeConfiguration() instanceof ProtoTransportPayloadConfiguration) {
-                ProtoTransportPayloadConfiguration protoTransportPayloadConfiguration =
-                        (ProtoTransportPayloadConfiguration) mqttTransportConfiguration.getTransportPayloadTypeConfiguration();
+        if (transportConfiguration instanceof MqttDeviceProfileTransportConfiguration mqttTransportConfiguration) {
+            if (mqttTransportConfiguration.getTransportPayloadTypeConfiguration() instanceof ProtoTransportPayloadConfiguration protoTransportPayloadConfiguration) {
                 validateProtoSchemas(protoTransportPayloadConfiguration);
                 validateTelemetryDynamicMessageFields(protoTransportPayloadConfiguration);
                 validateRpcRequestDynamicMessageFields(protoTransportPayloadConfiguration);
-            }
-        } else if (transportConfiguration instanceof CoapDeviceProfileTransportConfiguration) {
-            CoapDeviceProfileTransportConfiguration coapDeviceProfileTransportConfiguration = (CoapDeviceProfileTransportConfiguration) transportConfiguration;
-            CoapDeviceTypeConfiguration coapDeviceTypeConfiguration = coapDeviceProfileTransportConfiguration.getCoapDeviceTypeConfiguration();
-            if (coapDeviceTypeConfiguration instanceof DefaultCoapDeviceTypeConfiguration) {
-                DefaultCoapDeviceTypeConfiguration defaultCoapDeviceTypeConfiguration = (DefaultCoapDeviceTypeConfiguration) coapDeviceTypeConfiguration;
-                TransportPayloadTypeConfiguration transportPayloadTypeConfiguration = defaultCoapDeviceTypeConfiguration.getTransportPayloadTypeConfiguration();
-                if (transportPayloadTypeConfiguration instanceof ProtoTransportPayloadConfiguration) {
-                    ProtoTransportPayloadConfiguration protoTransportPayloadConfiguration = (ProtoTransportPayloadConfiguration) transportPayloadTypeConfiguration;
-                    validateProtoSchemas(protoTransportPayloadConfiguration);
-                    validateTelemetryDynamicMessageFields(protoTransportPayloadConfiguration);
-                    validateRpcRequestDynamicMessageFields(protoTransportPayloadConfiguration);
-                }
-            }
-        } else if (transportConfiguration instanceof Lwm2mDeviceProfileTransportConfiguration) {
-            List<LwM2MBootstrapServerCredential> lwM2MBootstrapServersConfigurations = ((Lwm2mDeviceProfileTransportConfiguration) transportConfiguration).getBootstrap();
-            if (lwM2MBootstrapServersConfigurations != null) {
-                validateLwm2mServersConfigOfBootstrapForClient(lwM2MBootstrapServersConfigurations,
-                        ((Lwm2mDeviceProfileTransportConfiguration) transportConfiguration).isBootstrapServerUpdateEnable());
-                for (LwM2MBootstrapServerCredential bootstrapServerCredential : lwM2MBootstrapServersConfigurations) {
-                    validateLwm2mServersCredentialOfBootstrapForClient(bootstrapServerCredential);
-                }
             }
         }
 
@@ -319,75 +293,6 @@ public class DeviceProfileDataValidator extends AbstractHasOtaPackageValidator<D
         }
     }
 
-    private void validateLwm2mServersConfigOfBootstrapForClient(List<LwM2MBootstrapServerCredential> lwM2MBootstrapServersConfigurations, boolean isBootstrapServerUpdateEnable) {
-        Set<String> uris = new HashSet<>();
-        Set<Integer> shortServerIds = new HashSet<>();
-        for (LwM2MBootstrapServerCredential bootstrapServerCredential : lwM2MBootstrapServersConfigurations) {
-            AbstractLwM2MBootstrapServerCredential serverConfig = (AbstractLwM2MBootstrapServerCredential) bootstrapServerCredential;
-            if (!isBootstrapServerUpdateEnable && serverConfig.isBootstrapServerIs()) {
-                throw new DeviceCredentialsValidationException("Bootstrap config must not include \"Bootstrap Server\". \"Include Bootstrap Server updates\" is " + isBootstrapServerUpdateEnable + ".");
-            }
-            String server = serverConfig.isBootstrapServerIs() ? "Bootstrap Server" : "LwM2M Server" + " shortServerId: " + serverConfig.getShortServerId() + ":";
-            if (serverConfig.getShortServerId() < 1 || serverConfig.getShortServerId() > 65534) {
-                throw new DeviceCredentialsValidationException(server + " ShortServerId must not be less than 1 and more than 65534!");
-            }
-            if (!shortServerIds.add(serverConfig.getShortServerId())) {
-                throw new DeviceCredentialsValidationException(server + " \"Short server Id\" value = " + serverConfig.getShortServerId() + ". This value must be a unique value for all servers!");
-            }
-            String uri = serverConfig.getHost() + ":" + serverConfig.getPort();
-            if (!uris.add(uri)) {
-                throw new DeviceCredentialsValidationException(server + " \"Host + port\" value = " + uri + ". This value must be a unique value for all servers!");
-            }
-            int port;
-            if (LwM2MSecurityMode.NO_SEC.equals(serverConfig.getSecurityMode())) {
-                port = serverConfig.isBootstrapServerIs() ? 5687 : 5685;
-            } else {
-                port = serverConfig.isBootstrapServerIs() ? 5688 : 5686;
-            }
-            if (serverConfig.getPort() == null || serverConfig.getPort() != port) {
-                throw new DeviceCredentialsValidationException(server + " \"Port\" value = " + serverConfig.getPort() + ". This value for security " + serverConfig.getSecurityMode().name() + " must be " + port + "!");
-            }
-        }
-    }
-
-    private void validateLwm2mServersCredentialOfBootstrapForClient(LwM2MBootstrapServerCredential bootstrapServerConfig) {
-        String server;
-        switch (bootstrapServerConfig.getSecurityMode()) {
-            case NO_SEC:
-            case PSK:
-                break;
-            case RPK:
-                RPKLwM2MBootstrapServerCredential rpkServerCredentials = (RPKLwM2MBootstrapServerCredential) bootstrapServerConfig;
-                server = rpkServerCredentials.isBootstrapServerIs() ? "Bootstrap Server" : "LwM2M Server";
-                if (StringUtils.isEmpty(rpkServerCredentials.getServerPublicKey())) {
-                    throw new DeviceCredentialsValidationException(server + " RPK public key must be specified!");
-                }
-                try {
-                    String pubkRpkSever = EncryptionUtil.pubkTrimNewLines(rpkServerCredentials.getServerPublicKey());
-                    rpkServerCredentials.setServerPublicKey(pubkRpkSever);
-                    SecurityUtil.publicKey.decode(rpkServerCredentials.getDecodedCServerPublicKey());
-                } catch (Exception e) {
-                    throw new DeviceCredentialsValidationException(server + " RPK public key must be in standard [RFC7250] and then encoded to Base64 format!");
-                }
-                break;
-            case X509:
-                X509LwM2MBootstrapServerCredential x509ServerCredentials = (X509LwM2MBootstrapServerCredential) bootstrapServerConfig;
-                server = x509ServerCredentials.isBootstrapServerIs() ? "Bootstrap Server" : "LwM2M Server";
-                if (StringUtils.isEmpty(x509ServerCredentials.getServerPublicKey())) {
-                    throw new DeviceCredentialsValidationException(server + " X509 certificate must be specified!");
-                }
-
-                try {
-                    String certServer = EncryptionUtil.certTrimNewLines(x509ServerCredentials.getServerPublicKey());
-                    x509ServerCredentials.setServerPublicKey(certServer);
-                    SecurityUtil.certificate.decode(x509ServerCredentials.getDecodedCServerPublicKey());
-                } catch (Exception e) {
-                    throw new DeviceCredentialsValidationException(server + " X509 certificate must be in DER-encoded X509v3 format and support only EC algorithm and then encoded to Base64 format!");
-                }
-                break;
-        }
-    }
-
     private boolean isDeviceProfileCertificateInJavaCacerts(String deviceProfileX509Secret) {
         try {
             FileInputStream is = new FileInputStream(javaCacertsPath);
@@ -408,6 +313,7 @@ public class DeviceProfileDataValidator extends AbstractHasOtaPackageValidator<D
     }
 
     private String getCertificateString(X509Certificate cert) throws CertificateEncodingException {
-        return EncryptionUtil.certTrimNewLines(Base64Utils.encodeToString(cert.getEncoded()));
+//        return EncryptionUtil.certTrimNewLines(Base64Utils.encodeToString(cert.getEncoded()));
+        return EncryptionUtil.certTrimNewLines(Base64.getEncoder().encodeToString(cert.getEncoded()));
     }
 }

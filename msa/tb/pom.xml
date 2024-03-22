@@ -16,7 +16,7 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.thingsboard</groupId>
@@ -102,7 +102,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
-                   <execution>
+                    <execution>
                         <id>copy-docker-tb-postgres-config</id>
                         <phase>process-resources</phase>
                         <goals>
@@ -114,10 +114,17 @@
                                 <resource>
                                     <directory>docker</directory>
                                     <filtering>true</filtering>
+                                    <!--                                    <includes>-->
+                                    <!--                                        <include>Dockerfile</include>-->
+                                    <!--                                        <include>**/*</include>-->
+                                    <!--                                    </includes>-->
                                 </resource>
                                 <resource>
                                     <directory>docker-postgres</directory>
                                     <filtering>true</filtering>
+                                    <!--                                    <includes>-->
+                                    <!--                                        <include>**/*</include>-->
+                                    <!--                                    </includes>-->
                                 </resource>
                             </resources>
                         </configuration>
@@ -134,10 +141,16 @@
                                 <resource>
                                     <directory>docker</directory>
                                     <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
                                 </resource>
                                 <resource>
                                     <directory>docker-cassandra</directory>
                                     <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
@@ -316,7 +329,8 @@
                                         <argument>buildx</argument>
                                         <argument>build</argument>
                                         <argument>-t</argument>
-                                        <argument>${docker.repo}/${tb-postgres.docker.name}:${project.version}</argument>
+                                        <argument>${docker.repo}/${tb-postgres.docker.name}:${project.version}
+                                        </argument>
                                         <argument>--platform=linux/amd64,linux/arm64</argument>
                                         <argument>-o</argument>
                                         <argument>type=registry</argument>
@@ -358,7 +372,8 @@
                                         <argument>buildx</argument>
                                         <argument>build</argument>
                                         <argument>-t</argument>
-                                        <argument>${docker.repo}/${tb-cassandra.docker.name}:${project.version}</argument>
+                                        <argument>${docker.repo}/${tb-cassandra.docker.name}:${project.version}
+                                        </argument>
                                         <argument>--platform=linux/amd64,linux/arm64</argument>
                                         <argument>-o</argument>
                                         <argument>type=registry</argument>

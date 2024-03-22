@@ -23,29 +23,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.thingsboard.server.common.data.ResourceType;
 import org.thingsboard.server.common.data.TbResource;
 import org.thingsboard.server.common.data.TbResourceInfo;
 import org.thingsboard.server.common.data.TbResourceInfoFilter;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
 import org.thingsboard.server.common.data.id.TbResourceId;
-import org.thingsboard.server.common.data.lwm2m.LwM2mObject;
 import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.security.Authority;
@@ -58,24 +44,9 @@ import org.thingsboard.server.service.security.permission.Resource;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import static org.thingsboard.server.controller.ControllerConstants.AVAILABLE_FOR_ANY_AUTHORIZED_USER;
-import static org.thingsboard.server.controller.ControllerConstants.LWM2M_OBJECT_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.PAGE_DATA_PARAMETERS;
-import static org.thingsboard.server.controller.ControllerConstants.PAGE_NUMBER_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.PAGE_SIZE_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.RESOURCE_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.RESOURCE_ID_PARAM_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.RESOURCE_INFO_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.RESOURCE_TEXT_SEARCH_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.RESOURCE_TYPE;
-import static org.thingsboard.server.controller.ControllerConstants.SORT_ORDER_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.SORT_PROPERTY_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.SYSTEM_OR_TENANT_AUTHORITY_PARAGRAPH;
-import static org.thingsboard.server.controller.ControllerConstants.TENANT_AUTHORITY_PARAGRAPH;
-import static org.thingsboard.server.controller.ControllerConstants.UUID_WIKI_LINK;
+import static org.thingsboard.server.controller.ControllerConstants.*;
 
 @Slf4j
 @RestController
@@ -84,10 +55,9 @@ import static org.thingsboard.server.controller.ControllerConstants.UUID_WIKI_LI
 @RequiredArgsConstructor
 public class TbResourceController extends BaseController {
 
+    public static final String RESOURCE_ID = "resourceId";
     private static final String DOWNLOAD_RESOURCE_IF_NOT_CHANGED = "Download Resource based on the provided Resource Id or return 304 status code if resource was not changed.";
     private final TbResourceService tbResourceService;
-
-    public static final String RESOURCE_ID = "resourceId";
 
     @ApiOperation(value = "Download Resource (downloadResource)", notes = "Download Resource based on the provided Resource Id." + SYSTEM_OR_TENANT_AUTHORITY_PARAGRAPH)
     @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'TENANT_ADMIN')")
@@ -247,41 +217,6 @@ public class TbResourceController extends BaseController {
                 .resourceTypes(EnumSet.allOf(ResourceType.class))
                 .build();
         return checkNotNull(resourceService.findTenantResourcesByTenantId(filter, pageLink));
-    }
-
-    @ApiOperation(value = "Get LwM2M Objects (getLwm2mListObjectsPage)",
-            notes = "Returns a page of LwM2M objects parsed from Resources with type 'LWM2M_MODEL' owned by tenant or sysadmin. " +
-                    PAGE_DATA_PARAMETERS + LWM2M_OBJECT_DESCRIPTION + TENANT_AUTHORITY_PARAGRAPH,
-            responses = @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
-    @PreAuthorize("hasAnyAuthority('TENANT_ADMIN')")
-    @GetMapping(value = "/resource/lwm2m/page")
-    public List<LwM2mObject> getLwm2mListObjectsPage(@Parameter(description = PAGE_SIZE_DESCRIPTION, required = true)
-                                                     @RequestParam int pageSize,
-                                                     @Parameter(description = PAGE_NUMBER_DESCRIPTION, required = true)
-                                                     @RequestParam int page,
-                                                     @Parameter(description = RESOURCE_TEXT_SEARCH_DESCRIPTION)
-                                                     @RequestParam(required = false) String textSearch,
-                                                     @Parameter(description = SORT_PROPERTY_DESCRIPTION, schema = @Schema(allowableValues = {"id", "name"}))
-                                                     @RequestParam(required = false) String sortProperty,
-                                                     @Parameter(description = SORT_ORDER_DESCRIPTION, schema = @Schema(allowableValues = {"ASC", "DESC"}))
-                                                     @RequestParam(required = false) String sortOrder) throws ThingsboardException {
-        PageLink pageLink = new PageLink(pageSize, page, textSearch);
-        return checkNotNull(tbResourceService.findLwM2mObjectPage(getTenantId(), sortProperty, sortOrder, pageLink));
-    }
-
-    @ApiOperation(value = "Get LwM2M Objects (getLwm2mListObjects)",
-            notes = "Returns a page of LwM2M objects parsed from Resources with type 'LWM2M_MODEL' owned by tenant or sysadmin. " +
-                    "You can specify parameters to filter the results. " + LWM2M_OBJECT_DESCRIPTION + TENANT_AUTHORITY_PARAGRAPH,
-            responses = @ApiResponse(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
-    @PreAuthorize("hasAnyAuthority('TENANT_ADMIN')")
-    @GetMapping(value = "/resource/lwm2m")
-    public List<LwM2mObject> getLwm2mListObjects(@Parameter(description = SORT_ORDER_DESCRIPTION, schema = @Schema(allowableValues = {"ASC", "DESC"}, required = true))
-                                                 @RequestParam String sortOrder,
-                                                 @Parameter(description = SORT_PROPERTY_DESCRIPTION, schema = @Schema(allowableValues = {"id", "name"}, required = true))
-                                                 @RequestParam String sortProperty,
-                                                 @Parameter(description = "LwM2M Object ids.", required = true)
-                                                 @RequestParam(required = false) String[] objectIds) throws ThingsboardException {
-        return checkNotNull(tbResourceService.findLwM2mObject(getTenantId(), sortOrder, sortProperty, objectIds));
     }
 
     @ApiOperation(value = "Delete Resource (deleteResource)",

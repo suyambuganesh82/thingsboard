@@ -95,7 +95,6 @@ import org.thingsboard.server.gen.transport.TransportProtos.ProvisionDeviceReque
 import org.thingsboard.server.gen.transport.TransportProtos.TransportApiRequestMsg;
 import org.thingsboard.server.gen.transport.TransportProtos.TransportApiResponseMsg;
 import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceCredentialsResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceLwM2MCredentialsRequestMsg;
 import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceTokenRequestMsg;
 import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceX509CertRequestMsg;
 import org.thingsboard.server.queue.common.TbProtoQueueMsg;
@@ -191,12 +190,6 @@ public class DefaultTransportApiService implements TransportApiService {
             result = handlerExecutor.submit(() -> handle(transportApiRequestMsg.getGetOrCreateDeviceRequestMsg()));
         } else if (transportApiRequestMsg.hasEntityProfileRequestMsg()) {
             result = handle(transportApiRequestMsg.getEntityProfileRequestMsg());
-        } else if (transportApiRequestMsg.hasLwM2MRequestMsg()) {
-            result = handle(transportApiRequestMsg.getLwM2MRequestMsg());
-        } else if (transportApiRequestMsg.hasValidateDeviceLwM2MCredentialsRequestMsg()) {
-            ValidateDeviceLwM2MCredentialsRequestMsg msg = transportApiRequestMsg.getValidateDeviceLwM2MCredentialsRequestMsg();
-            final String credentialsId = msg.getCredentialsId();
-            result = handlerExecutor.submit(() -> validateCredentials(credentialsId, DeviceCredentialsType.LWM2M_CREDENTIALS));
         } else if (transportApiRequestMsg.hasProvisionDeviceRequestMsg()) {
             result = handle(transportApiRequestMsg.getProvisionDeviceRequestMsg());
         } else if (transportApiRequestMsg.hasResourceRequestMsg()) {
@@ -443,7 +436,6 @@ public class DefaultTransportApiService implements TransportApiService {
                 break;
             case MQTT_BASIC:
             case X509_CERTIFICATE:
-            case LWM2M_CREDENTIALS:
                 provisionResponse.setCredentialsValue(deviceCredentials.getCredentialsValue());
                 break;
         }

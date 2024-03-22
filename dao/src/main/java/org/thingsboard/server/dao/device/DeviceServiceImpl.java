@@ -42,13 +42,10 @@ import org.thingsboard.server.common.data.Tenant;
 import org.thingsboard.server.common.data.audit.ActionType;
 import org.thingsboard.server.common.data.device.DeviceSearchQuery;
 import org.thingsboard.server.common.data.device.credentials.BasicMqttCredentials;
-import org.thingsboard.server.common.data.device.data.CoapDeviceTransportConfiguration;
 import org.thingsboard.server.common.data.device.data.DefaultDeviceConfiguration;
 import org.thingsboard.server.common.data.device.data.DefaultDeviceTransportConfiguration;
 import org.thingsboard.server.common.data.device.data.DeviceData;
-import org.thingsboard.server.common.data.device.data.Lwm2mDeviceTransportConfiguration;
 import org.thingsboard.server.common.data.device.data.MqttDeviceTransportConfiguration;
-import org.thingsboard.server.common.data.device.data.SnmpDeviceTransportConfiguration;
 import org.thingsboard.server.common.data.edge.Edge;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.DeviceId;
@@ -285,15 +282,6 @@ public class DeviceServiceImpl extends AbstractCachedEntityService<DeviceCacheKe
                     break;
                 case MQTT:
                     deviceData.setTransportConfiguration(new MqttDeviceTransportConfiguration());
-                    break;
-                case COAP:
-                    deviceData.setTransportConfiguration(new CoapDeviceTransportConfiguration());
-                    break;
-                case LWM2M:
-                    deviceData.setTransportConfiguration(new Lwm2mDeviceTransportConfiguration());
-                    break;
-                case SNMP:
-                    deviceData.setTransportConfiguration(new SnmpDeviceTransportConfiguration());
                     break;
             }
         }
@@ -559,8 +547,6 @@ public class DeviceServiceImpl extends AbstractCachedEntityService<DeviceCacheKe
                     break;
                 case X509_CERTIFICATE:
                     deviceCredentials.setCredentialsValue(provisionRequest.getCredentialsData().getX509CertHash());
-                    break;
-                case LWM2M_CREDENTIALS:
                     break;
             }
             try {

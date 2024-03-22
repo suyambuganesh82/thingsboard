@@ -292,7 +292,6 @@ public class ThingsboardInstallService {
                     log.info("Updating system data...");
                     dataUpdateService.upgradeRuleNodes();
                     systemDataLoaderService.loadSystemWidgets();
-                    installScripts.loadSystemLwm2mResources();
                     installScripts.loadSystemImages();
                     if (installScripts.isUpdateImages()) {
                         installScripts.updateImages();
@@ -338,7 +337,6 @@ public class ThingsboardInstallService {
 
 //                systemDataLoaderService.loadSystemPlugins();
 //                systemDataLoaderService.loadSystemRules();
-                installScripts.loadSystemLwm2mResources();
                 installScripts.loadSystemImages();
 
                 if (loadDemo) {

@@ -14,21 +14,16 @@
 # limitations under the License.
 #
 
-#FROM thingsboard/openjdk21:bookworm-slim
-#FROM thingsboard/openjdk21:jammy-slim
+#mvn clean license:format install -DskipTests -Ddockerfile.skip=false -T 8
+mvn clean license:format install -DskipTests -Ddockerfile.skip=false -U
 
-FROM europe-docker.pkg.dev/sangam-iot/docker/openjdk21:bookworm-slim
+services=("tb-http-transport" "tb-mqtt-transport" "tb-node" "tb-web-ui" "tb-js-executor" "tb-vc-executor")
 
-COPY start-tb-node.sh ${pkg.name}.deb /tmp/
+VERSION=3.7.0
 
-RUN chmod a+x /tmp/*.sh \
-    && mv /tmp/start-tb-node.sh /usr/bin && \
-    (yes | dpkg -i /tmp/${pkg.name}.deb) && \
-    rm /tmp/${pkg.name}.deb && \
-    (systemctl --no-reload disable --now ${pkg.name}.service > /dev/null 2>&1 || :) && \
-    chown -R ${pkg.user}:${pkg.user} /tmp && \
-    chmod 555 ${pkg.installFolder}/bin/${pkg.name}.jar
-
-USER ${pkg.user}
-
-CMD ["start-tb-node.sh"]
+for service in "${services[@]}"
+do
+    echo $service
+    docker tag thingsboard/$service:latest europe-docker.pkg.dev/sangam-iot/docker/$service:$VERSION
+    docker push europe-docker.pkg.dev/sangam-iot/docker/$service:$VERSION
+done

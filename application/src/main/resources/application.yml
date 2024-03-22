@@ -921,7 +921,7 @@ transport:
   # Local MQTT transport parameters
   mqtt:
     # Enable/disable mqtt transport protocol.
-    enabled: "${MQTT_ENABLED:false}"
+    enabled: "${MQTT_ENABLED:true}"
     # MQTT bind-address
     bind_address: "${MQTT_BIND_ADDRESS:0.0.0.0}"
     # MQTT bind port
@@ -1017,7 +1017,7 @@ device:
 # Edges parameters
 edges:
   # Enable/disable Edge instance
-  enabled: "${EDGES_ENABLED:true}"
+  enabled: "${EDGES_ENABLED:false}"
   rpc:
     # RPC port bind
     port: "${EDGES_RPC_PORT:7070}"
@@ -1087,12 +1087,24 @@ swagger:
 
 # Queue configuration parameters
 queue:
-  type: "${TB_QUEUE_TYPE:in-memory}" # in-memory or kafka (Apache Kafka) or aws-sqs (AWS SQS) or pubsub (PubSub) or service-bus (Azure Service Bus) or rabbitmq (RabbitMQ)
+  type: "${TB_QUEUE_TYPE:pulsar}" # in-memory or kafka (Apache Kafka) or aws-sqs (AWS SQS) or pubsub (PubSub) or service-bus (Azure Service Bus) or rabbitmq (RabbitMQ)
   prefix: "${TB_QUEUE_PREFIX:}" # Global queue prefix. If specified, prefix is added before default topic name: 'prefix.default_topic_name'. Prefix is applied to all topics (and consumer groups for kafka).
   in_memory:
     stats:
       # For debug level
       print-interval-ms: "${TB_QUEUE_IN_MEMORY_STATS_PRINT_INTERVAL_MS:60000}"
+  pulsar:
+    bootstrap.servers: "${TB_PULSAR_SERVERS:pulsar://localhost:6650}"
+    admin.servers: "${TB_PULSAR_ADMIN_SERVERS:http://localhost:8088}"
+    cluster: "${TB_PULSAR_CLUSTER:standalone}"
+    topic-properties:
+      rule-engine: "${TB_QUEUE_PULSAR_RE_TOPIC_PROPERTIES:retention.ms:604800000;segment.bytes:26214400;retention.bytes:1048576000;partitions:1;min.insync.replicas:1}"
+      core: "${TB_QUEUE_PULSAR_CORE_TOPIC_PROPERTIES:retention.ms:604800000;segment.bytes:26214400;retention.bytes:1048576000;partitions:1;min.insync.replicas:1}"
+      transport-api: "${TB_QUEUE_PULSAR_TA_TOPIC_PROPERTIES:retention.ms:604800000;segment.bytes:26214400;retention.bytes:1048576000;partitions:10;min.insync.replicas:1}"
+      notifications: "${TB_QUEUE_PULSAR_NOTIFICATIONS_TOPIC_PROPERTIES:retention.ms:604800000;segment.bytes:26214400;retention.bytes:1048576000;partitions:1;min.insync.replicas:1}"
+      js-executor: "${TB_QUEUE_PULSAR_JE_TOPIC_PROPERTIES:retention.ms:604800000;segment.bytes:26214400;retention.bytes:104857600;partitions:100;min.insync.replicas:1}"
+      ota-updates: "${TB_QUEUE_PULSAR_OTA_TOPIC_PROPERTIES:retention.ms:604800000;segment.bytes:26214400;retention.bytes:1048576000;partitions:10;min.insync.replicas:1}"
+      version-control: "${TB_QUEUE_PULSAR_VC_TOPIC_PROPERTIES:retention.ms:604800000;segment.bytes:26214400;retention.bytes:1048576000;partitions:10;min.insync.replicas:1}"
   kafka:
     # Kafka Bootstrap nodes in "host:port" format
     bootstrap.servers: "${TB_KAFKA_SERVERS:localhost:9092}"

@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-queue_type: "kafka"
+queue_type: "pulsar"
 request_topic: "js_eval.requests"
 queue_prefix: ""
 http_port: "8888" # /livenessProbe
@@ -22,6 +22,11 @@ http_port: "8888" # /livenessProbe
 js:
   response_poll_interval: "25"
   max_result_size: "300000"
+
+pulsar:
+  bootstrap:
+    servers: "localhost:6650"
+  topic_properties: "retention.ms:604800000;segment.bytes:26214400;retention.bytes:104857600;partitions:50;min.insync.replicas:1"
 
 kafka:
   bootstrap:
@@ -41,23 +46,6 @@ kafka:
   confluent:
     sasl:
       mechanism: "PLAIN"
-
-pubsub:
-  queue_properties: "ackDeadlineInSec:30;messageRetentionInSec:604800"
-
-aws_sqs:
-  queue_properties: "VisibilityTimeout:30;MaximumMessageSize:262144;MessageRetentionPeriod:604800"
-
-rabbitmq:
-  host: "localhost"
-  port: "5672"
-  virtual_host: "/"
-  username: "admin"
-  password: "password"
-  queue_properties: "x-max-length-bytes:1048576000;x-message-ttl:604800000"
-
-service_bus:
-  queue_properties: "lockDurationInSec:30;maxSizeInMb:1024;messageTimeToLiveInSec:604800"
 
 logger:
   level: "info"

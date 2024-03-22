@@ -13,20 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.thingsboard.monitoring.config.transport;
+package org.thingsboard.server.queue.pulsar;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+public interface TbPulsarEncoder<T> {
 
-@Component
-@ConditionalOnProperty(name = "monitoring.transports.coap.enabled", havingValue = "true")
-@ConfigurationProperties(prefix = "monitoring.transports.coap")
-public class CoapTransportMonitoringConfig extends TransportMonitoringConfig {
-
-    @Override
-    public TransportType getTransportType() {
-        return TransportType.COAP;
-    }
+    byte[] encode(T value);
 
 }

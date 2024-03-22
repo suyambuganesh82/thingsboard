@@ -228,8 +228,10 @@ public class DefaultTransportService extends TransportActivityManager implements
         this.transportApiStats = statsFactory.createMessagesStats(StatsType.TRANSPORT.getName() + ".producer");
         this.transportCallbackExecutor = ThingsBoardExecutors.newWorkStealingPool(20, getClass());
         this.scheduler.scheduleAtFixedRate(this::invalidateRateLimits, new Random().nextInt((int) sessionReportTimeout), sessionReportTimeout, TimeUnit.MILLISECONDS);
+
         transportApiRequestTemplate = queueProvider.createTransportApiRequestTemplate();
         transportApiRequestTemplate.setMessagesStats(transportApiStats);
+
         ruleEngineMsgProducer = producerProvider.getRuleEngineMsgProducer();
         tbCoreMsgProducer = producerProvider.getTbCoreMsgProducer();
         transportNotificationsConsumer = queueProvider.createTransportNotificationsConsumer();
@@ -245,7 +247,7 @@ public class DefaultTransportService extends TransportActivityManager implements
             while (!stopped) {
                 try {
                     List<TbProtoQueueMsg<ToTransportMsg>> records = transportNotificationsConsumer.poll(notificationsPollDuration);
-                    if (records.size() == 0) {
+                    if (records.isEmpty()) {
                         continue;
                     }
                     records.forEach(record -> {

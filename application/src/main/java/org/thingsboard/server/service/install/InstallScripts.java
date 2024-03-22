@@ -26,9 +26,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.server.common.data.Dashboard;
-import org.thingsboard.server.common.data.ResourceType;
-import org.thingsboard.server.common.data.TbResource;
-import org.thingsboard.server.common.data.exception.ThingsboardException;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.oauth2.OAuth2ClientRegistrationTemplate;
@@ -41,7 +38,6 @@ import org.thingsboard.server.common.data.widget.WidgetTypeDetails;
 import org.thingsboard.server.common.data.widget.WidgetTypeInfo;
 import org.thingsboard.server.common.data.widget.WidgetsBundle;
 import org.thingsboard.server.dao.dashboard.DashboardService;
-import org.thingsboard.server.dao.exception.DataValidationException;
 import org.thingsboard.server.dao.oauth2.OAuth2ConfigTemplateService;
 import org.thingsboard.server.dao.resource.ResourceService;
 import org.thingsboard.server.dao.rule.RuleChainService;
@@ -54,15 +50,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
-import static org.thingsboard.server.utils.LwM2mObjectModelUtils.toLwm2mResource;
 
 /**
  * Created by ashvayka on 18.04.18.
@@ -115,7 +105,8 @@ public class InstallScripts {
 
     @Autowired
     private ImagesUpdater imagesUpdater;
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean updateImages = false;
 
     Path getTenantRuleChainsDir() {
@@ -381,9 +372,7 @@ public class InstallScripts {
                             OAuth2ClientRegistrationTemplate clientRegistrationTemplate = JacksonUtil.treeToValue(oauth2ConfigTemplateJson, OAuth2ClientRegistrationTemplate.class);
                             Optional<OAuth2ClientRegistrationTemplate> existingClientRegistrationTemplate =
                                     oAuth2TemplateService.findClientRegistrationTemplateByProviderId(clientRegistrationTemplate.getProviderId());
-                            if (existingClientRegistrationTemplate.isPresent()) {
-                                clientRegistrationTemplate.setId(existingClientRegistrationTemplate.get().getId());
-                            }
+                            existingClientRegistrationTemplate.ifPresent(oAuth2ClientRegistrationTemplate -> clientRegistrationTemplate.setId(oAuth2ClientRegistrationTemplate.getId()));
                             oAuth2TemplateService.saveClientRegistrationTemplate(clientRegistrationTemplate);
                         } catch (Exception e) {
                             log.error("Unable to load oauth2 config templates from json: [{}]", path.toString());
@@ -391,43 +380,6 @@ public class InstallScripts {
                         }
                     }
             );
-        }
-    }
-
-    public void loadSystemLwm2mResources() {
-        Path resourceLwm2mPath = Paths.get(getDataDir(), MODELS_LWM2M_DIR);
-        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(resourceLwm2mPath, path -> path.toString().endsWith(InstallScripts.XML_EXT))) {
-            dirStream.forEach(
-                    path -> {
-                        try {
-                            byte[] data = Files.readAllBytes(path);
-                            TbResource tbResource = new TbResource();
-                            tbResource.setTenantId(TenantId.SYS_TENANT_ID);
-                            tbResource.setData(data);
-                            tbResource.setResourceType(ResourceType.LWM2M_MODEL);
-                            tbResource.setFileName(path.toFile().getName());
-                            doSaveLwm2mResource(tbResource);
-                        } catch (Exception e) {
-                            log.error("Unable to load resource lwm2m object model from file: [{}]", path.toString());
-                            throw new RuntimeException("resource lwm2m object model from file", e);
-                        }
-                    }
-            );
-        } catch (Exception e) {
-            log.error("Unable to load resources lwm2m object model from file: [{}]", resourceLwm2mPath.toString());
-            throw new RuntimeException("resource lwm2m object model from file", e);
-        }
-    }
-
-    private void doSaveLwm2mResource(TbResource resource) throws ThingsboardException {
-        log.trace("Executing saveResource [{}]", resource);
-        if (resource.getData() == null || resource.getData().length == 0) {
-            throw new DataValidationException("Resource data should be specified!");
-        }
-        toLwm2mResource(resource);
-        TbResource foundResource = resourceService.findResourceByTenantIdAndKey(TenantId.SYS_TENANT_ID, ResourceType.LWM2M_MODEL, resource.getResourceKey());
-        if (foundResource == null) {
-            resourceService.saveResource(resource);
         }
     }
 }

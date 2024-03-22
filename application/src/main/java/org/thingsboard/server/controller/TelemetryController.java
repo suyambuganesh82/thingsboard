@@ -636,7 +636,7 @@ public class TelemetryController extends BaseController {
                 return getImmediateDeferredResult("No attributes data found in request body!", HttpStatus.BAD_REQUEST);
             }
             for (AttributeKvEntry attributeKvEntry : attributes) {
-                if (attributeKvEntry.getKey().isEmpty() || attributeKvEntry.getKey().trim().length() == 0) {
+                if (attributeKvEntry.getKey().isEmpty() || attributeKvEntry.getKey().trim().isEmpty()) {
                     return getImmediateDeferredResult("Key cannot be empty or contains only spaces", HttpStatus.BAD_REQUEST);
                 }
             }

@@ -20,26 +20,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.monitoring.client.TbClient;
-import org.thingsboard.monitoring.config.transport.DeviceConfig;
-import org.thingsboard.monitoring.config.transport.TransportInfo;
-import org.thingsboard.monitoring.config.transport.TransportMonitoringConfig;
-import org.thingsboard.monitoring.config.transport.TransportMonitoringTarget;
-import org.thingsboard.monitoring.config.transport.TransportType;
+import org.thingsboard.monitoring.config.transport.*;
 import org.thingsboard.monitoring.service.BaseHealthChecker;
-import org.thingsboard.monitoring.util.ResourceUtils;
 import org.thingsboard.server.common.data.Device;
 import org.thingsboard.server.common.data.DeviceProfile;
 import org.thingsboard.server.common.data.DeviceProfileType;
 import org.thingsboard.server.common.data.DeviceTransportType;
-import org.thingsboard.server.common.data.TbResource;
-import org.thingsboard.server.common.data.device.credentials.lwm2m.LwM2MBootstrapClientCredentials;
-import org.thingsboard.server.common.data.device.credentials.lwm2m.LwM2MDeviceCredentials;
-import org.thingsboard.server.common.data.device.credentials.lwm2m.NoSecBootstrapClientCredential;
-import org.thingsboard.server.common.data.device.credentials.lwm2m.NoSecClientCredential;
 import org.thingsboard.server.common.data.device.data.DefaultDeviceConfiguration;
 import org.thingsboard.server.common.data.device.data.DefaultDeviceTransportConfiguration;
 import org.thingsboard.server.common.data.device.data.DeviceData;
-import org.thingsboard.server.common.data.device.data.Lwm2mDeviceTransportConfiguration;
 import org.thingsboard.server.common.data.device.profile.DefaultDeviceProfileConfiguration;
 import org.thingsboard.server.common.data.device.profile.DefaultDeviceProfileTransportConfiguration;
 import org.thingsboard.server.common.data.device.profile.DeviceProfileData;
@@ -106,23 +95,8 @@ public abstract class TransportHealthChecker<C extends TransportMonitoringConfig
         device.setType(deviceProfile.getName());
         device.setDeviceProfileId(deviceProfile.getId());
 
-        if (transportType != TransportType.LWM2M) {
-            deviceData.setTransportConfiguration(new DefaultDeviceTransportConfiguration());
-            credentials.setCredentialsType(DeviceCredentialsType.ACCESS_TOKEN);
-        } else {
-            deviceData.setTransportConfiguration(new Lwm2mDeviceTransportConfiguration());
-            credentials.setCredentialsType(DeviceCredentialsType.LWM2M_CREDENTIALS);
-            LwM2MDeviceCredentials lwm2mCreds = new LwM2MDeviceCredentials();
-            NoSecClientCredential client = new NoSecClientCredential();
-            client.setEndpoint(credentials.getCredentialsId());
-            lwm2mCreds.setClient(client);
-            LwM2MBootstrapClientCredentials bootstrap = new LwM2MBootstrapClientCredentials();
-            bootstrap.setBootstrapServer(new NoSecBootstrapClientCredential());
-            bootstrap.setLwm2mServer(new NoSecBootstrapClientCredential());
-            lwm2mCreds.setBootstrap(bootstrap);
-            credentials.setCredentialsValue(JacksonUtil.toString(lwm2mCreds));
-        }
-
+        deviceData.setTransportConfiguration(new DefaultDeviceTransportConfiguration());
+        credentials.setCredentialsType(DeviceCredentialsType.ACCESS_TOKEN);
         return tbClient.saveDeviceWithCredentials(device, credentials).get();
     }
 
@@ -136,7 +110,6 @@ public abstract class TransportHealthChecker<C extends TransportMonitoringConfig
         }
 
         log.info("Creating new device profile '{}'", profileName);
-        if (transportType != TransportType.LWM2M) {
             deviceProfile = new DeviceProfile();
             deviceProfile.setType(DeviceProfileType.DEFAULT);
             deviceProfile.setTransportType(DeviceTransportType.DEFAULT);
@@ -144,17 +117,6 @@ public abstract class TransportHealthChecker<C extends TransportMonitoringConfig
             profileData.setConfiguration(new DefaultDeviceProfileConfiguration());
             profileData.setTransportConfiguration(new DefaultDeviceProfileTransportConfiguration());
             deviceProfile.setProfileData(profileData);
-        } else {
-            tbClient.getResources(new PageLink(1, 0, "lwm2m monitoring")).getData()
-                    .stream().findFirst()
-                    .orElseGet(() -> {
-                        TbResource newResource = ResourceUtils.getResource("lwm2m/resource.json", TbResource.class);
-                        log.info("Creating LwM2M resource");
-                        return tbClient.saveResource(newResource);
-                    });
-            deviceProfile = ResourceUtils.getResource("lwm2m/device_profile.json", DeviceProfile.class);
-        }
-
         deviceProfile.setName(profileName);
         deviceProfile.setDefaultQueueName(target.getQueue());
         return tbClient.saveDeviceProfile(deviceProfile);

@@ -14,7 +14,8 @@
 # limitations under the License.
 #
 
-FROM thingsboard/openjdk17:bookworm-slim
+#FROM thingsboard/openjdk17:bookworm-slim
+FROM europe-docker.pkg.dev/sangam-iot/docker/openjdk21:bookworm-slim
 
 COPY start-tb-http-transport.sh ${pkg.name}.deb /tmp/
 

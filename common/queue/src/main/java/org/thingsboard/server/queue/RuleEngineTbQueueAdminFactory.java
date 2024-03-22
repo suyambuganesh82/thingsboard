@@ -15,6 +15,7 @@
  */
 package org.thingsboard.server.queue;
 
+import org.apache.pulsar.client.admin.PulsarAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,9 @@ import org.springframework.context.annotation.Configuration;
 import org.thingsboard.server.queue.kafka.TbKafkaAdmin;
 import org.thingsboard.server.queue.kafka.TbKafkaSettings;
 import org.thingsboard.server.queue.kafka.TbKafkaTopicConfigs;
+import org.thingsboard.server.queue.pulsar.TbPulsarAdmin;
+import org.thingsboard.server.queue.pulsar.TbPulsarSettings;
+import org.thingsboard.server.queue.pulsar.TbPulsarTopicConfigs;
 
 @Configuration
 public class RuleEngineTbQueueAdminFactory {
@@ -30,6 +34,14 @@ public class RuleEngineTbQueueAdminFactory {
     private TbKafkaTopicConfigs kafkaTopicConfigs;
     @Autowired(required = false)
     private TbKafkaSettings kafkaSettings;
+
+    @Autowired(required = false)
+    private TbPulsarTopicConfigs tbPulsarTopicConfigs;
+    @Autowired(required = false)
+    private TbPulsarSettings tbPulsarSettings;
+    @Autowired(required = false)
+    private PulsarAdmin pulsarAdmin;
+
 
     @ConditionalOnExpression("'${queue.type:null}'=='kafka'")
     @Bean
@@ -55,4 +67,11 @@ public class RuleEngineTbQueueAdminFactory {
             }
         };
     }
+
+    @ConditionalOnExpression("'${queue.type:null}'=='pulsar'")
+    @Bean
+    public TbQueueAdmin createPulsarAdmin() {
+        return new TbPulsarAdmin(tbPulsarSettings, tbPulsarTopicConfigs.getRuleEngineConfigs(), pulsarAdmin);
+    }
+
 }
